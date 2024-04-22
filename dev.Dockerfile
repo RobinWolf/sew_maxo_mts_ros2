@@ -30,7 +30,8 @@ FROM base as gazebo_testenviroment
 
 #install some ros packages
 USER root
-RUN apt-get update && apt-get install -y ros-humble-xacro
-RUN apt-get update && apt-get install -y ros-humble-joint-state-publisher-gui
-RUN apt-get update && apt-get install -y ros-humble-gazebo
-USER ${USER}
+RUN apt-get update && apt-get install -y ros-${ROS_DISTRO}-xacro
+RUN apt-get update && apt-get install -y ros-${ROS_DISTRO}-joint-state-publisher-gui
+RUN apt-get update && apt-get install -y ros-${ROS_DISTRO}-ros-gz
+RUN apt-get update && apt-get install -y ros-${ROS_DISTRO}-gazebo-ros-pkgs
+USER $USER
