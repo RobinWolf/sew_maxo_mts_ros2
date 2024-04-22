@@ -6,9 +6,9 @@ UR-Gazebo implementation: https://github.com/UniversalRobots/Universal_Robots_RO
 
 
 ## commands:
-
 launch gazebo (empty world): ros2 launch gazebo_ros gazebo.launch.py
-convert urdf files to sdf and spawn: ros2 run gazebo_ros spawn_entity.py -topic robot_description -entity <naame>
+convert urdf files to sdf and spawn: ros2 run gazebo_ros spawn_entity.py -topic robot_description -entity <name>
+
 
 ## launch-file:
 needed nodes:
