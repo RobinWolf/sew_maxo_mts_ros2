@@ -25,6 +25,9 @@ endif()
 install(DIRECTORY
   config
   launch
+  worlds
+  models
+  rviz
   DESTINATION share/${PROJECT_NAME}/
 )
 
