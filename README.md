@@ -3,7 +3,8 @@ gazebo_enviroment for simulation mobile base and 6DoF kooperation possibilities
 
 ## useful links:
 UR-Gazebo implementation: https://github.com/UniversalRobots/Universal_Robots_ROS2_Gazebo_Simulation/tree/humble
-
+Gazebo Package ROS2: https://github.com/ros-simulation/gazebo_ros_pkgs/tree/ros2
+How To create new gazebo model (shelf with KLT, ...): https://classic.gazebosim.org/tutorials?tut=build_model
 
 ## commands:
 launch gazebo (empty world): ros2 launch gazebo_ros gazebo.launch.py
