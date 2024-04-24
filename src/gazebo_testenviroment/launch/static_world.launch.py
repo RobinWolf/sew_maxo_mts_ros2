@@ -21,7 +21,7 @@ def generate_launch_description():
                             description='Set to "false" not to run gzserver.'))
     
     declared_arguments.append(
-    DeclareLaunchArgument('world', default_value='src/gazebo_testenviroment/worlds/first_test.world',
+    DeclareLaunchArgument('world', default_value='src/gazebo_testenviroment/worlds/static_world_2404.world',
                             description='Specify the world which should be loaded in Gazebo'))
     
 
