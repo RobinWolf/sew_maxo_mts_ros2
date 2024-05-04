@@ -18,8 +18,8 @@
                 <wheel_diameter>0.2</wheel_diameter>
 
                 <!-- joint limits/ overrides urdf definitions ! -->
-                <max_wheel_torque>200</max_wheel_torque>
-                <max_wheel_acceleration>10.0</max_wheel_acceleration>
+                <max_wheel_torque>20</max_wheel_torque>
+                <max_wheel_acceleration>1.0</max_wheel_acceleration>
                 
                 <!-- Output messages of the plugin gazebo -> ros2-->
                 <odometry_frame>odom</odometry_frame>
