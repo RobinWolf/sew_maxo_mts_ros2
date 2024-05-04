@@ -24,6 +24,7 @@ def generate_launch_description():
     DeclareLaunchArgument('world', default_value='src/gazebo_testenviroment/worlds/static_world_2404.world',
                             description='Specify the world which should be loaded in Gazebo'))
     
+    #static_world_2404
 
     #init launch arguments, transfer to variables
     world = LaunchConfiguration('world')
