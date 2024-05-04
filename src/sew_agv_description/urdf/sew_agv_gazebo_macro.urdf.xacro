@@ -1,0 +1,66 @@
+<?xml version="1.0"?>
+<robot xmlns:xacro="http://www.ros.org/wiki/xacro">
+
+    <xacro:macro name="sew_agv_gazebo">
+
+    <!--#######################################################################################################################################-->
+    <!--set up the diff_drive plugin controller from gazebo, NOT ros2_control -> maybe change when ros2_control available -->
+    <!--#######################################################################################################################################-->
+        <gazebo>
+            <plugin name="diff_drive" filename="libgazebo_ros_diff_drive.so">
+                <!--set wheels-->
+                <left_joint>wheel_left_joint</left_joint>
+                <right_joint>wheel_right_joint</right_joint>
+                <wheel_separation>0.525</wheel_separation>
+                <wheel_diameter>0.2</wheel_diameter>
+
+                <!-- joint limits/ overrides urdf definitions ! -->
+                <max_wheel_torque>200</max_wheel_torque>
+                <max_wheel_acceleration>10.0</max_wheel_acceleration>
+                
+                <!-- Output messages of the plugin-->
+                <odometry_frame>odom</odometry_frame>
+                <robot_base_frame>base_link</robot_base_frame>
+
+                <publish_odom>true</publish_odom>
+                <publish_odom_tf>true</publish_odom_tf>
+                <publish_wheel_tf>true</publish_wheel_tf>
+
+            </plugin>    
+        </gazebo>
+
+    <!--#######################################################################################################################################-->
+    <!--define gazebo tags for materials, because urdf materialc can not be used in gazebo -->
+    <!--#######################################################################################################################################-->
+
+        <gazebo reference="caster_wheel_link">
+            <material> Gazebo/Black</material>
+        </gazebo>
+
+        <gazebo reference="right_wheel_link">
+            <material> Gazebo/Black</material>
+        </gazebo>
+
+        <gazebo reference="left_wheel_link">
+            <material> Gazebo/Black</material>
+        </gazebo>
+
+        <gazebo reference="body_link">
+            <material> Gazebo/Grey</material>
+        </gazebo>
+
+        <gazebo reference="lidar_link">
+            <material> Gazebo/Yellow</material>
+        </gazebo>
+
+    <!--#######################################################################################################################################-->
+    <!--set friction of the caster wheel to nearly 0 (for simplicity reasons) -->
+    <!--#######################################################################################################################################-->
+
+        <gazebo reference="caster_wheel_link">
+            <mu1 value="0.001"/>
+            <mu2 value="0.001"/>
+        </gazebo>
+
+    </xacro:macro>
+</robot>

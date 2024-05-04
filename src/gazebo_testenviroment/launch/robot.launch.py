@@ -11,6 +11,7 @@ from ament_index_python.packages import get_package_share_directory
 
 def generate_launch_description():
     description_package = "sew_agv_description"
+    sim_package = "gazebo_testenviroment"
 
     declared_arguments = []
     declared_arguments.append(
@@ -57,7 +58,7 @@ def generate_launch_description():
     )
 
     #convert robot_description_content to string, thet it can be passed as yaml to the robot_state_publisher Node --> unsafe without !
-    robot_description = {"robot_description": ParameterValue(robot_description_content, value_type=str)} 
+    robot_description = {"robot_description": ParameterValue(robot_description_content, value_type=str), 'use_sim_time': True} 
     
     robot_state_publisher_node = Node(
         package="robot_state_publisher",
@@ -78,20 +79,20 @@ def generate_launch_description():
                             '-entity', 'sew-maxo-mts-agv'],
                 output='screen')
 
-    #rviz_config_file = PathJoinSubstitution([FindPackageShare(description_package), "rviz", "rviz_config.rviz"]) # define path to rviz-config file
+    rviz_config_file = PathJoinSubstitution([FindPackageShare(sim_package), "rviz", "gazebo_rviz.rviz"]) # define path to rviz-config file
 
     rviz_node = Node(
         package="rviz2",
         executable="rviz2",
         name="rviz2",
         output="log",
+        arguments=["-d", rviz_config_file]
     )
-    #arguments=["-d", rviz_config_file]
 
 
     nodes_to_start = [
-        robot_state_publisher_node,
         gazebo_node,
+        robot_state_publisher_node,
         spawn_entity,
         rviz_node
     ]
