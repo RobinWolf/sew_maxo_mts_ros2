@@ -75,11 +75,8 @@ def generate_launch_description():
     gazebo_node = IncludeLaunchDescription(
         PythonLaunchDescriptionSource(
             [PathJoinSubstitution([FindPackageShare('gazebo_ros'), 'launch']), '/gazebo.launch.py']),
-
     )
-     #       launch_arguments={
-      #      'world': world,
-       # }.items(),
+    
 
     #spawn the robot into the empty world (establish a bridge between ros2 topics like cmd_vel and gazebo)
     spawn_entity = Node(
