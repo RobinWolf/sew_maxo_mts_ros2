@@ -98,6 +98,7 @@ def generate_launch_description():
 
 
     nodes_to_start = [
+        gazebo_node,
         robot_state_publisher_node,
         spawn_entity,
         rviz_node
