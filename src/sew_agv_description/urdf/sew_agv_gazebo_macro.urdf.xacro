@@ -8,6 +8,9 @@
     <!--#######################################################################################################################################-->
         <gazebo>
             <plugin name="diff_drive" filename="libgazebo_ros_diff_drive.so">
+
+                <update_rate>30</update_rate>
+                
                 <!--set wheels-->
                 <left_joint>wheel_left_joint</left_joint>
                 <right_joint>wheel_right_joint</right_joint>
@@ -18,13 +21,15 @@
                 <max_wheel_torque>200</max_wheel_torque>
                 <max_wheel_acceleration>10.0</max_wheel_acceleration>
                 
-                <!-- Output messages of the plugin-->
+                <!-- Output messages of the plugin gazebo -> ros2-->
                 <odometry_frame>odom</odometry_frame>
                 <robot_base_frame>base_footprint</robot_base_frame>
-
                 <publish_odom>true</publish_odom>
                 <publish_odom_tf>true</publish_odom_tf>
                 <publish_wheel_tf>true</publish_wheel_tf>
+
+                <!--command topic ros2 -> gazebo-->
+                <command_topic>cmd_vel</command_topic>
 
             </plugin>    
         </gazebo>
