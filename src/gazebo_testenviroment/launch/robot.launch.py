@@ -5,8 +5,6 @@ from launch_ros.actions import Node
 from launch_ros.substitutions import FindPackageShare
 from launch_ros.descriptions import ParameterValue
 from launch.launch_description_sources import PythonLaunchDescriptionSource
-import os
-from ament_index_python.packages import get_package_share_directory
 
 
 def generate_launch_description():
@@ -34,8 +32,14 @@ def generate_launch_description():
             default_value='true',
             description="add the robot description to gazebo with a simpler approach, using a diff_drive and lidar plugin",
         )
-    )          
+    )
+    declared_arguments.append(
+    DeclareLaunchArgument('world', default_value='src/gazebo_testenviroment/worlds/static_world_2404.world',
+                            description='Specify the world which should be loaded in Gazebo'))
+    
 
+    #init launch arguments, transfer to variables
+    world = LaunchConfiguration('world')        
     tf_prefix = LaunchConfiguration("tf_prefix")
     ros2_control_with_gazebo = LaunchConfiguration("ros2_control_with_gazebo")
     standalone_gazebo = LaunchConfiguration("standalone_gazebo")
@@ -63,21 +67,27 @@ def generate_launch_description():
     robot_state_publisher_node = Node(
         package="robot_state_publisher",
         executable="robot_state_publisher",
-        output="both",
+        output="screen",
         parameters=[robot_description],
     )
 
     #lauch gazebo (empty world)
     gazebo_node = IncludeLaunchDescription(
-        PythonLaunchDescriptionSource([os.path.join(
-            get_package_share_directory('gazebo_ros'), 'launch'), '/gazebo.launch.py']),
-        )
+        PythonLaunchDescriptionSource(
+            [PathJoinSubstitution([FindPackageShare('gazebo_ros'), 'launch']), '/gazebo.launch.py']),
+
+    )
+     #       launch_arguments={
+      #      'world': world,
+       # }.items(),
 
     #spawn the robot into the empty world (establish a bridge between ros2 topics like cmd_vel and gazebo)
-    spawn_entity = Node(package='gazebo_ros', executable='spawn_entity.py',
-                arguments=['-topic', 'robot_description',
-                            '-entity', 'sew-maxo-mts-agv'],
-                output='screen')
+    spawn_entity = Node(
+        package='gazebo_ros',
+        executable='spawn_entity.py',
+        arguments=['-topic', 'robot_description', '-entity', 'sew-maxo-mts-agv'],
+        output='screen'
+    )
 
     rviz_config_file = PathJoinSubstitution([FindPackageShare(sim_package), "rviz", "gazebo_rviz.rviz"]) # define path to rviz-config file
 
