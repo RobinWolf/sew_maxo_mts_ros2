@@ -79,14 +79,14 @@
         <visual>
             <origin rpy="0 0 0" xyz="0 0 0"/>
             <geometry>
-                <mesh filename="package://sew_agv_description/meshes/visual/sew_maxo_mts_body.stl" scale="0.001 0.001 0.001"/>
+                <mesh filename="/home/logilab/ros2_ws/src/sew_agv_description/meshes/visual/sew_maxo_mts_body.stl" scale="0.001 0.001 0.001"/>
             </geometry>
             <material name="${tf_prefix}grey"/>
         </visual>
         <collision>
             <origin rpy=" 0 0 0" xyz="0 0 0"/>
             <geometry>
-                <mesh filename="package://sew_agv_description/meshes/collision/sew_maxo_mts_body.stl" scale="0.001 0.001 0.001"/>
+                <mesh filename="/home/logilab/ros2_ws/src/sew_agv_description/meshes/collision/sew_maxo_mts_body.stl" scale="0.001 0.001 0.001"/>
             </geometry>
             <material name="${tf_prefix}red"/>
         </collision>
@@ -108,14 +108,14 @@
         <visual>
             <origin rpy="0 0 0" xyz="0 0 0"/>
             <geometry>
-                <mesh filename="package://sew_agv_description/meshes/visual/sew_maxo_mts_front_wheel.stl" scale="0.001 0.001 0.001"/>
+                <mesh filename="/home/logilab/ros2_ws/src/sew_agv_description/meshes/visual/sew_maxo_mts_front_wheel.stl" scale="0.001 0.001 0.001"/>
             </geometry>
             <material name="${tf_prefix}black"/>
         </visual>
         <collision>
             <origin rpy="0 0 0" xyz="0 0 0"/>
             <geometry>
-                <mesh filename="package://sew_agv_description/meshes/visual/sew_maxo_mts_front_wheel.stl" scale="0.001 0.001 0.001"/>
+                <mesh filename="/home/logilab/ros2_ws/src/sew_agv_description/meshes/visual/sew_maxo_mts_front_wheel.stl" scale="0.001 0.001 0.001"/>
             </geometry>
             <material name="${tf_prefix}red"/>
         </collision>
@@ -138,14 +138,14 @@
         <visual>
             <origin rpy="0 0 0" xyz="0 0 0"/>
             <geometry>
-                <mesh filename="package://sew_agv_description/meshes/visual/sew_maxo_mts_wheel.stl" scale="0.001 0.001 0.001"/>
+                <mesh filename="/home/logilab/ros2_ws/src/sew_agv_description/meshes/visual/sew_maxo_mts_wheel.stl" scale="0.001 0.001 0.001"/>
             </geometry>
             <material name="${tf_prefix}black"/>
         </visual>
         <collision>
             <origin rpy="0 0 0" xyz="0 0 0"/>
             <geometry>
-                <mesh filename="package://sew_agv_description/meshes/visual/sew_maxo_mts_wheel.stl" scale="0.001 0.001 0.001"/>
+                <mesh filename="/home/logilab/ros2_ws/src/sew_agv_description/meshes/visual/sew_maxo_mts_wheel.stl" scale="0.001 0.001 0.001"/>
             </geometry>
             <material name="${tf_prefix}red"/>
         </collision>
@@ -168,14 +168,14 @@
         <visual>
             <origin rpy="0 0 0" xyz="0 0 0"/>
             <geometry>
-                <mesh filename="package://sew_agv_description/meshes/visual/sew_maxo_mts_wheel.stl" scale="0.001 0.001 0.001"/>
+                <mesh filename="/home/logilab/ros2_ws/src/sew_agv_description/meshes/visual/sew_maxo_mts_wheel.stl" scale="0.001 0.001 0.001"/>
             </geometry>
             <material name="${tf_prefix}black"/>
         </visual>
         <collision>
             <origin rpy="0 0 0" xyz="0 0 0"/>
             <geometry>
-                <mesh filename="package://sew_agv_description/meshes/visual/sew_maxo_mts_wheel.stl" scale="0.001 0.001 0.001"/>
+                <mesh filename="/home/logilab/ros2_ws/src/sew_agv_description/meshes/visual/sew_maxo_mts_wheel.stl" scale="0.001 0.001 0.001"/>
             </geometry>
             <material name="${tf_prefix}red"/>
         </collision>
@@ -197,14 +197,14 @@
         <visual>
             <origin rpy="0 0 0" xyz="0 0 0"/>
             <geometry>
-                <mesh filename="package://sew_agv_description/meshes/visual/sew_maxo_mts_lidar.stl" scale="0.001 0.001 0.001"/>
+                <mesh filename="/home/logilab/ros2_ws/src/sew_agv_description/meshes/visual/sew_maxo_mts_lidar.stl" scale="0.001 0.001 0.001"/>
             </geometry>
             <material name="${tf_prefix}yellow"/>
         </visual>
         <collision>
             <origin rpy="0 0 0" xyz="0 0 0"/>
             <geometry>
-                <mesh filename="package://sew_agv_description/meshes/visual/sew_maxo_mts_lidar.stl" scale="0.001 0.001 0.001"/>
+                <mesh filename="/home/logilab/ros2_ws/src/sew_agv_description/meshes/visual/sew_maxo_mts_lidar.stl" scale="0.001 0.001 0.001"/>
             </geometry>
         </collision>
         <material name="${tf_prefix}red"/>
