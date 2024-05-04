@@ -50,6 +50,7 @@
 
     <xacro:if value="${standalone_gazebo}">
         <xacro:include filename="$(find sew_agv_description)/urdf/sew_agv_gazebo_macro.urdf.xacro" />
+        <xacro:sew_agv_gazebo/>
     </xacro:if>
 
 
