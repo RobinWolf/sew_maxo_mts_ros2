@@ -8,7 +8,6 @@ uid=$(eval "id -u")
 gid=$(eval "id -g")
 
 #pass some arguments and settings to the dev.Dockerfile while building the image (dev.Dockerfile)
-#name of the image builded here: utomaton-dev/ros-render:"ROS-Distribution eg humble"
 
 #--no-cache
 docker build \
@@ -16,7 +15,7 @@ docker build \
   --build-arg UID="$uid" \
   --build-arg GID="$gid" \
   -f dev.Dockerfile \
-  -t automaton-dev/ros-render:"$ROS_DISTRO" .
+  -t logilab-gazebo-dev/ros-render:"$ROS_DISTRO" .
 
 ##############################################################################
 ##                            Run the container                             ##
@@ -31,6 +30,6 @@ docker run \
   --net=host \
   -v "$SRC_HOST":"$SRC_CONTAINER":rw \
   -e DISPLAY="$DISPLAY" \
-  automaton-dev/ros-render:"$ROS_DISTRO"
+  logilab-gazebo-dev/ros-render:"$ROS_DISTRO"
 
 # display and network access is already passed to the container

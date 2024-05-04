@@ -1,0 +1,50 @@
+[1.398s] DEBUG:colcon:Command line arguments: ['/usr/bin/colcon', 'list', '-p', '--base-paths', '/home/robin/hka_projects/FE2_AGV_Manipulator/ROS-Packages/gazebo_enviroment']
+[1.398s] DEBUG:colcon:Parsed command line arguments: Namespace(log_base=None, log_level=None, verb_name='list', build_base='build', ignore_user_meta=False, metas=['./colcon.meta'], base_paths=['/home/robin/hka_projects/FE2_AGV_Manipulator/ROS-Packages/gazebo_enviroment'], packages_ignore=None, packages_ignore_regex=None, paths=None, packages_up_to=None, packages_up_to_regex=None, packages_above=None, packages_above_and_dependencies=None, packages_above_depth=None, packages_select_by_dep=None, packages_skip_by_dep=None, packages_skip_up_to=None, packages_select_build_failed=False, packages_skip_build_finished=False, packages_select_test_failures=False, packages_skip_test_passed=False, packages_select=None, packages_skip=None, packages_select_regex=None, packages_skip_regex=None, packages_start=None, packages_end=None, allow_overriding=[], topological_order=False, names_only=False, paths_only=True, topological_graph=False, topological_graph_dot=False, topological_graph_density=False, topological_graph_legend=False, topological_graph_dot_cluster=False, topological_graph_dot_include_skipped=False, verb_parser=<colcon_defaults.argument_parser.defaults.DefaultArgumentsDecorator object at 0x7e0493b87100>, verb_extension=<colcon_package_information.verb.list.ListVerb object at 0x7e0493ba8130>, main=<bound method ListVerb.main of <colcon_package_information.verb.list.ListVerb object at 0x7e0493ba8130>>)
+[1.460s] Level 1:colcon.colcon_core.package_discovery:discover_packages(colcon_meta) check parameters
+[1.460s] Level 1:colcon.colcon_core.package_discovery:discover_packages(recursive) check parameters
+[1.460s] Level 1:colcon.colcon_core.package_discovery:discover_packages(ignore) check parameters
+[1.460s] Level 1:colcon.colcon_core.package_discovery:discover_packages(path) check parameters
+[1.460s] Level 1:colcon.colcon_core.package_discovery:discover_packages(recursive) discover
+[1.460s] INFO:colcon.colcon_core.package_discovery:Crawling recursively for packages in '/home/robin/hka_projects/FE2_AGV_Manipulator/ROS-Packages/gazebo_enviroment'
+[1.461s] Level 1:colcon.colcon_core.package_identification:_identify(/home/robin/hka_projects/FE2_AGV_Manipulator/ROS-Packages/gazebo_enviroment) by extensions ['ignore', 'ignore_ament_install']
+[1.461s] Level 1:colcon.colcon_core.package_identification:_identify(/home/robin/hka_projects/FE2_AGV_Manipulator/ROS-Packages/gazebo_enviroment) by extension 'ignore'
+[1.461s] Level 1:colcon.colcon_core.package_identification:_identify(/home/robin/hka_projects/FE2_AGV_Manipulator/ROS-Packages/gazebo_enviroment) by extension 'ignore_ament_install'
+[1.461s] Level 1:colcon.colcon_core.package_identification:_identify(/home/robin/hka_projects/FE2_AGV_Manipulator/ROS-Packages/gazebo_enviroment) by extensions ['colcon_pkg']
+[1.461s] Level 1:colcon.colcon_core.package_identification:_identify(/home/robin/hka_projects/FE2_AGV_Manipulator/ROS-Packages/gazebo_enviroment) by extension 'colcon_pkg'
+[1.461s] Level 1:colcon.colcon_core.package_identification:_identify(/home/robin/hka_projects/FE2_AGV_Manipulator/ROS-Packages/gazebo_enviroment) by extensions ['colcon_meta']
+[1.461s] Level 1:colcon.colcon_core.package_identification:_identify(/home/robin/hka_projects/FE2_AGV_Manipulator/ROS-Packages/gazebo_enviroment) by extension 'colcon_meta'
+[1.461s] Level 1:colcon.colcon_core.package_identification:_identify(/home/robin/hka_projects/FE2_AGV_Manipulator/ROS-Packages/gazebo_enviroment) by extensions ['ros']
+[1.461s] Level 1:colcon.colcon_core.package_identification:_identify(/home/robin/hka_projects/FE2_AGV_Manipulator/ROS-Packages/gazebo_enviroment) by extension 'ros'
+[1.474s] Level 1:colcon.colcon_core.package_identification:_identify(/home/robin/hka_projects/FE2_AGV_Manipulator/ROS-Packages/gazebo_enviroment) by extensions ['cmake', 'python']
+[1.474s] Level 1:colcon.colcon_core.package_identification:_identify(/home/robin/hka_projects/FE2_AGV_Manipulator/ROS-Packages/gazebo_enviroment) by extension 'cmake'
+[1.474s] Level 1:colcon.colcon_core.package_identification:_identify(/home/robin/hka_projects/FE2_AGV_Manipulator/ROS-Packages/gazebo_enviroment) by extension 'python'
+[1.475s] Level 1:colcon.colcon_core.package_identification:_identify(/home/robin/hka_projects/FE2_AGV_Manipulator/ROS-Packages/gazebo_enviroment) by extensions ['python_setup_py']
+[1.475s] Level 1:colcon.colcon_core.package_identification:_identify(/home/robin/hka_projects/FE2_AGV_Manipulator/ROS-Packages/gazebo_enviroment) by extension 'python_setup_py'
+[1.475s] Level 1:colcon.colcon_core.package_identification:_identify(/home/robin/hka_projects/FE2_AGV_Manipulator/ROS-Packages/gazebo_enviroment/log) by extensions ['ignore', 'ignore_ament_install']
+[1.475s] Level 1:colcon.colcon_core.package_identification:_identify(/home/robin/hka_projects/FE2_AGV_Manipulator/ROS-Packages/gazebo_enviroment/log) by extension 'ignore'
+[1.475s] Level 1:colcon.colcon_core.package_identification:_identify(/home/robin/hka_projects/FE2_AGV_Manipulator/ROS-Packages/gazebo_enviroment/log) ignored
+[1.475s] Level 1:colcon.colcon_core.package_identification:_identify(/home/robin/hka_projects/FE2_AGV_Manipulator/ROS-Packages/gazebo_enviroment/src) by extensions ['ignore', 'ignore_ament_install']
+[1.476s] Level 1:colcon.colcon_core.package_identification:_identify(/home/robin/hka_projects/FE2_AGV_Manipulator/ROS-Packages/gazebo_enviroment/src) by extension 'ignore'
+[1.476s] Level 1:colcon.colcon_core.package_identification:_identify(/home/robin/hka_projects/FE2_AGV_Manipulator/ROS-Packages/gazebo_enviroment/src) by extension 'ignore_ament_install'
+[1.476s] Level 1:colcon.colcon_core.package_identification:_identify(/home/robin/hka_projects/FE2_AGV_Manipulator/ROS-Packages/gazebo_enviroment/src) by extensions ['colcon_pkg']
+[1.476s] Level 1:colcon.colcon_core.package_identification:_identify(/home/robin/hka_projects/FE2_AGV_Manipulator/ROS-Packages/gazebo_enviroment/src) by extension 'colcon_pkg'
+[1.476s] Level 1:colcon.colcon_core.package_identification:_identify(/home/robin/hka_projects/FE2_AGV_Manipulator/ROS-Packages/gazebo_enviroment/src) by extensions ['colcon_meta']
+[1.476s] Level 1:colcon.colcon_core.package_identification:_identify(/home/robin/hka_projects/FE2_AGV_Manipulator/ROS-Packages/gazebo_enviroment/src) by extension 'colcon_meta'
+[1.476s] Level 1:colcon.colcon_core.package_identification:_identify(/home/robin/hka_projects/FE2_AGV_Manipulator/ROS-Packages/gazebo_enviroment/src) by extensions ['ros']
+[1.476s] Level 1:colcon.colcon_core.package_identification:_identify(/home/robin/hka_projects/FE2_AGV_Manipulator/ROS-Packages/gazebo_enviroment/src) by extension 'ros'
+[1.476s] Level 1:colcon.colcon_core.package_identification:_identify(/home/robin/hka_projects/FE2_AGV_Manipulator/ROS-Packages/gazebo_enviroment/src) by extensions ['cmake', 'python']
+[1.476s] Level 1:colcon.colcon_core.package_identification:_identify(/home/robin/hka_projects/FE2_AGV_Manipulator/ROS-Packages/gazebo_enviroment/src) by extension 'cmake'
+[1.476s] Level 1:colcon.colcon_core.package_identification:_identify(/home/robin/hka_projects/FE2_AGV_Manipulator/ROS-Packages/gazebo_enviroment/src) by extension 'python'
+[1.476s] Level 1:colcon.colcon_core.package_identification:_identify(/home/robin/hka_projects/FE2_AGV_Manipulator/ROS-Packages/gazebo_enviroment/src) by extensions ['python_setup_py']
+[1.476s] Level 1:colcon.colcon_core.package_identification:_identify(/home/robin/hka_projects/FE2_AGV_Manipulator/ROS-Packages/gazebo_enviroment/src) by extension 'python_setup_py'
+[1.477s] Level 1:colcon.colcon_core.package_identification:_identify(/home/robin/hka_projects/FE2_AGV_Manipulator/ROS-Packages/gazebo_enviroment/src/gazebo_testenviroment) by extensions ['ignore', 'ignore_ament_install']
+[1.477s] Level 1:colcon.colcon_core.package_identification:_identify(/home/robin/hka_projects/FE2_AGV_Manipulator/ROS-Packages/gazebo_enviroment/src/gazebo_testenviroment) by extension 'ignore'
+[1.477s] Level 1:colcon.colcon_core.package_identification:_identify(/home/robin/hka_projects/FE2_AGV_Manipulator/ROS-Packages/gazebo_enviroment/src/gazebo_testenviroment) by extension 'ignore_ament_install'
+[1.477s] Level 1:colcon.colcon_core.package_identification:_identify(/home/robin/hka_projects/FE2_AGV_Manipulator/ROS-Packages/gazebo_enviroment/src/gazebo_testenviroment) by extensions ['colcon_pkg']
+[1.477s] Level 1:colcon.colcon_core.package_identification:_identify(/home/robin/hka_projects/FE2_AGV_Manipulator/ROS-Packages/gazebo_enviroment/src/gazebo_testenviroment) by extension 'colcon_pkg'
+[1.477s] Level 1:colcon.colcon_core.package_identification:_identify(/home/robin/hka_projects/FE2_AGV_Manipulator/ROS-Packages/gazebo_enviroment/src/gazebo_testenviroment) by extensions ['colcon_meta']
+[1.477s] Level 1:colcon.colcon_core.package_identification:_identify(/home/robin/hka_projects/FE2_AGV_Manipulator/ROS-Packages/gazebo_enviroment/src/gazebo_testenviroment) by extension 'colcon_meta'
+[1.477s] Level 1:colcon.colcon_core.package_identification:_identify(/home/robin/hka_projects/FE2_AGV_Manipulator/ROS-Packages/gazebo_enviroment/src/gazebo_testenviroment) by extensions ['ros']
+[1.477s] Level 1:colcon.colcon_core.package_identification:_identify(/home/robin/hka_projects/FE2_AGV_Manipulator/ROS-Packages/gazebo_enviroment/src/gazebo_testenviroment) by extension 'ros'
+[1.481s] DEBUG:colcon.colcon_core.package_identification:Package '/home/robin/hka_projects/FE2_AGV_Manipulator/ROS-Packages/gazebo_enviroment/src/gazebo_testenviroment' with type 'ros.ament_cmake' and name 'gazebo_testenviroment'
+[1.481s] Level 1:colcon.colcon_core.package_discovery:discover_packages(recursive) using defaults

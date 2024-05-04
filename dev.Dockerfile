@@ -32,6 +32,12 @@ FROM base as gazebo_testenviroment
 USER root
 RUN apt-get update && apt-get install -y ros-${ROS_DISTRO}-xacro
 RUN apt-get update && apt-get install -y ros-${ROS_DISTRO}-joint-state-publisher-gui
+RUN apt-get update && apt-get install -y ros-${ROS_DISTRO}-teleop-twist-joy
+RUN apt-get update && apt-get install -y ros-${ROS_DISTRO}-teleop-twist-keyboard
+RUN apt-get update && apt-get install -y ros-${ROS_DISTRO}-joy
 RUN apt-get update && apt-get install -y ros-${ROS_DISTRO}-ros-gz
 RUN apt-get update && apt-get install -y ros-${ROS_DISTRO}-gazebo-ros-pkgs
 USER $USER
+
+#copy the description package into this ws
+# --> TODO

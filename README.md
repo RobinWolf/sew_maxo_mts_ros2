@@ -6,6 +6,7 @@ UR-Gazebo implementation: https://github.com/UniversalRobots/Universal_Robots_RO
 Gazebo Package ROS2: https://github.com/ros-simulation/gazebo_ros_pkgs/tree/ros2
 How To create new gazebo model (shelf with KLT, ...): https://classic.gazebosim.org/tutorials?tut=build_model
 list of gazebo materials: http://wiki.ros.org/simulator_gazebo/Tutorials/ListOfMaterials
+moveit sourcecode:https://github.com/ros-planning/moveit2/tree/main
 
 ## commands:
 launch gazebo (empty world): ros2 launch gazebo_ros gazebo.launch.py
