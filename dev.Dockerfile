@@ -37,6 +37,9 @@ RUN apt-get update && apt-get install -y ros-${ROS_DISTRO}-teleop-twist-keyboard
 RUN apt-get update && apt-get install -y ros-${ROS_DISTRO}-joy
 RUN apt-get update && apt-get install -y ros-${ROS_DISTRO}-ros-gz
 RUN apt-get update && apt-get install -y ros-${ROS_DISTRO}-gazebo-ros-pkgs
+
+RUN apt-get update && apt-get install -y joystick
+
 USER $USER
 
 #copy the description package into this ws
