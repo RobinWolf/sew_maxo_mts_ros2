@@ -92,7 +92,7 @@ def generate_launch_description():
         output='screen'
     )
 
-    rviz_config_file = PathJoinSubstitution([FindPackageShare(sim_package), "rviz", "gazebo_rviz.rviz"]) # define path to rviz-config file
+    rviz_config_file = PathJoinSubstitution([FindPackageShare(sim_package), "rviz", "gazebo_teleop_lidar_rviz.rviz"]) # define path to rviz-config file
 
     rviz_node = Node(
         package="rviz2",
