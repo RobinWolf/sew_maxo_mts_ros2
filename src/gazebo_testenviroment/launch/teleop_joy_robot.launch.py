@@ -6,9 +6,9 @@ from launch_ros.substitutions import FindPackageShare
 from launch_ros.descriptions import ParameterValue
 from launch.launch_description_sources import PythonLaunchDescriptionSource
 
+
 def generate_launch_description():
 
-    description_package = "sew_agv_description"
     sim_package = "gazebo_testenviroment"
 
     declared_arguments = []
@@ -37,13 +37,21 @@ def generate_launch_description():
     DeclareLaunchArgument('world', default_value='src/gazebo_testenviroment/worlds/static_world_2404.world',
                             description='Specify the world which should be loaded in Gazebo'))
     
+        
+    declared_arguments.append(
+    DeclareLaunchArgument('use_sim_time', default_value='true',
+                            description='Set to "true" if you want to use the joystick with gazebo, set to "fasle" if you use real hardware.'))
+    
 
     #init launch arguments, transfer to variables
     world = LaunchConfiguration('world')        
     tf_prefix = LaunchConfiguration("tf_prefix")
-    ros2_control_with_gazebo = LaunchConfiguration("ros2_control_with_gazebo")
+    ros2_control_with_gazebo = LaunchConfiguration("ros2_control_with_gazebo")      # --> maybe not needed?
     standalone_gazebo = LaunchConfiguration("standalone_gazebo")
+    use_sim_time = LaunchConfiguration('use_sim_time')   
 
+
+    #include gazebo and robot spawning launch
     gazebo_robot_node = IncludeLaunchDescription(
         PythonLaunchDescriptionSource(
             [PathJoinSubstitution([FindPackageShare(sim_package), 'launch']), "/robot.launch.py"]),
@@ -55,24 +63,16 @@ def generate_launch_description():
             }.items(),
     )
 
-    teleop_joy_node = Node(
-        package='teleop_twist_joy',
-        executable='teleop_node',
-        name='teleop_twist_joy',
-        output='screen',
-        parameters=[{'enable_button': 2}]  # enable teleop of the robot by pressing X on the xBox controller
+    #include the joystick launch
+    joystick_node = IncludeLaunchDescription(
+        PythonLaunchDescriptionSource(
+            [PathJoinSubstitution([FindPackageShare(sim_package), 'launch']), "/joystick.launch.py"]),
+            launch_arguments={
+                "use_sim_time": use_sim_time,
+            }.items(),
     )
 
-    joy_node = Node(
-        package='joy',
-        executable='joy_node',
-        name='joy_node',
-        output='screen',
-        parameters=[{'dev': '/dev/input/js0'}]  # Specify the device file for your joystick
-    )
-
-
-    nodes_to_start = [gazebo_robot_node, teleop_joy_node, joy_node]
+    nodes_to_start = [gazebo_robot_node, joystick_node]
 
 
     return LaunchDescription(declared_arguments + nodes_to_start)
