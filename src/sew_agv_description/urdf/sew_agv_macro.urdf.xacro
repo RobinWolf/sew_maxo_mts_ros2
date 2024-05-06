@@ -66,7 +66,7 @@
     <!--base/ main body fixed relative to the footprint , inertial definitions required due to the use in gazebo-->
     <joint name="base_footprint_joint" type="fixed">
         <origin rpy="0 0 0" xyz="0 0 0.58"/>
-        <axis xyz="0 0 1"/>
+        <axis xyz="0 0 0"/>
         <parent link="base_footprint"/>
         <child link="base_link"/>
     </joint>
@@ -95,8 +95,7 @@
     <!--front wheel / axis should match the rotation axis of the wheel, for simplicity reasons set this to fixed and disable friction in gazebo-->
     <joint name="caster_wheel_joint" type="fixed">
         <origin rpy="1.57079 0 0" xyz="0.290 0 -0.56"/>
-        <axis xyz="0 0 1"/>
-        <limit effort="10.0" velocity="3.5"/>    <!--effort in Nm, velocity in m/s-->
+        <axis xyz="0 0 0"/>
         <parent link="base_link"/>
         <child link="caster_wheel_link"/>
     </joint>
@@ -124,7 +123,7 @@
     <!--right back wheel / axis shold match the rotation axis of the wheel-->
     <joint name="wheel_right_joint" type="continuous">
         <origin rpy="0 0 -1.57079" xyz="-0.225 -0.2625 -0.48"/>
-        <limit effort="10.0" velocity="3.5"/>
+        <limit effort="100.0" velocity="3.5"/>
         <axis xyz="-1 0 0"/>
         <parent link="base_link"/>
         <child link="wheel_right_link"/>
@@ -154,7 +153,7 @@
     <!--left back wheel / axis shold match the rotation axis of the wheel-->
     <joint name="wheel_left_joint" type="continuous">
         <origin rpy="0 0 1.57079" xyz="-0.225 0.2625 -0.48"/>
-        <limit effort="10.0" velocity="3.5"/>
+        <limit effort="100.0" velocity="3.5"/>
         <axis xyz="1 0 0"/>
         <parent link="base_link"/>
         <child link="wheel_left_link"/>
