@@ -30,7 +30,11 @@ docker run \
   --net=host \
   -v "$SRC_HOST":"$SRC_CONTAINER":rw \
   -e DISPLAY="$DISPLAY" \
+  -v /dev:/dev \
   --privileged \
   logilab-gazebo-dev/ros-render:"$ROS_DISTRO"
 
-# display, joystick 0 input and network acess added to the container   --user logilab:logilab \
+# display, joystick 0 input and network acess added to the container
+# permissions for the joystick on the host machine should be: crw-rw-r--+ 1 robin robin 13, 0 Mai  6 15:21 /dev/input/js0
+
+

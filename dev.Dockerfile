@@ -39,8 +39,12 @@ RUN apt-get update && apt-get install -y ros-${ROS_DISTRO}-ros-gz
 RUN apt-get update && apt-get install -y ros-${ROS_DISTRO}-gazebo-ros-pkgs
 
 RUN apt-get update && apt-get install -y joystick
-
 USER $USER
+
+#set joystick permissions
+#ARG JOYSTICK_GID
+#ENV JOYSTICK_GID=$JOYSTICK_GID
+#RUN chgrp 1000 /dev/input/js0
 
 #copy the description package into this ws
 # --> TODO
