@@ -183,7 +183,7 @@
     <!--lidar sensor, required due to the use in gazebo-->
     <joint name="lidar_joint" type="fixed">
         <axis xyz="0 0 0"/>
-        <origin rpy="0 0 0 " xyz="0.355 0 -0.465"/>
+        <origin rpy="0 0 0 " xyz="0.355 0 -0.445"/>
         <parent link="base_link"/>
         <child link="lidar_link"/>
     </joint>
