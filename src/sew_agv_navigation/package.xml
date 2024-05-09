@@ -13,7 +13,7 @@
   <test_depend>ament_lint_common</test_depend>
 
   <depend>navigation2</depend>
-  <depend>nav2</depend>
+  <depend>nav2-*</depend>
   <depend>slam_toolbox</depend>
   <depend>teleop_twist_joy</depend>
 

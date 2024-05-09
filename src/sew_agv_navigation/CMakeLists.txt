@@ -10,10 +10,17 @@ find_package(ament_cmake REQUIRED)
 # uncomment the following section in order to fill in
 # further dependencies manually.
 find_package(navigation2 REQUIRED)
-find_package(nav2 REQUIRED)
+find_package(nav2_amcl REQUIRED)
+find_package(nav2_behavior_tree REQUIRED)
+find_package(nav2_behaviors REQUIRED)
+find_package(nav2_bringup REQUIRED)
+find_package(nav2_bt_navigator REQUIRED)    #and many more nav2_* packages, but is some are installed correctly, they are all!
 find_package(slam_toolbox REQUIRED)
 find_package(rviz2 REQUIRED)
 find_package(teleop_twist_joy REQUIRED)
+
+
+
 
 
 if(BUILD_TESTING)
