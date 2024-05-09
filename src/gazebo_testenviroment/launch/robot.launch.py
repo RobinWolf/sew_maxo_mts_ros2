@@ -5,6 +5,7 @@ from launch_ros.actions import Node
 from launch_ros.substitutions import FindPackageShare
 from launch_ros.descriptions import ParameterValue
 from launch.launch_description_sources import PythonLaunchDescriptionSource
+from launch.conditions import IfCondition
 
 
 def generate_launch_description():
@@ -21,33 +22,30 @@ def generate_launch_description():
     )
     declared_arguments.append(
         DeclareLaunchArgument(
-            "ros2_control_with_gazebo",
-            default_value='false',
-            description="add the robot description to gazebo using a ros2_control hardware interface",
-        )
-    )
-    declared_arguments.append(
-        DeclareLaunchArgument(
             "standalone_gazebo",
             default_value='true',
             description="add the robot description to gazebo with a simpler approach, using a diff_drive and lidar plugin",
         )
     )
     declared_arguments.append(
-    DeclareLaunchArgument('world', default_value='src/gazebo_testenviroment/worlds/static_world_2404.world',
-                            description='Specify the world which should be loaded in Gazebo'))
-    
+    DeclareLaunchArgument('world',
+            default_value='src/gazebo_testenviroment/worlds/static_world_2404.world',
+            description='Specify the world which should be loaded in Gazebo'
+        )
+    )
     declared_arguments.append(
-    DeclareLaunchArgument('use_sim_time', default_value='true',
-                            description='Set to "true" if you want to use the joystick with gazebo, set to "fasle" if you use real hardware.'))
-    
+    DeclareLaunchArgument('launch_rviz',
+            default_value='true',
+            description='Set to "true" if you want to launch rviz gui.'
+        )
+    )
 
     #init launch arguments, transfer to variables
     world = LaunchConfiguration('world')        
     tf_prefix = LaunchConfiguration("tf_prefix")
-    ros2_control_with_gazebo = LaunchConfiguration("ros2_control_with_gazebo")  # --> maybe not necessary
     standalone_gazebo = LaunchConfiguration("standalone_gazebo")
-    use_sim_time = LaunchConfiguration('use_sim_time')   
+    launch_rviz = LaunchConfiguration('launch_rviz')   
+
 
 
     robot_description_content = Command(
@@ -58,9 +56,6 @@ def generate_launch_description():
             " ",
             "tf_prefix:=",
             tf_prefix,
-            " ",
-            "ros2_control_with_gazebo:=",
-            ros2_control_with_gazebo,
             " ",
             "standalone_gazebo:=",
             standalone_gazebo,
@@ -99,7 +94,8 @@ def generate_launch_description():
         executable="rviz2",
         name="rviz2",
         output="log",
-        arguments=["-d", rviz_config_file]
+        arguments=["-d", rviz_config_file],
+        condition=IfCondition(launch_rviz)
     )
 
 
