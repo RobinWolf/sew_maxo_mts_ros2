@@ -55,17 +55,17 @@ def generate_launch_description():
             name='slam_toolbox',
             parameters = [param_dir])
     
-    #rviz_config_file = PathJoinSubstitution([FindPackageShare(navigation_package), "rviz", "mapping.rviz"]) # define path to rviz-config file
+    rviz_config_file = PathJoinSubstitution([FindPackageShare(navigation_package), "rviz", "mapping.rviz"]) # define path to rviz-config file
 
     rviz_node = Node(
         package="rviz2",
         executable="rviz2",
         name="rviz2",
         output="log",
-        
+        arguments=["-d", rviz_config_file],
         condition=IfCondition(launch_rviz)
     )
-#arguments=["-d", rviz_config_file],
+
 
 
 
@@ -75,3 +75,8 @@ def generate_launch_description():
     ]
 
     return LaunchDescription(declared_arguments + nodes_to_start)
+
+
+
+#save map in new terminal with: ~/ros2_ws$ ros2 run nav2_map_server map_saver_cli -f ~/ros2_ws/src/sew_agv_navigation/config/navigation/<name>
+
