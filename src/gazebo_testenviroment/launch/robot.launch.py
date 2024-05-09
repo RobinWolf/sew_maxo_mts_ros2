@@ -41,7 +41,7 @@ def generate_launch_description():
     )
 
     #init launch arguments, transfer to variables
-    world = LaunchConfiguration('world')        
+    world = LaunchConfiguration('world')     # --> seems to be that gazebo uses static_world as default?    
     tf_prefix = LaunchConfiguration("tf_prefix")
     standalone_gazebo = LaunchConfiguration("standalone_gazebo")
     launch_rviz = LaunchConfiguration('launch_rviz')   
