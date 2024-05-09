@@ -8,6 +8,12 @@ endif()
 # find dependencies           ------> add here more dependencies packages
 find_package(ament_cmake REQUIRED)
 find_package(gazebo_ros_pkgs REQUIRED)
+find_package(teleop_twist_joy REQUIRED)
+find_package(joy REQUIRED)
+find_package(ros_gz REQUIRED)
+
+
+
 
 if(BUILD_TESTING)
   find_package(ament_lint_auto REQUIRED)
