@@ -38,7 +38,7 @@ def generate_launch_description():
     declared_arguments.append(
     DeclareLaunchArgument('use_sim_time',
             default_value='true',
-            description='Set to "true" if you want to use the joystick with gazebo, set to "fasle" if you use real hardware.'
+            description='Set to "true" if you want to use the gazebo clock, set to "fasle" if you use real hardware.'
         )
     )
     declared_arguments.append(
