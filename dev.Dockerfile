@@ -24,27 +24,43 @@ RUN mkdir -p /home/$USER/ros2_ws/src
 WORKDIR /home/$USER/ros2_ws
 
 ##############################################################################
-##                           2. stage: set up gazebo                        ##
+##                     2. stage: set up description pkg                     ##
 ##############################################################################
-FROM base as gazebo_testenviroment
+FROM base as sew_description
 
-#install some ros packages
 USER root
 RUN apt-get update && apt-get install -y ros-${ROS_DISTRO}-xacro
 RUN apt-get update && apt-get install -y ros-${ROS_DISTRO}-joint-state-publisher-gui
-RUN apt-get update && apt-get install -y ros-${ROS_DISTRO}-teleop-twist-joy
-RUN apt-get update && apt-get install -y ros-${ROS_DISTRO}-teleop-twist-keyboard
-RUN apt-get update && apt-get install -y ros-${ROS_DISTRO}-joy
-RUN apt-get update && apt-get install -y ros-${ROS_DISTRO}-ros-gz
-RUN apt-get update && apt-get install -y ros-${ROS_DISTRO}-gazebo-ros-pkgs
+USER $USER
+
+
+##############################################################################
+##                           3. stage: set up gazebo                        ##
+##############################################################################
+FROM sew_description as gazebo_testenviroment
+
+USER root
+RUN apt-get update && apt-get install -y ros-${ROS_DISTRO}-teleop-twist-joy \
+    ros-${ROS_DISTRO}-teleop-twist-keyboard \
+    ros-${ROS_DISTRO}-joy \
+    ros-${ROS_DISTRO}-ros-gz \
+    ros-${ROS_DISTRO}-gazebo-ros-pkgs
 
 RUN apt-get update && apt-get install -y joystick
 USER $USER
 
-#set joystick permissions
-#ARG JOYSTICK_GID
-#ENV JOYSTICK_GID=$JOYSTICK_GID
-#RUN chgrp 1000 /dev/input/js0
+##############################################################################
+##                         4. stage: set up nav2 stack                      ##
+##############################################################################
+FROM gazebo_testenviroment as sew_navigation
 
-#copy the description package into this ws
-# --> TODO
+USER root
+RUN apt-get update && apt-get install -y ros-${ROS_DISTRO}-navigation2 \
+    ros-${ROS_DISTRO}-navigation2 \
+    ros-${ROS_DISTRO}-nav2-* \
+    ros-${ROS_DISTRO}-slam-toolbox 
+
+USER $USER
+
+
+#CMD [/bin/bash]

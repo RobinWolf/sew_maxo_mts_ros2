@@ -24,7 +24,7 @@ SRC_CONTAINER=/home/logilab/ros2_ws/src
 SRC_HOST="$(pwd)"/src                           #use a src on host machine to develop code, mout it to the container to run code inside the container
 
 docker run \
-  --name gazebo_testenviroment \
+  --name sew_navigation \
   --rm \
   -it \
   --net=host \
