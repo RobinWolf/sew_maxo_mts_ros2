@@ -9,7 +9,12 @@ endif()
 find_package(ament_cmake REQUIRED)
 # uncomment the following section in order to fill in
 # further dependencies manually.
-find_package(<dependency> REQUIRED)
+find_package(navigation2 REQUIRED)
+find_package(nav2 REQUIRED)
+find_package(slam_toolbox REQUIRED)
+find_package(rviz2 REQUIRED)
+find_package(teleop_twist_joy REQUIRED)
+
 
 if(BUILD_TESTING)
   find_package(ament_lint_auto REQUIRED)
