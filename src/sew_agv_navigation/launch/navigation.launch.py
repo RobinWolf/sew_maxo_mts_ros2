@@ -17,6 +17,7 @@ def generate_launch_description():
 
     param_file_name = 'navigation.yaml' 
     map_file_name = '240509_raw.yaml' 
+    #map_file_name = 'map.yaml' 
     navigation_package = "sew_agv_navigation"
 
     default_param_dir = os.path.join(get_package_share_directory(navigation_package), 'config', 'navigation', param_file_name)
@@ -27,7 +28,7 @@ def generate_launch_description():
     declared_arguments.append(
     DeclareLaunchArgument('use_sim_time',
             default_value='true',
-            description='Set to "true" if you want to use the gazebo clock, set to "fasle" if you use real hardware.'
+            description='Set to "true" if you want to use the gazebo clock, set to "false" if you use real hardware.'
         )
     )
     declared_arguments.append(
