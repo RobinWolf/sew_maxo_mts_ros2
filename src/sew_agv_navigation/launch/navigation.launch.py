@@ -74,8 +74,8 @@ def generate_launch_description():
         param_rewrites=param_substitutions,
         convert_types=True)
 
-    # remappings = [('/tf', 'tf'),
-    #               ('/tf_static', 'tf_static')]
+    remappings = [('/tf', 'tf'),
+                  ('/tf_static', 'tf_static')]
     #########################################################################################################################
     ###                                            nodes for neo_localization                                             ###
     #########################################################################################################################
@@ -85,16 +85,16 @@ def generate_launch_description():
             executable='map_server',
             name='map_server',
             output='screen',
-            parameters=[configured_param_dir]), 
-            #remappings=remappings),
+            parameters=[configured_param_dir], 
+            remappings=remappings)
     
     amcl_localization_node = Node(
             package='nav2_amcl',
             executable='amcl',
             name='amcl',
             output='screen',
-            parameters=[configured_param_dir]),
-            #remappings=remappings),
+            parameters=[configured_param_dir],
+            remappings=remappings)
     
     lifecycle_nodes_localization = ['map_server']
     #lifecycle_nodes_localization = ['map_server', 'amcl']
