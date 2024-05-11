@@ -1,4 +1,4 @@
-neo_localization2_node:
+neo_localization2_node: #launched
   ros__parameters:
     base_frame: "base_footprint"
     odom_frame: "odom"
@@ -57,7 +57,7 @@ neo_localization2_node:
     # if to broadcast map frame
     broadcast_tf: true
     # Scan topic
-    scan_topic: "lidar_1/scan_filtered"
+    scan_topic: "scan"
     # Initial Pose topic
     initialpose: initialpose
     # Map Tile topic
@@ -69,56 +69,56 @@ neo_localization2_node:
     # amcl_pose topic
     amcl_pose: amcl_pose
 
-amcl:
-  ros__parameters:
-    use_sim_time: False
-    alpha1: 0.05
-    alpha2: 0.05
-    alpha3: 0.05
-    alpha4: 0.05
-    alpha5: 0.05
-    base_frame_id: "base_link"
-    beam_skip_distance: 0.5
-    beam_skip_error_threshold: 0.9
-    beam_skip_threshold: 0.3
-    do_beamskip: false
-    global_frame_id: "map"
-    lambda_short: 0.1
-    set_initial_pose: false
-    laser_likelihood_max_dist: 2.0
-    laser_max_range: -1.0
-    laser_min_range: -1.0
-    laser_model_type: "likelihood_field"
-    max_beams: 200
-    max_particles: 1250
-    min_particles: 500
-    odom_frame_id: "odom"
-    pf_err: 0.05
-    pf_z: 0.01
-    recovery_alpha_fast: 0.0
-    recovery_alpha_slow: 0.0
-    resample_interval: 2
-    robot_model_type: "omnidirectional"
-    save_pose_rate: 0.5
-    sigma_hit: 0.2
-    tf_broadcast: true
-    transform_tolerance: 0.1
-    scan_topic: /lidar_1/scan_filtered
-    update_min_a: 0.1
-    update_min_d: 0.1
-    # z_hit: 0.5
-    # z_max: 0.05
-    # z_rand: 0.5
+# amcl:
+#   ros__parameters:
+#     use_sim_time: False
+#     alpha1: 0.05
+#     alpha2: 0.05
+#     alpha3: 0.05
+#     alpha4: 0.05
+#     alpha5: 0.05
+#     base_frame_id: "base_link"
+#     beam_skip_distance: 0.5
+#     beam_skip_error_threshold: 0.9
+#     beam_skip_threshold: 0.3
+#     do_beamskip: false
+#     global_frame_id: "map"
+#     lambda_short: 0.1
+#     set_initial_pose: false
+#     laser_likelihood_max_dist: 2.0
+#     laser_max_range: -1.0
+#     laser_min_range: -1.0
+#     laser_model_type: "likelihood_field"
+#     max_beams: 200
+#     max_particles: 1250
+#     min_particles: 500
+#     odom_frame_id: "odom"
+#     pf_err: 0.05
+#     pf_z: 0.01
+#     recovery_alpha_fast: 0.0
+#     recovery_alpha_slow: 0.0
+#     resample_interval: 2
+#     robot_model_type: "omnidirectional"
+#     save_pose_rate: 0.5
+#     sigma_hit: 0.2
+#     tf_broadcast: true
+#     transform_tolerance: 0.1
+#     scan_topic: /lidar_1/scan_filtered
+#     update_min_a: 0.1
+#     update_min_d: 0.1
+#     # z_hit: 0.5
+#     # z_max: 0.05
+#     # z_rand: 0.5
 
-amcl_map_client:
-  ros__parameters:
-    use_sim_time: False
+# amcl_map_client:
+#   ros__parameters:
+#     use_sim_time: False
 
-amcl_rclcpp_node:
-  ros__parameters:
-    use_sim_time: False
+# amcl_rclcpp_node:
+#   ros__parameters:
+#     use_sim_time: False
 
-bt_navigator:
+bt_navigator:   ##launched
   ros__parameters:
     use_sim_time: False
     global_frame: map
@@ -162,12 +162,12 @@ bt_navigator:
     - nav2_controller_selector_bt_node
     - nav2_goal_checker_selector_bt_node
 
-bt_navigator_rclcpp_node:
+bt_navigator_rclcpp_node: ##launched
   ros__parameters:
     use_sim_time: False
 
 
-controller_server:
+controller_server:  ##launched
   ros__parameters:
     # controller server parameters (see Controller Server for more info)
     use_sim_time: True
@@ -279,9 +279,9 @@ controller_server:
       min_stop_dist : 0.6
 
       # If robot has differential drive, holonomic otherwise
-      differential_drive : false
+      differential_drive : true
 
-controller_server_rclcpp_node:
+controller_server_rclcpp_node:  ##launched
   ros__parameters:
     use_sim_time: False
 
@@ -376,17 +376,7 @@ global_costmap:
         enabled: True
         observation_sources: scan scan1
         scan:
-          topic: /lidar_1/scan_filtered
-          max_obstacle_height: 2.0
-          obstacle_max_range: 5.0
-          obstacle_min_range: 0.0
-          raytrace_max_range: 8.0
-          raytrace_min_range: 0.0
-          clearing: True
-          marking: True
-          data_type: "LaserScan"
-        scan1:
-          topic: /lidar_2/scan_filtered
+          topic: /scan
           max_obstacle_height: 2.0
           obstacle_max_range: 5.0
           obstacle_min_range: 0.0
@@ -410,12 +400,12 @@ global_costmap:
     ros__parameters:
       use_sim_time: True
 
-map_server:
+map_server: ##launched
   ros__parameters:
     use_sim_time: True
     yaml_filename: "test.yaml"
 
-map_saver:
+map_saver:  ##called manually in terminal when save map
   ros__parameters:
     use_sim_time: True
     save_map_timeout: 5000
@@ -423,7 +413,7 @@ map_saver:
     occupied_thresh_default: 0.65
     map_subscribe_transient_local: False
 
-planner_server:
+planner_server:     ##launched
   ros__parameters:
     expected_planner_frequency: 5.0
     use_sim_time: True
@@ -434,11 +424,11 @@ planner_server:
       use_astar: false
       allow_unknown: true
 
-planner_server_rclcpp_node:
+planner_server_rclcpp_node: ##launched
   ros__parameters:
     use_sim_time: True
 
-recoveries_server:
+recoveries_server:  ##called in bt_navigator
   ros__parameters:
     costmap_topic: local_costmap/costmap_raw
     footprint_topic: local_costmap/published_footprint
@@ -459,11 +449,11 @@ recoveries_server:
     min_rotational_vel: 0.4
     rotational_acc_lim: 3.2
 
-robot_state_publisher:
-  ros__parameters:
-    use_sim_time: True
+# robot_state_publisher:
+#   ros__parameters:
+#     use_sim_time: True
 
-waypoint_follower:
+waypoint_follower:  ##launched
   ros__parameters:
     loop_rate: 20
     stop_on_failure: false
