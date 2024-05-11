@@ -74,6 +74,8 @@ def generate_launch_description():
         param_rewrites=param_substitutions,
         convert_types=True)
 
+    # remappings = [('/tf', 'tf'),
+    #               ('/tf_static', 'tf_static')]
     #########################################################################################################################
     ###                                            nodes for neo_localization                                             ###
     #########################################################################################################################
@@ -83,9 +85,20 @@ def generate_launch_description():
             executable='map_server',
             name='map_server',
             output='screen',
-            parameters=[configured_param_dir])     #note: params for the map_Server node are modified above before loading the configs!
+            parameters=[configured_param_dir]), 
+            #remappings=remappings),
+    
+    amcl_localization_node = Node(
+            package='nav2_amcl',
+            executable='amcl',
+            name='amcl',
+            output='screen',
+            parameters=[configured_param_dir]),
+            #remappings=remappings),
     
     lifecycle_nodes_localization = ['map_server']
+    #lifecycle_nodes_localization = ['map_server', 'amcl']
+
     lifecycle_manager_localization = Node(
             package='nav2_lifecycle_manager',
             executable='lifecycle_manager',
@@ -93,14 +106,7 @@ def generate_launch_description():
             output='screen',
             parameters=[{'use_sim_time': use_sim_time},
                         {'autostart': autostart},
-                        {'node_names': lifecycle_nodes_localization}]) 
-    
-    amcl_localization_node = Node(
-            package='nav2_amcl',
-            executable='amcl',
-            name='amcl',
-            output='screen',
-            parameters=[configured_param_dir])
+                        {'node_names': lifecycle_nodes_localization}])  
     
     #########################################################################################################################
     ###                                               nodes for neo_navigation                                            ###
@@ -150,7 +156,7 @@ def generate_launch_description():
     ###                                                           common                                                  ###
     #########################################################################################################################
 
-    rviz_config_file = PathJoinSubstitution([FindPackageShare(navigation_package), "rviz", "navigation.rviz"]) # define path to rviz-config file
+    rviz_config_file = PathJoinSubstitution([FindPackageShare(navigation_package), "rviz", "only_map.rviz"]) # define path to rviz-config file
 
     rviz_node = Node(
         package="rviz2",
@@ -162,16 +168,22 @@ def generate_launch_description():
     )
 
 
+    # nodes_to_start = [
+    #     rviz_node,
+    #     lifecycle_manager_localization,
+    #     map_server,
+    #     amcl_localization_node,
+    #     controller_server,
+    #     planner_server,
+    #     behavior_server,
+    #     bt_navigator,
+    #     waypoint_follower,
+    #     lifecycle_manager_navigation
+    # ]
     nodes_to_start = [
         map_server,
         lifecycle_manager_localization,
         amcl_localization_node,
-        controller_server,
-        planner_server,
-        behavior_server,
-        bt_navigator,
-        waypoint_follower,
-        lifecycle_manager_navigation,
-        rviz_node
+        rviz_node,
     ]
     return LaunchDescription(declared_arguments + nodes_to_start)
