@@ -198,7 +198,7 @@ local_costmap:  ## https://docs.nav2.org/configuration/packages/configuring-cost
       obstacle_layer:
         plugin: "nav2_costmap_2d::ObstacleLayer"
         enabled: True
-        #observation_sources: ""
+        observation_sources: scan
         scan:
           topic: /scan
           obstacle_max_range: 5.0
@@ -236,7 +236,7 @@ global_costmap: ## https://docs.nav2.org/configuration/packages/configuring-cost
       obstacle_layer:
         plugin: "nav2_costmap_2d::ObstacleLayer"
         enabled: True
-        #observation_sources: ""
+        observation_sources: scan
         scan:
           topic: /scan
           max_obstacle_height: 2.0
