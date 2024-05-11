@@ -35,14 +35,22 @@ def generate_launch_description():
     declared_arguments.append(
     DeclareLaunchArgument('param_dir',
             default_value=default_param_dir,
-            description='pass the path to your navigation.yaml file where params for slam_toolbox node are defined.'
+            description='pass the path to your navigation.yaml file where params for all navigation and localization node are defined.'
+        )
+    )
+    declared_arguments.append(
+    DeclareLaunchArgument('launch_rviz',
+            default_value='true',
+            description='set to true if you want to launch the rviz gui to view the mapping process'
         )
     )
 
     #init launch arguments, transfer to variables
     use_sim_time = LaunchConfiguration('use_sim_time')
     autostart = LaunchConfiguration('autostart')  
-    param_dir = LaunchConfiguration('param_dir')     
+    param_dir = LaunchConfiguration('param_dir')    
+    launch_rviz = LaunchConfiguration('launch_rviz')     
+ 
 
 
     #########################################################################################################################
@@ -117,6 +125,22 @@ def generate_launch_description():
                             {'node_names': lifecycle_nodes_navigation}])
 
 
+    #########################################################################################################################
+    ###                                                           common                                                  ###
+    #########################################################################################################################
+
+    rviz_config_file = PathJoinSubstitution([FindPackageShare(navigation_package), "rviz", "mapping.rviz"]) # define path to rviz-config file
+
+    rviz_node = Node(
+        package="rviz2",
+        executable="rviz2",
+        name="rviz2",
+        output="log",
+        arguments=["-d", rviz_config_file],
+        condition=IfCondition(launch_rviz)
+    )
+
+
     nodes_to_start = [
         map_server,
         lifecycle_manager_localization,
@@ -127,18 +151,6 @@ def generate_launch_description():
         bt_navigator,
         waypoint_follower,
         lifecycle_manager_navigation,
+        rviz_node
     ]
-
     return LaunchDescription(declared_arguments + nodes_to_start)
-
-#nav2_controller
-#nav2_planner
-#nav2_behaviors
-#nav2_bt_navigator
-#nav2_waypoint_follower
-#nav2_waypoint_follower
-
-#https://github.com/neobotix/neo_nav2_bringup/blob/rolling/launch/localization_neo.launch.py --> Multi Robor nicht berücksichtigen!
-#https://github.com/neobotix/neo_nav2_bringup/blob/rolling/launch/navigation_neo.launch.py
-
-#configs für node aus config übernehmen
