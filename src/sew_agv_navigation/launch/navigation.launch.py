@@ -21,8 +21,6 @@ def generate_launch_description():
 
     default_param_dir = os.path.join(get_package_share_directory(navigation_package), 'config', 'navigation', param_file_name)
     default_map_dir = os.path.join(get_package_share_directory(navigation_package), 'config', 'navigation', 'maps', map_file_name)
-
-    print('#################################################'+default_param_dir)
     
 
     declared_arguments = []
@@ -151,7 +149,7 @@ def generate_launch_description():
     ###                                                           common                                                  ###
     #########################################################################################################################
 
-    rviz_config_file = PathJoinSubstitution([FindPackageShare(navigation_package), "rviz", "mapping.rviz"]) # define path to rviz-config file
+    rviz_config_file = PathJoinSubstitution([FindPackageShare(navigation_package), "rviz", "navigation.rviz"]) # define path to rviz-config file
 
     rviz_node = Node(
         package="rviz2",
