@@ -96,7 +96,6 @@ def generate_launch_description():
             parameters=[configured_param_dir],
             remappings=remappings)
     
-    #lifecycle_nodes_localization = ['map_server']
     lifecycle_nodes_localization = ['map_server', 'amcl']
 
     lifecycle_manager_localization = Node(
@@ -180,10 +179,5 @@ def generate_launch_description():
         waypoint_follower,
         lifecycle_manager_navigation
     ]
-    # nodes_to_start = [
-    #     map_server,
-    #     lifecycle_manager_localization,
-    #     amcl_localization_node,
-    #     rviz_node,
-    # ]
+
     return LaunchDescription(declared_arguments + nodes_to_start)
