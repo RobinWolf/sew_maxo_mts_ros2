@@ -36,3 +36,4 @@ empty_world_launch (to develop new worlds and save them in the src/worlds dir.):
 - localization concept graphics: http://wiki.ros.org/amcl
 - nav2 code: https://github.com/ros-navigation/navigation2
 - amcl configuration guide: https://docs.nav2.org/configuration/packages/configuring-amcl.html
+- lifecycle managed nodes: https://design.ros2.org/articles/node_lifecycle.html
