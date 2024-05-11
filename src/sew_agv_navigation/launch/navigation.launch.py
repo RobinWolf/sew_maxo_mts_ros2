@@ -10,13 +10,18 @@ from launch.conditions import IfCondition
 import os
 from ament_index_python.packages import get_package_share_directory
 
+from nav2_common.launch import RewrittenYaml
+
 def generate_launch_description():
 
 
     param_file_name = 'mapping.yaml' 
+    map_file_name = '240509_raw.yaml' 
     navigation_package = "sew_agv_navigation"
 
     default_param_dir = os.path.join(get_package_share_directory(navigation_package), 'config', 'navigation' + param_file_name)
+    default_map_dir = os.path.join(get_package_share_directory(navigation_package), 'config', 'navigation', 'maps' + map_file_name)
+
     
 
     declared_arguments = []
@@ -39,6 +44,12 @@ def generate_launch_description():
         )
     )
     declared_arguments.append(
+    DeclareLaunchArgument('map_yaml_file',
+            default_value=default_map_dir,
+            description='pass the path to your <map_name>.yaml file where params for all navigation and localization node are defined.'
+        )
+    )
+    declared_arguments.append(
     DeclareLaunchArgument('launch_rviz',
             default_value='true',
             description='set to true if you want to launch the rviz gui to view the mapping process'
@@ -49,9 +60,19 @@ def generate_launch_description():
     use_sim_time = LaunchConfiguration('use_sim_time')
     autostart = LaunchConfiguration('autostart')  
     param_dir = LaunchConfiguration('param_dir')    
+    map_yaml_file = LaunchConfiguration('map_yaml_file')  
     launch_rviz = LaunchConfiguration('launch_rviz')     
  
 
+    #modify default navigation.yaml file with parameters passed as lauch arguments (only for map_server to change maps)
+    param_substitutions = {
+        'use_sim_time' : use_sim_time,
+        'yaml_filename': map_yaml_file}
+
+    configured_param_dir = RewrittenYaml(
+        source_file=param_dir,
+        param_rewrites=param_substitutions,
+        convert_types=True)
 
     #########################################################################################################################
     ###                                            nodes for neo_localization                                             ###
@@ -62,7 +83,7 @@ def generate_launch_description():
             executable='map_server',
             name='map_server',
             output='screen',
-            parameters=[param_dir])
+            parameters=[configured_param_dir])     #note: params for the map_Server node are modified above before loading the configs!
     
     lifecycle_nodes_localization = ['map_server']
     lifecycle_manager_localization = Node(
@@ -74,12 +95,12 @@ def generate_launch_description():
                         {'autostart': autostart},
                         {'node_names': lifecycle_nodes_localization}]) 
     
-    neo_localization2_node = Node(
-            package='neo_localization2', 
-            executable='neo_localization_node', 
+    amcl_localization_node = Node(
+            package='nav2_amcl',
+            executable='amcl',
+            name='amcl',
             output='screen',
-            name='neo_localization2_node', 
-            parameters= [param_dir])
+            parameters=[configured_param_dir])
     
     #########################################################################################################################
     ###                                               nodes for neo_navigation                                            ###
@@ -88,31 +109,31 @@ def generate_launch_description():
                 package='nav2_controller',
                 executable='controller_server',
                 output='screen',
-                parameters=[param_dir])
+                parameters=[configured_param_dir])
     planner_server = Node(
                 package='nav2_planner',
                 executable='planner_server',
                 name='planner_server',
                 output='screen',
-                parameters=[param_dir])
+                parameters=[configured_param_dir])
     behavior_server = Node(
                 package='nav2_behaviors',
                 executable='behavior_server',
                 name='behavior_server',
                 output='screen',
-                parameters=[param_dir])
+                parameters=[configured_param_dir])
     bt_navigator = Node(
                 package='nav2_bt_navigator',
                 executable='bt_navigator',
                 name='bt_navigator',
                 output='screen',
-                parameters=[param_dir])
+                parameters=[configured_param_dir])
     waypoint_follower = Node(
                 package='nav2_waypoint_follower',
                 executable='waypoint_follower',
                 name='waypoint_follower',
                 output='screen',
-                parameters=[param_dir])
+                parameters=[configured_param_dir])
     
     lifecycle_nodes_navigation = ['controller_server', 'planner_server', 'behavior_server', 'bt_navigator', 'waypoint_follower']
     lifecycle_manager_navigation = Node(
@@ -144,7 +165,7 @@ def generate_launch_description():
     nodes_to_start = [
         map_server,
         lifecycle_manager_localization,
-        neo_localization2_node,
+        amcl_localization_node,
         controller_server,
         planner_server,
         behavior_server,

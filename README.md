@@ -26,3 +26,13 @@ static_world_launch:
 
 empty_world_launch (to develop new worlds and save them in the src/worlds dir.):
 - ros2 launch gazebo_ros gazebo.launch.py
+
+
+
+
+
+
+## notes/ links for doku:
+- localization concept graphics: http://wiki.ros.org/amcl
+- nav2 code: https://github.com/ros-navigation/navigation2
+- amcl configuration guide: https://docs.nav2.org/configuration/packages/configuring-amcl.html
