@@ -1,8 +1,89 @@
+from launch import LaunchDescription
+from launch.actions import DeclareLaunchArgument, IncludeLaunchDescription
+from launch.substitutions import Command, FindExecutable, LaunchConfiguration, PathJoinSubstitution
+from launch_ros.actions import Node
+from launch_ros.substitutions import FindPackageShare
+from launch_ros.descriptions import ParameterValue
+from launch.launch_description_sources import PythonLaunchDescriptionSource
+from launch.conditions import IfCondition
 
-# --> auch nur wenn bringup bereits läuft
-#nav2-map server
-#nav2-lifecycle manager
-#nav2-neo_localization
+import os
+from ament_index_python.packages import get_package_share_directory
+
+def generate_launch_description():
+
+
+    param_file_name = 'mapping.yaml' 
+    navigation_package = "sew_agv_navigation"
+
+    default_param_dir = os.path.join(get_package_share_directory(navigation_package), 'config', 'navigation' + param_file_name)
+    
+
+    declared_arguments = []
+    declared_arguments.append(
+    DeclareLaunchArgument('use_sim_time',
+            default_value='true',
+            description='Set to "true" if you want to use the gazebo clock, set to "fasle" if you use real hardware.'
+        )
+    )
+    declared_arguments.append(
+    DeclareLaunchArgument('autostart',
+            default_value='true',
+            description='Set to "true" if you want to start the nav2 lifecycle automatically in launch.'
+        )
+    )
+    declared_arguments.append(
+    DeclareLaunchArgument('param_dir',
+            default_value=default_param_dir,
+            description='pass the path to your navigation.yaml file where params for slam_toolbox node are defined.'
+        )
+    )
+
+    #init launch arguments, transfer to variables
+    use_sim_time = LaunchConfiguration('use_sim_time')
+    autostart = LaunchConfiguration('autostart')  
+    param_dir = LaunchConfiguration('param_dir')     
+
+
+    #########################################################################################################################
+    ###                                            nodes for neo_localization                                             ###
+    #########################################################################################################################
+    #all params for these nodes are defined in the navigation.yaml file. Every section of this file connects to the drsired node name
+    map_server = Node(
+            package='nav2_map_server',
+            executable='map_server',
+            name='map_server',
+            output='screen',
+            parameters=[param_dir])
+    
+    lifecycle_nodes = ['map_server']
+    lifecycle_manager_localization = Node(
+            package='nav2_lifecycle_manager',
+            executable='lifecycle_manager',
+            name='lifecycle_manager_localization',
+            output='screen',
+            parameters=[{'use_sim_time': use_sim_time},
+                        {'autostart': autostart},
+                        {'node_names': lifecycle_nodes}]) 
+    
+    neo_localization2_node = Node(
+            package='neo_localization2', 
+            executable='neo_localization_node', 
+            output='screen',
+            name='neo_localization2_node', 
+            parameters= [param_dir])
+    
+
+
+
+
+    nodes_to_start = [
+        map_server,
+        lifecycle_manager_localization,
+        neo_localization2_node,
+    ]
+
+    return LaunchDescription(declared_arguments + nodes_to_start)
 
 #nav2_controller
 #nav2_planner
