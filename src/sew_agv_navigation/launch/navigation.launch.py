@@ -15,13 +15,14 @@ from nav2_common.launch import RewrittenYaml
 def generate_launch_description():
 
 
-    param_file_name = 'mapping.yaml' 
+    param_file_name = 'navigation.yaml' 
     map_file_name = '240509_raw.yaml' 
     navigation_package = "sew_agv_navigation"
 
-    default_param_dir = os.path.join(get_package_share_directory(navigation_package), 'config', 'navigation' + param_file_name)
-    default_map_dir = os.path.join(get_package_share_directory(navigation_package), 'config', 'navigation', 'maps' + map_file_name)
+    default_param_dir = os.path.join(get_package_share_directory(navigation_package), 'config', 'navigation', param_file_name)
+    default_map_dir = os.path.join(get_package_share_directory(navigation_package), 'config', 'navigation', 'maps', map_file_name)
 
+    print('#################################################'+default_param_dir)
     
 
     declared_arguments = []
