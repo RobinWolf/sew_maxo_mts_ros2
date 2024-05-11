@@ -182,21 +182,14 @@ local_costmap:
       obstacle_layer:
         plugin: "nav2_costmap_2d::ObstacleLayer"
         enabled: True
-        observation_sources: scan scan1
+        observation_sources: scan
         scan:
           topic: /scan
           max_obstacle_height: 2.0
           clearing: True
           marking: True
           data_type: "LaserScan"
-          sensor_frame: "lidar_1_link"
-        scan1:
-          topic: /scan2
-          max_obstacle_height: 2.0
-          clearing: True
-          marking: True
-          data_type: "LaserScan"
-          sensor_frame: "lidar_2_link"
+          sensor_frame: "lidar_link"
       always_send_full_costmap: True
 
   local_costmap_client:
@@ -224,15 +217,9 @@ global_costmap:
       obstacle_layer:
         plugin: "nav2_costmap_2d::ObstacleLayer"
         enabled: True
-        observation_sources: scan scan1
+        observation_sources: scan
         scan:
           topic: /scan
-          max_obstacle_height: 2.0
-          clearing: True
-          marking: True
-          data_type: "LaserScan"
-        scan1:
-          topic: /scan2
           max_obstacle_height: 2.0
           clearing: True
           marking: True
@@ -245,7 +232,7 @@ global_costmap:
         cost_scaling_factor: 4.0
         inflation_radius: 1.0
       always_send_full_costmap: True
-      
+
   global_costmap_client:
     ros__parameters:
       use_sim_time: True  # reconfigured in launch file with launch argument
