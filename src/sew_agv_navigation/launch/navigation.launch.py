@@ -96,8 +96,8 @@ def generate_launch_description():
             parameters=[configured_param_dir],
             remappings=remappings)
     
-    lifecycle_nodes_localization = ['map_server']
-    #lifecycle_nodes_localization = ['map_server', 'amcl']
+    #lifecycle_nodes_localization = ['map_server']
+    lifecycle_nodes_localization = ['map_server', 'amcl']
 
     lifecycle_manager_localization = Node(
             package='nav2_lifecycle_manager',
@@ -156,7 +156,7 @@ def generate_launch_description():
     ###                                                           common                                                  ###
     #########################################################################################################################
 
-    rviz_config_file = PathJoinSubstitution([FindPackageShare(navigation_package), "rviz", "only_map.rviz"]) # define path to rviz-config file
+    rviz_config_file = PathJoinSubstitution([FindPackageShare(navigation_package), "rviz", "navigation.rviz"]) # define path to rviz-config file
 
     rviz_node = Node(
         package="rviz2",
@@ -168,22 +168,22 @@ def generate_launch_description():
     )
 
 
-    # nodes_to_start = [
-    #     rviz_node,
-    #     lifecycle_manager_localization,
-    #     map_server,
-    #     amcl_localization_node,
-    #     controller_server,
-    #     planner_server,
-    #     behavior_server,
-    #     bt_navigator,
-    #     waypoint_follower,
-    #     lifecycle_manager_navigation
-    # ]
     nodes_to_start = [
-        map_server,
-        lifecycle_manager_localization,
-        amcl_localization_node,
         rviz_node,
+        lifecycle_manager_localization,
+        map_server,
+        amcl_localization_node,
+        controller_server,
+        planner_server,
+        behavior_server,
+        bt_navigator,
+        waypoint_follower,
+        lifecycle_manager_navigation
     ]
+    # nodes_to_start = [
+    #     map_server,
+    #     lifecycle_manager_localization,
+    #     amcl_localization_node,
+    #     rviz_node,
+    # ]
     return LaunchDescription(declared_arguments + nodes_to_start)
