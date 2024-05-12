@@ -30,6 +30,16 @@ def generate_launch_description():
         parameters=[joy_params,{use_sim_time}]  # enable teleop of the robot by pressing X on the xBox controller
     )
 
+    # twistmux_params = os.path.join(get_package_share_directory(navigation_package),'config', 'joystick', 'twistmux.yaml')
+    # twistmux_node = Node(
+    #     package='twist_mux',
+    #     executable='twist_mux',
+    #     name='teleop_joy_node',
+    #     output='screen',
+    #     parameters=[twistmux_params,{use_sim_time}],  # enable teleop of the robot by pressing X on the xBox controller
+    #     remappings=[('/cmd_vel_out', '/')]
+    # )
+
     joy_node = Node(
         package='joy',
         executable='joy_node',
