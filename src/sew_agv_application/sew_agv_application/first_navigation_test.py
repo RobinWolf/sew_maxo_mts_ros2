@@ -3,7 +3,7 @@
 # 2: goal location and path generation
 # 3: goal complete
 
-# https://navigation.ros.org/commander_api/index.html
+# https://navigation.ros.org/commander_api/index.html --> webside is down currently
 # --> STILL TO FIGURE OUT IF THIS METHODS CALL THE NAV2 BEHAVIOR TREE OR SUB-METHODS --> I WANT THE BEHAVOIR TREE!
 
 from nav2.simple_commander.robot_navigator import BasicNavigator, TaskResult
