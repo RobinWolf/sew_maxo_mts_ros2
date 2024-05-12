@@ -18,8 +18,11 @@ setup(
     description='TODO: Package description',
     license='TODO: License declaration',
     tests_require=['pytest'],
-    entry_points={
-        'console_scripts': [
+
+    #define here executables you want to call from the commamnd line. This are usual your applications
+    entry_points={                                                     
+        'console_scripts': [                    
+            'first_navigation_test = sew_agv_application.first_navigation_test:main',  
         ],
     },
 )
