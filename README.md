@@ -11,6 +11,7 @@ moveit sourcecode:https://github.com/ros-planning/moveit2/tree/main
 ## commands:
 launch gazebo (empty world): ros2 launch gazebo_ros gazebo.launch.py
 convert urdf files to sdf and spawn: ros2 run gazebo_ros spawn_entity.py -topic robot_description -entity <name>
+save a map: ros2 run nav2_map_server map_saver_cli -f ~/ros2_ws/src/sew_agv_navigation/config/navigation/maps/<name>
 
 
 ## launch-file:
@@ -26,6 +27,12 @@ static_world_launch:
 
 empty_world_launch (to develop new worlds and save them in the src/worlds dir.):
 - ros2 launch gazebo_ros gazebo.launch.py
+
+bringup.launch
+
+mapping.launch
+
+navigation.launch
 
 
 
