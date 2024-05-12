@@ -16,7 +16,7 @@ def generate_launch_description():
 
 
     param_file_name = 'navigation_experimental.yaml' 
-    map_file_name = '240512raw.yaml' 
+    map_file_name = '240512_raw.yaml' 
     navigation_package = "sew_agv_navigation"
 
     default_param_dir = os.path.join(get_package_share_directory(navigation_package), 'config', 'navigation', param_file_name)
