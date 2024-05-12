@@ -58,7 +58,8 @@ USER root
 RUN apt-get update && apt-get install -y ros-${ROS_DISTRO}-navigation2 \
     ros-${ROS_DISTRO}-navigation2 \
     ros-${ROS_DISTRO}-nav2-* \
-    ros-${ROS_DISTRO}-slam-toolbox 
+    ros-${ROS_DISTRO}-slam-toolbox \
+    ros-${ROS_DISTRO}-twist-mux
 
 USER $USER
 

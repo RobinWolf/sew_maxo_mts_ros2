@@ -18,6 +18,7 @@ find_package(nav2_bt_navigator REQUIRED)    #and many more nav2_* packages, but 
 find_package(slam_toolbox REQUIRED)
 find_package(rviz2 REQUIRED)
 find_package(teleop_twist_joy REQUIRED)
+find_package(twist_mux REQUIRED)
 
 
 

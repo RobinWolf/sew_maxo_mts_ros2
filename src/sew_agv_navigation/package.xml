@@ -16,6 +16,7 @@
   <depend>nav2-*</depend>
   <depend>slam_toolbox</depend>
   <depend>teleop_twist_joy</depend>
+  <depend>twist_mux</depend>
 
   <export>
     <build_type>ament_cmake</build_type>
