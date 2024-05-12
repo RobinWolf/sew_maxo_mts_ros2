@@ -29,10 +29,12 @@
                 <publish_wheel_tf>true</publish_wheel_tf>
 
                 <!--command topic ros2 -> gazebo-->
-                <command_topic>cmd_vel</command_topic>
+                <command_topic>cmd_vel_out</command_topic>      <!--whyever this has no effect on gazebo -> remap topics in launch file-->
 
             </plugin>    
         </gazebo>
+
+        <!--later add ros2 control plugin : https://www.youtube.com/watch?v=4QKsDf1c4hc&list=PLunhqkrRNRhYAffV8JDiFOatQXuU-NnxT&index=12-->
 
     <!--#######################################################################################################################################-->
     <!--define gazebo tags for materials, because urdf materialc can not be used in gazebo -->

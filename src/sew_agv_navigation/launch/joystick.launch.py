@@ -35,9 +35,8 @@ def generate_launch_description():
     twistmux_node = Node(
         package='twist_mux',
         executable='twist_mux',
-        name='teleop_joy_node',
-        output='screen',
-        parameters=[twistmux_params,{use_sim_time}]  # enable teleop of the robot by pressing X on the xBox controller
+        parameters=[twistmux_params,{use_sim_time}],  # just needs to be set up, because topic remapping in gazebo without ros2_control is not possible
+        remappings=[('/cmd_vel_out', '/cmd_vel')]   # until ros2_control is available just shortcut the twistmux node --> controller is not prioritized!
     )
 
     joy_node = Node(
