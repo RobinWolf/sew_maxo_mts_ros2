@@ -1,9 +1,10 @@
-# use the nav2 commander API to control tha navigation out of a python script BUT uses internal behavior tree to perform recoveries!
+# use the nav2 commander API to control tha navigation out of a python script
 # 1: init commander, set initial pose
 # 2: goal location and path generation
 # 3: goal complete
 
 # https://navigation.ros.org/commander_api/index.html
+# --> STILL TO FIGURE OUT IF THIS METHODS CALL THE NAV2 BEHAVIOR TREE OR SUB-METHODS --> I WANT THE BEHAVOIR TREE!
 
 from nav2.simple_commander.robot_navigator import BasicNavigator, TaskResult
 from geometry_msgs.msg import PoseStamped
