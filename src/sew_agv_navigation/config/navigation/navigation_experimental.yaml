@@ -185,7 +185,7 @@ local_costmap:
           marking: True
           data_type: "LaserScan"
           #sensor_frame: "lidar_link"
-        inflation_layer:
+      inflation_layer:
         plugin: "nav2_costmap_2d::InflationLayer" # calculates the exponential cost around obstacles
         cost_scaling_factor: 5.0
         inflation_radius: 0.75
