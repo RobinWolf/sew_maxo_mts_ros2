@@ -119,12 +119,12 @@ controller_server:
     FollowPath:
       plugin: "dwb_core::DWBLocalPlanner"
       debug_trajectory_details: True
-      min_vel_x: 0.0
+      min_vel_x: -0.5  # set to 0 if you want to drive forwards only
       min_vel_y: 0.0
       max_vel_x: 0.5
       max_vel_y: 0.0
       max_vel_theta: 1.0
-      min_speed_xy: 0.0
+      min_speed_xy: -0.26   # set to 0 if you want to drive forwards only
       max_speed_xy: 0.26
       min_speed_theta: 0.0
       acc_lim_x: 2.5
@@ -165,22 +165,17 @@ local_costmap:
     ros__parameters:
       update_frequency: 10.0
       publish_frequency: 1.0
-      global_frame: odom
+      global_frame: map #odom
       robot_base_frame: base_footprint
-      footprint_padding: 0.
+      footprint_padding: 0.01
       footprint:  "[ [0.425,0.3],[-0.425,0.3],[-0.425,-0.3],[0.425,-0.3] ]"
       rolling_window: true
-      width: 5
-      height: 5
+      width: 3
+      height: 3
       resolution: 0.02
-      # robot_radius: 0.22
-      plugins: ["obstacle_layer", "inflation_layer"]
-      inflation_layer:
-        plugin: "nav2_costmap_2d::InflationLayer"
-        cost_scaling_factor: 4.0
-        inflation_radius: 1.0
+      plugins: ["obstacle_layer", "inflation_layer"]  # voxel layer plugin is for 3d perception -- not used
       obstacle_layer:
-        plugin: "nav2_costmap_2d::ObstacleLayer"
+        plugin: "nav2_costmap_2d::ObstacleLayer"  # displays obstacles, detected by the lidar scanner in the map
         enabled: True
         observation_sources: scan
         scan:
@@ -189,16 +184,20 @@ local_costmap:
           clearing: True
           marking: True
           data_type: "LaserScan"
-          sensor_frame: "lidar_link"
+          #sensor_frame: "lidar_link"
+        inflation_layer:
+        plugin: "nav2_costmap_2d::InflationLayer" # calculates the exponential cost around obstacles
+        cost_scaling_factor: 5.0
+        inflation_radius: 0.75
       always_send_full_costmap: True
 
   local_costmap_client:
     ros__parameters:
-      use_sim_time: False  # reconfigured in launch file with launch argument
+      use_sim_time: True  # reconfigured in launch file with launch argument
 
   local_costmap_rclcpp_node:
     ros__parameters:
-      use_sim_time: False # reconfigured in launch file with launch argument
+      use_sim_time: True # reconfigured in launch file with launch argument
 
 global_costmap:
   global_costmap:
@@ -207,7 +206,7 @@ global_costmap:
       publish_frequency: 1.0
       global_frame: map
       robot_base_frame: base_footprint
-      footprint_padding: 0.
+      footprint_padding: 0.01
       footprint:  "[ [0.425,0.3],[-0.425,0.3],[-0.425,-0.3],[0.425,-0.3] ]"
       use_sim_time: True
       # robot_radius: 0.22
@@ -215,7 +214,7 @@ global_costmap:
       track_unknown_space: true
       plugins: ["static_layer", "obstacle_layer", "inflation_layer"]
       obstacle_layer:
-        plugin: "nav2_costmap_2d::ObstacleLayer"
+        plugin: "nav2_costmap_2d::ObstacleLayer"  # displays obstacles, detected by the lidar scanner in the map
         enabled: True
         observation_sources: scan
         scan:
@@ -225,10 +224,10 @@ global_costmap:
           marking: True
           data_type: "LaserScan"
       static_layer:
-        plugin: "nav2_costmap_2d::StaticLayer"
+        plugin: "nav2_costmap_2d::StaticLayer"  # subscribes to the static map published by the map server
         map_subscribe_transient_local: True
       inflation_layer:
-        plugin: "nav2_costmap_2d::InflationLayer"
+        plugin: "nav2_costmap_2d::InflationLayer" # calculates the exponential cost around obstacles and the static map
         cost_scaling_factor: 4.0
         inflation_radius: 1.0
       always_send_full_costmap: True
