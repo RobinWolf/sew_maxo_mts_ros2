@@ -87,7 +87,7 @@ def generate_launch_description():
     )
 
     #convert robot_description_content to string, thet it can be passed as yaml to the robot_state_publisher Node --> unsafe without !
-    robot_description = {"robot_description": ParameterValue(robot_description_content, value_type=None), 'use_sim_time': True} 
+    robot_description = {"robot_description": ParameterValue(robot_description_content, value_type=str), 'use_sim_time': True} 
     
     robot_state_publisher_node = Node(
         package="robot_state_publisher",
