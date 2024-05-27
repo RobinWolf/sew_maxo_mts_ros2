@@ -105,8 +105,8 @@ def generate_launch_description():
         package="controller_manager",
         executable="ros2_control_node",
         parameters=[agv_description, agv_controllers, {'use_sim_time': use_sim_time}],
-        output="both",
     )
+
     joint_state_broadcaster_spawner = Node(
         package="controller_manager",
         executable="spawner",
