@@ -25,21 +25,21 @@ def generate_launch_description():
     declared_arguments.append(
         DeclareLaunchArgument(
             "standalone_gazebo",
-            default_value='false',
+            default_value='true',
             description="add the robot description to gazebo with a simpler approach, using a diff_drive and lidar plugin",
         )
     )
     declared_arguments.append(
         DeclareLaunchArgument(
             "ros2_control_with_gazebo",
-            default_value='true',
+            default_value='false',
             description="add the robot description to gazebo ros2 control for the diff_drive, no gazebo internal plugin!",
         )
     )
     declared_arguments.append(
         DeclareLaunchArgument(
             "generate_ros2_control_tag",
-            default_value='true',
+            default_value='false',
             description="launch the drivers that connect to the real hardware via IP",
         )
     )
@@ -86,7 +86,6 @@ def generate_launch_description():
     load_gazebo = IncludeLaunchDescription(
         PythonLaunchDescriptionSource(
             [PathJoinSubstitution([FindPackageShare(sim_package), 'launch']), "/robot.launch.py"]),
-            #condition=IfCondition(standalone_gazebo),
             launch_arguments={
                 "tf_prefix": tf_prefix,
                 "world": world,
@@ -121,6 +120,7 @@ def generate_launch_description():
                 "use_sim_time": use_sim_time,
             }.items(),
     )
+
     delay_load_real_drivers = TimerAction(
         period=10.0,  # Delay period in seconds
         actions=[load_real_drivers]
