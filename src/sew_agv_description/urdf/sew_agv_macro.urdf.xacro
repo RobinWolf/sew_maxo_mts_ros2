@@ -17,8 +17,7 @@
     standalone_gazebo:=false
     ros2_control_with_gazebo:=false
     use_fake_hardware:=false
-    robot_ip
-    robot_ssid"
+    robot_ip"
   >
 
 <!--#######################################################################################################################################-->
@@ -31,9 +30,9 @@
         <!-- ros2 control instance -->
         <xacro:sew_agv_ros2_control
           ros2_control_with_gazebo="${ros2_control_with_gazebo}"
+          use_fake_hardware="${use_fake_hardware}"
           tf_prefix="${tf_prefix}"
-          robot_ip="${robot_ip}"
-          robot_ssid="${robot_ssid}"
+          agv_ip="${robot_ip}"
         />
     </xacro:if>
 
