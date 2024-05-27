@@ -28,6 +28,20 @@ def generate_launch_description():
         )
     )
     declared_arguments.append(
+        DeclareLaunchArgument(
+            "gernerate_ros2_control_tag",
+            default_value='false',
+            description="TODO",
+        )
+    )
+    declared_arguments.append(
+        DeclareLaunchArgument(
+            "ros2_control_with_gazebo",
+            default_value='false',
+            description="TODO",
+        )
+    )
+    declared_arguments.append(
     DeclareLaunchArgument('world',
             default_value='src/gazebo_testenviroment/worlds/static_world_2404.world',
             description='Specify the world which should be loaded in Gazebo'
@@ -44,6 +58,9 @@ def generate_launch_description():
     world = LaunchConfiguration('world')     # --> seems to be that gazebo uses static_world as default?    
     tf_prefix = LaunchConfiguration("tf_prefix")
     standalone_gazebo = LaunchConfiguration("standalone_gazebo")
+    gernerate_ros2_control_tag = LaunchConfiguration("gernerate_ros2_control_tag")
+    ros2_control_with_gazebo = LaunchConfiguration("ros2_control_with_gazebo")
+
     launch_rviz = LaunchConfiguration('launch_rviz')   
 
 
@@ -59,6 +76,13 @@ def generate_launch_description():
             " ",
             "standalone_gazebo:=",
             standalone_gazebo,
+            " ",
+            "gernerate_ros2_control_tag:=",
+            gernerate_ros2_control_tag,
+            " ",
+            "ros2_control_with_gazebo:=",
+            ros2_control_with_gazebo
+
         ]
     )
 
