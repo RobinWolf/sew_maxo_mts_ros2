@@ -1,6 +1,5 @@
- <?xml version="1.0"?>
+<?xml version="1.0"?>
 
-<!--this file dontains all of the specification to set up ros2_control and establish an hardwareinterface the SEW AGV-->
 <robot xmlns:xacro="http://www.ros.org/wiki/xacro">
 
 <!--#######################################################################################################################################-->
