@@ -11,7 +11,7 @@ from launch.conditions import IfCondition
 def generate_launch_description():
     description_package = "sew_agv_description"
     sim_package = "gazebo_testenviroment"
-    driver_package = "TODO"
+    driver_package = "sew_agv_drivers"
     navigation_package = "sew_agv_navigation"
 
     declared_arguments = []
@@ -37,6 +37,13 @@ def generate_launch_description():
         )
     )
     declared_arguments.append(
+        DeclareLaunchArgument(
+            "generate_ros2_control_tag",
+            default_value='false',
+            description="launch the drivers that connect to the real hardware via IP",
+        )
+    )
+    declared_arguments.append(
     DeclareLaunchArgument('world',
             default_value='src/gazebo_testenviroment/worlds/static_world_2404.world',
             description='Specify the world which should be loaded in Gazebo'
@@ -46,13 +53,6 @@ def generate_launch_description():
     DeclareLaunchArgument('use_sim_time',
             default_value='true',
             description='Set to "true" if you want to use the gazebo clock, set to "fasle" if you use real hardware.'
-        )
-    )
-    declared_arguments.append(
-        DeclareLaunchArgument(
-            "generate_ros2_control_tag",
-            default_value='false',
-            description="launch the drivers that connect to the real hardware via IP",
         )
     )
     declared_arguments.append(
@@ -76,33 +76,10 @@ def generate_launch_description():
     tf_prefix = LaunchConfiguration("tf_prefix")
     standalone_gazebo = LaunchConfiguration("standalone_gazebo")
     use_sim_time = LaunchConfiguration('use_sim_time')   
-    generate_ros2_control_tag = LaunchConfiguration('generate_ros2_control_tag')   
+    generate_ros2_control_tag = LaunchConfiguration('generate_ros2_control_tag') 
+    ros2_control_with_gazebo = LaunchConfiguration("ros2_control_with_gazebo")
     robot_ip = LaunchConfiguration('robot_ip') 
     enable_joystick = LaunchConfiguration('enable_joystick') 
-
-
-
-
-    # robot_description_content = Command(
-    #     [
-    #         PathJoinSubstitution([FindExecutable(name="xacro")]),
-    #         " ",
-    #         PathJoinSubstitution([FindPackageShare(description_package), "urdf", "sew_agv_model.urdf.xacro"]),
-    #         " ",
-    #         "tf_prefix:=",
-    #         tf_prefix,
-    #         " ",
-    #         "standalone_gazebo:=",
-    #         standalone_gazebo,
-    #         " ",
-    #         "generate_ros2_control_tag:=",
-    #         generate_ros2_control_tag,
-    #         " ",
-    #         "robot_ip:=",
-    #         robot_ip,
-    #     ]
-    # )
-    #launch the robot_state_publisher in the called sub-launch files
 
 
     #lauch gazebo if launch argument is set to true
@@ -120,16 +97,18 @@ def generate_launch_description():
 
   
     #launch real drivers if launch argument is set to true
-    # load_real_drivers =     load_joystick = IncludeLaunchDescription(
-    #     PythonLaunchDescriptionSource(
-    #         [PathJoinSubstitution([FindPackageShare(driver_package), 'launch']), "/drivers.launch.py"]),
-    #         condition=IfCondition(generate_ros2_control_tag),
-    #         launch_arguments={
-    #             "tf_prefix": tf_prefix,
-    #             "robot_ip": robot_ip,
-    #             'launch_rviz':'false',
-    #         }.items(),
-    # )
+    load_real_drivers = IncludeLaunchDescription(
+        PythonLaunchDescriptionSource(
+            [PathJoinSubstitution([FindPackageShare(driver_package), 'launch']), "/driver.launch.py"]),
+            condition=IfCondition(generate_ros2_control_tag),
+            launch_arguments={
+                "tf_prefix": tf_prefix,
+                "robot_ip": robot_ip,
+                "generate_ros2_control_tag": generate_ros2_control_tag,
+                "ros2_control_with_gazebo": ros2_control_with_gazebo,
+                "use_sim_time": use_sim_time,
+            }.items(),
+    )
 
 
     #launch real sensors such as lidar --> currently not feasable dur to lack in hardware support
@@ -149,8 +128,8 @@ def generate_launch_description():
 
     nodes_to_start = [
         load_gazebo,
-        load_joystick
+        load_joystick,
+        load_real_drivers
     ]
-    #load_real_drivers,
 
     return LaunchDescription(declared_arguments + nodes_to_start)

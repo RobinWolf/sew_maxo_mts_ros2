@@ -27,14 +27,14 @@ def generate_launch_description():
     declared_arguments.append(
         DeclareLaunchArgument(
             "use_fake_hardware",
-            default_value="true",
+            default_value="false",
             description="start the agv with fake (mock) hardware or real controller",
         )
     )
     declared_arguments.append(
         DeclareLaunchArgument(
             "gernerate_ros2_control_tag",
-            default_value="true",
+            default_value="false",
             description="Generate the ros2_control tag in the urdf file, if false the tag has to be added manually to the urdf file.",
         )
     )
@@ -49,12 +49,12 @@ def generate_launch_description():
     )  
 
     declared_arguments.append(
-    DeclareLaunchArgument(
-      "rviz",
-      default_value="false",
-      description="Start RViz2 automatically with this launch file, should be deactivated when launching moveit from this base image.",
+        DeclareLaunchArgument(
+            "rviz",
+            default_value="false",
+            description="Start RViz2 automatically with this launch file, should be deactivated when launching moveit from this base image.",
+        )
     )
-  )
 
 
     tf_prefix = LaunchConfiguration("tf_prefix")
