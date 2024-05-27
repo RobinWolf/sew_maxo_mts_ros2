@@ -1,5 +1,5 @@
 from launch import LaunchDescription
-from launch.actions import DeclareLaunchArgument, IncludeLaunchDescription
+from launch.actions import DeclareLaunchArgument, IncludeLaunchDescription, TimerAction
 from launch.substitutions import Command, FindExecutable, LaunchConfiguration, PathJoinSubstitution
 from launch_ros.actions import Node
 from launch_ros.substitutions import FindPackageShare
@@ -25,21 +25,21 @@ def generate_launch_description():
     declared_arguments.append(
         DeclareLaunchArgument(
             "standalone_gazebo",
-            default_value='true',
+            default_value='false',
             description="add the robot description to gazebo with a simpler approach, using a diff_drive and lidar plugin",
         )
     )
     declared_arguments.append(
         DeclareLaunchArgument(
             "ros2_control_with_gazebo",
-            default_value='false',
+            default_value='true',
             description="add the robot description to gazebo ros2 control for the diff_drive, no gazebo internal plugin!",
         )
     )
     declared_arguments.append(
         DeclareLaunchArgument(
             "generate_ros2_control_tag",
-            default_value='false',
+            default_value='true',
             description="launch the drivers that connect to the real hardware via IP",
         )
     )
@@ -86,15 +86,27 @@ def generate_launch_description():
     load_gazebo = IncludeLaunchDescription(
         PythonLaunchDescriptionSource(
             [PathJoinSubstitution([FindPackageShare(sim_package), 'launch']), "/robot.launch.py"]),
-            condition=IfCondition(standalone_gazebo),
+            #condition=IfCondition(standalone_gazebo),
             launch_arguments={
                 "tf_prefix": tf_prefix,
                 "world": world,
                 "standalone_gazebo": standalone_gazebo,
+                "generate_ros2_control_tag": generate_ros2_control_tag,
+                "ros2_control_with_gazebo": ros2_control_with_gazebo,
                 'launch_rviz':'false',
             }.items(),
     )
 
+
+    #launch the joystick
+    load_joystick = IncludeLaunchDescription(
+        PythonLaunchDescriptionSource(
+            [PathJoinSubstitution([FindPackageShare(navigation_package), 'launch']), "/joystick.launch.py"]),
+            condition=IfCondition(enable_joystick),
+            launch_arguments={
+                "use_sim_time": use_sim_time,
+            }.items(),
+    )
   
     #launch real drivers if launch argument is set to true
     load_real_drivers = IncludeLaunchDescription(
@@ -109,27 +121,22 @@ def generate_launch_description():
                 "use_sim_time": use_sim_time,
             }.items(),
     )
+    delay_load_real_drivers = TimerAction(
+        period=15.0,  # Delay period in seconds
+        actions=[load_real_drivers]
+    )
 
 
     #launch real sensors such as lidar --> currently not feasable dur to lack in hardware support
     #load_lidar = 
 
-    #launch the joystick
-    load_joystick = IncludeLaunchDescription(
-        PythonLaunchDescriptionSource(
-            [PathJoinSubstitution([FindPackageShare(navigation_package), 'launch']), "/joystick.launch.py"]),
-            condition=IfCondition(enable_joystick),
-            launch_arguments={
-                "use_sim_time": use_sim_time,
-            }.items(),
-    )
 
 
 
     nodes_to_start = [
         load_gazebo,
         load_joystick,
-        load_real_drivers
+        delay_load_real_drivers
     ]
 
     return LaunchDescription(declared_arguments + nodes_to_start)
