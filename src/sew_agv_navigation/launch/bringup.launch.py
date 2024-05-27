@@ -122,7 +122,7 @@ def generate_launch_description():
             }.items(),
     )
     delay_load_real_drivers = TimerAction(
-        period=15.0,  # Delay period in seconds
+        period=10.0,  # Delay period in seconds
         actions=[load_real_drivers]
     )
 
