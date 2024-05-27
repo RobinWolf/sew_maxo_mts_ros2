@@ -27,16 +27,18 @@
                    <param name="fake_sensor_commands">${fake_sensor_commands}</param>
                    <param name="state_following_offset">0.0</param>
                 </xacro:if>
-                <!--unless no simulation is required, use real hardware-->
-                <xacro:unless value="${use_fake_hardware}">
-                    <plugin>agv_driver/AGVHardware</plugin>    <!--call our plugin for interfacing with AGV (this is the Driver!)-->
-                    <param name="agv_ip">${agv_ip}</param>
-                    <param name="tf_prefix">${tf_prefix}</param>
-                </xacro:unless>
                 <!--load gazebo plugin-->
                 <xacro:if value="${ros2_control_with_gazebo}">
-                    <plugin>gz_ros2_control/GazeboSimSystem</plugin>
+                    <plugin>gazebo_ros2_control/GazeboSystem</plugin>
                 </xacro:if>
+                <!--unless no simulation is required, use real hardware-->
+                <xacro:unless value="${use_fake_hardware}">
+                    <xacro:unless value="${ros2_control_with_gazebo}">
+                        <plugin>agv_driver/AGVHardware</plugin>    <!--call our plugin for interfacing with AGV (this is the Driver!)-->
+                        <param name="agv_ip">${agv_ip}</param>
+                        <param name="tf_prefix">${tf_prefix}</param>
+                    </xacro:unless>
+                </xacro:unless>
             </hardware>
                 
 
