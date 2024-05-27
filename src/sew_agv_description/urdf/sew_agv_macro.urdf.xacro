@@ -38,12 +38,21 @@
 
 
 <!--#######################################################################################################################################-->
-<!--load gazebo hardware plugin for ros2_control or standard gazebo diff_drive plugin-->
+<!--load standard gazebo diff_drive plugin-->
 <!--#######################################################################################################################################-->
 
     <xacro:if value="${standalone_gazebo}">
         <xacro:include filename="$(find sew_agv_description)/urdf/sew_agv_gazebo_macro.urdf.xacro" />
         <xacro:sew_agv_gazebo/>
+    </xacro:if>
+
+<!--#######################################################################################################################################-->
+<!--load gazebo hardware plugin for ros2_control diff_drive plugin-->
+<!--#######################################################################################################################################-->
+
+    <xacro:if value="${ros2_control_with_gazebo}">
+        <xacro:include filename="$(find sew_agv_description)/urdf/sew_agv_ros2_control_macro.urdf.xacro" />
+        <xacro:sew_ros2_control_gazebo/>
     </xacro:if>
 
 
