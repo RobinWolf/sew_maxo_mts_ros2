@@ -43,7 +43,7 @@
 
     <xacro:if value="${standalone_gazebo}">
         <xacro:include filename="$(find sew_agv_description)/urdf/sew_agv_gazebo_macro.urdf.xacro" />
-        <xacro:sew_agv_gazebo/>
+        <xacro:sew_agv_gazebo tf_prefix="${tf_prefix}"/>
     </xacro:if>
 
 <!--#######################################################################################################################################-->
@@ -52,7 +52,7 @@
 
     <xacro:if value="${ros2_control_with_gazebo}">
         <xacro:include filename="$(find sew_agv_description)/urdf/sew_agv_ros2_control_gazebo_macro.urdf.xacro" />
-        <xacro:sew_ros2_control_gazebo/>
+        <xacro:sew_ros2_control_gazebo tf_prefix="${tf_prefix}"/>
     </xacro:if>
 
 

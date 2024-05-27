@@ -1,7 +1,7 @@
 <?xml version="1.0"?>
 <robot xmlns:xacro="http://www.ros.org/wiki/xacro">
 
-    <xacro:macro name="sew_ros2_control_gazebo">
+    <xacro:macro name="sew_ros2_control_gazebo" params="tf_prefix">
 
     <!--#######################################################################################################################################-->
     <!--set up the ros2 control plugin for the sew diff drive controller-->
@@ -14,11 +14,44 @@
           <controller_manager_name>controller_manager</controller_manager_name>
         </plugin>
     </gazebo>
+
+    <!--#######################################################################################################################################-->
+    <!--define gazebo tags for materials, because urdf materialc can not be used in gazebo -->
+    <!--#######################################################################################################################################-->
+
+        <gazebo reference="${tf_prefix}caster_wheel_link">
+            <material> Gazebo/Black</material>
+        </gazebo>
+
+        <gazebo reference="${tf_prefix}right_wheel_link">
+            <material> Gazebo/Black</material>
+        </gazebo>
+
+        <gazebo reference="${tf_prefix}left_wheel_link">
+            <material> Gazebo/Black</material>
+        </gazebo>
+
+        <gazebo reference="${tf_prefix}body_link">
+            <material> Gazebo/Grey</material>
+        </gazebo>
+
+        <gazebo reference="${tf_prefix}lidar_link">
+            <material> Gazebo/Yellow</material>
+        </gazebo>
+
+    <!--#######################################################################################################################################-->
+    <!--set friction of the caster wheel to nearly 0 (for simplicity reasons) -->
+    <!--#######################################################################################################################################-->
+
+        <gazebo reference="${tf_prefix}caster_wheel_link">
+            <mu1 value="0.001"/>
+            <mu2 value="0.001"/>
+        </gazebo>
     
     <!--#######################################################################################################################################-->
     <!--include lidar sensor simulation on lidar link -->
     <!--#######################################################################################################################################-->
-        <gazebo reference="sew_lidar_link">
+        <gazebo reference="${tf_prefix}lidar_link">
             <sensor type="ray" name="lidar_1">
                 <pose> 0 0 0 0 0 0 </pose>      <!--define offset to lidar_link frame-->
                 <visualize>true</visualize>
