@@ -24,7 +24,7 @@ RUN mkdir -p /home/$USER/ros2_ws/src
 WORKDIR /home/$USER/ros2_ws
 
 ##############################################################################
-##                     2. stage: set up description pkg                     ##
+##       2. stage: set up description and install ros2 control pkg          ##
 ##############################################################################
 FROM base as sew_description
 
@@ -33,6 +33,16 @@ RUN apt-get update && apt-get install -y ros-${ROS_DISTRO}-xacro
 RUN apt-get update && apt-get install -y ros-${ROS_DISTRO}-joint-state-publisher-gui
 USER $USER
 
+USER root
+RUN apt-get update && apt-get install -y ros-humble-controller-interface 
+RUN apt-get update && apt-get install -y ros-humble-controller-manager 
+RUN apt-get update && apt-get install -y ros-humble-hardware-interface 
+RUN apt-get update && apt-get install -y ros-humble-pluginlib 
+RUN apt-get update && apt-get install -y ros-humble-rclcpp
+RUN apt-get update && apt-get install -y ros-humble-rclcpp-lifecycle
+RUN apt-get update && apt-get install -y ros-humble-ros2-control
+RUN apt-get update && apt-get install -y ros-humble-ros2-controllers
+USER $USER
 
 ##############################################################################
 ##                           3. stage: set up gazebo                        ##
