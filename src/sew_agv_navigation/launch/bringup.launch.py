@@ -30,6 +30,13 @@ def generate_launch_description():
         )
     )
     declared_arguments.append(
+        DeclareLaunchArgument(
+            "ros2_control_with_gazebo",
+            default_value='false',
+            description="add the robot description to gazebo ros2 control for the diff_drive, no gazebo internal plugin!",
+        )
+    )
+    declared_arguments.append(
     DeclareLaunchArgument('world',
             default_value='src/gazebo_testenviroment/worlds/static_world_2404.world',
             description='Specify the world which should be loaded in Gazebo'
