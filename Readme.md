@@ -26,6 +26,9 @@ ros2 launch sew_agv_navigation joystick.launch.py
 ```
 ros2 launch sew_agv_navigation bringup.launch.py
 ```
+```
+ros2 launch sew_agv_navigation navigation.launch.py
+```
 
 ## TODOs 
 - 
