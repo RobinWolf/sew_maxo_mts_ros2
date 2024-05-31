@@ -36,7 +36,7 @@ def generate_launch_description():
         package='twist_mux',
         executable='twist_mux',
         parameters=[twistmux_params,{use_sim_time}],  #  !!! topic remapping in gazebo without ros2_control is not possible !!!
-        remappings=[('/cmd_vel_out', '/diffbot_base_controller/cmd_vel')]   # 
+        remappings=[('/cmd_vel_out', '/diffbot_base_controller/cmd_vel_unstamped')]   # 
     )
 
     joy_node = Node(
