@@ -35,8 +35,8 @@ def generate_launch_description():
     twistmux_node = Node(
         package='twist_mux',
         executable='twist_mux',
-        parameters=[twistmux_params,{use_sim_time}],  # just needs to be set up, because topic remapping in gazebo without ros2_control is not possible
-        remappings=[('/cmd_vel_out', '/cmd_vel')]   # until ros2_control is available just shortcut the twistmux node --> controller is not prioritized!
+        parameters=[twistmux_params,{use_sim_time}],  #  !!! topic remapping in gazebo without ros2_control is not possible !!!
+        remappings=[('/cmd_vel_out', '/diffbot_base_controller/cmd_vel')]   # 
     )
 
     joy_node = Node(
