@@ -26,7 +26,7 @@
 
     <xacro:if value="${generate_ros2_control_tag}">
         <!-- ros2 control include -->
-        <xacro:include filename="$(find sew_agv_description)/urdf/sew_agv.ros2_control.urdf.xacro" />
+        <xacro:include filename="$(find sew_agv_description)/urdf/sew_agv_ros2_control.urdf.xacro" />
         <!-- ros2 control instance -->
         <xacro:sew_agv_ros2_control
           ros2_control_with_gazebo="${ros2_control_with_gazebo}"
