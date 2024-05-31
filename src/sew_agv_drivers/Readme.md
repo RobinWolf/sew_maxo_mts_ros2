@@ -10,11 +10,13 @@ Diffdrive Repo by ArticulatedRobotics: https://github.com/joshnewans/diffdrive_a
 
 ## Helpful comands
 ```
-ros2 launch sew_agv_drivers launch_agv.launch.py rviz:=true
+ros2 launch sew_agv_drivers launch_agv.launch.py rviz:=true use_fake_hardware:=true
 ```
+Move agw via terminal:
 ```
-ros2 topic pub /cmd_vel geometry_msgs/msg/Twist "{linear: {x: 1.0, y: 0.0, z: 0.0}, angular: {x: 0.0, y: 0.0, z: 0.5}}" --once
+ros2 topic pub /diffbot_base_controller/cmd_vel geometry_msgs/msg/TwistStamped "{header: {stamp: {sec: 0, nanosec: 0}, frame_id: ''}, twist: {linear: {x: 1.0, y: 0.0, z: 0.0}, angular: {x: 0.0, y: 0.0, z: 0.5}}}" --once
 ```
 
+
 ## TODOs 
-- Prüfen ob topic auf das diff_drive_controller (im yaml file) hört geändert werden kann (aktuell cmd_vel)  --> damit controller über navigation priorisiert werden kann (mit twist max node)
+- 
