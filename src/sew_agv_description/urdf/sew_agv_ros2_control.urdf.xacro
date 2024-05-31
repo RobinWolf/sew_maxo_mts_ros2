@@ -8,7 +8,7 @@
     <xacro:macro name="sew_agv_ros2_control" params="
         name:='sew_hardware_interface',
         use_fake_hardware:=false
-        fake_sensor_commands:=false
+        mock_sensor_commands:=false
         initial_positions:=${dict(sew_wheel_left_joint=0.0,sew_wheel_right_joint=0.0)}
         initial_velocity:=${dict(sew_wheel_left_joint=0.0,sew_wheel_right_joint=0.0)}
         tf_prefix
@@ -24,7 +24,7 @@
             <hardware>
                 <xacro:if value="${use_fake_hardware}">
                    <plugin>mock_components/GenericSystem</plugin>
-                   <param name="fake_sensor_commands">${fake_sensor_commands}</param>
+                   <param name="mock_sensor_commands">${mock_sensor_commands}</param>
                    <param name="state_following_offset">0.0</param>
                 </xacro:if>
                 <!--load gazebo plugin-->
