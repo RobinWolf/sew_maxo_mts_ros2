@@ -7,9 +7,9 @@
 #include <atomic>
 #include <vector>
 #include <rclcpp/rclcpp.hpp>
-#include <std_msgs/msg/empty.hpp>
-#include "sew_agv/tx.hpp"
-#include "sew_agv/rx.hpp"
+#include <arpa/inet.h>
+#include "tx.hpp"
+#include "rx.hpp"
 
 namespace sew_agv_drivers
 {
@@ -36,6 +36,6 @@ private:
   int sock_;
   struct sockaddr_in agv_addr_;
   };
-}  // namespace sew_agv_drivers
+}
 
-#endif  // SEW_AGV_DRIVERS__AGV_ENDPOINT_HPP_
+#endif
