@@ -9,6 +9,7 @@ endif()
 find_package(ament_cmake REQUIRED)
 find_package(rclcpp REQUIRED)
 find_package(std_msgs REQUIRED)
+find_package(pluginlib REQUIRED)
 # uncomment the following section in order to fill in
 # further dependencies manually.
 # find_package(<dependency> REQUIRED)
@@ -25,14 +26,55 @@ if(BUILD_TESTING)
   ament_lint_auto_find_test_dependencies()
 endif()
 
+
+
+#build and compile hardware interface
+add_library(agv_interface_plugin
+  SHARED
+  src/sew_agv_hardware_interface.cpp
+)
+target_link_libraries(
+  agv_interface_plugin
+)
+target_include_directories(
+  agv_interface_plugin
+  PRIVATE
+  include
+)
+ament_target_dependencies(
+  agv_interface_plugin
+  ${${PROJECT_NAME}_EXPORTED_TARGETS}
+  ${THIS_PACKAGE_INCLUDE_DEPENDS}
+)
+#export self written hardware interface plugin to libary
+pluginlib_export_plugin_description_file(hardware_interface agv_interface_plugin.xml)
+
+
 # add custom directories to install them while buildung
+install(
+  TARGETS agv_interface_plugin
+  DESTINATION lib
+)
+
+install(
+  DIRECTORY include/
+  DESTINATION include
+)
+
 install(DIRECTORY
   config
-  include
   launch
   msg
   src
   DESTINATION share/${PROJECT_NAME}/
+)
+
+## EXPORTS
+ament_export_include_directories(
+  include
+)
+ament_export_libraries(
+  agv_interface_plugin
 )
 
 ament_package()
