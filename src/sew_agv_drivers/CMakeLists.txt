@@ -10,6 +10,15 @@ find_package(ament_cmake REQUIRED)
 find_package(rclcpp REQUIRED)
 find_package(std_msgs REQUIRED)
 find_package(pluginlib REQUIRED)
+find_package(controller_manager REQUIRED)
+find_package(controller_manager_msgs REQUIRED)
+find_package(hardware_interface REQUIRED)
+find_package(rclcpp_lifecycle REQUIRED)
+find_package(std_srvs REQUIRED)
+find_package(xacro REQUIRED)
+find_package(ros2_control REQUIRED)
+find_package(ros2_controllers REQUIRED)
+
 # uncomment the following section in order to fill in
 # further dependencies manually.
 # find_package(<dependency> REQUIRED)
@@ -29,6 +38,24 @@ endif()
 
 
 #build and compile hardware interface
+
+include_directories(include)
+
+set(THIS_PACKAGE_INCLUDE_DEPENDS
+  controller_manager
+  controller_manager_msgs
+  hardware_interface
+  pluginlib
+  rclcpp
+  rclcpp_lifecycle
+  std_msgs
+  std_srvs
+  xacro
+  ros2_control
+  ros2_controllers
+)
+
+
 add_library(agv_interface_plugin
   SHARED
   src/sew_agv_hardware_interface.cpp
@@ -75,6 +102,14 @@ ament_export_include_directories(
 )
 ament_export_libraries(
   agv_interface_plugin
+)
+
+ament_export_dependencies(
+  hardware_interface
+  pluginlib
+  rclcpp
+  rclcpp_lifecycle
+  ${THIS_PACKAGE_INCLUDE_DEPENDS}
 )
 
 ament_package()
