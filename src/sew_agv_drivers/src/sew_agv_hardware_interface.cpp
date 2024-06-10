@@ -13,20 +13,20 @@ namespace sew_agv_drivers
 
   hardware_interface::CallbackReturn AgvHardwareInterface::on_init(const hardware_interface::HardwareInfo & info)
   {
-    if (configure_default(info) != hardware_interface::return_type::OK) {
-      return hardware_interface::return_type::ERROR;
-    }
+    if (hardware_interface::SystemInterface::on_init(info) !=  hardware_interface::CallbackReturn::SUCCESS) {
+          return hardware_interface::CallbackReturn::ERROR; 
+        }
 
     // Get parameters
-    std::string agv_host = info.hardware_parameters["agv_host"];
-    int agv_port = std::stoi(info.hardware_parameters["agv_port"]);
-    std::string local_ip = info.hardware_parameters["local_ip"];
-    int local_port = std::stoi(info.hardware_parameters["local_port"]);
+    std::string agv_host = info_.hardware_parameters["agv_host"];
+    int agv_port = std::stoi(info_.hardware_parameters["agv_port"]);
+    std::string local_ip = info_.hardware_parameters["local_ip"];
+    int local_port = std::stoi(info_.hardware_parameters["local_port"]);
 
     // Initialize endpoint
     endpoint_ = std::make_shared<AgvEndpoint>(agv_host, agv_port, local_ip, local_port);
 
-    return hardware_interface::return_type::OK;
+    return hardware_interface::CallbackReturn::SUCCESS;
   }
 
   std::vector<hardware_interface::StateInterface> AgvHardwareInterface::export_state_interfaces()
@@ -56,17 +56,13 @@ namespace sew_agv_drivers
   hardware_interface::CallbackReturn AgvHardwareInterface::on_activate(const rclcpp_lifecycle::State& previous_state)
   {
     endpoint_->start();
-    return hardware_interface::return_type::OK;
+    return hardware_interface::CallbackReturn::SUCCESS;
   }
 
   hardware_interface::CallbackReturn AgvHardwareInterface::on_deactivate(const rclcpp_lifecycle::State& previous_state)
   {
     endpoint_->stop();
-    return hardware_interface::return_type::OK;
-  }
-  {
-    endpoint_->stop();
-    return hardware_interface::return_type::OK;
+    return hardware_interface::CallbackReturn::SUCCESS;
   }
 
   hardware_interface::return_type AgvHardwareInterface::read(const rclcpp::Time& time, const rclcpp::Duration& period)
