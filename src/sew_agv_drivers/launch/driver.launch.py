@@ -33,7 +33,7 @@ def generate_launch_description():
     declared_arguments.append(
         DeclareLaunchArgument(
             "gernerate_ros2_control_tag",
-            default_value="false",
+            default_value="true",
             description="Generate the ros2_control tag in the urdf file, if false the tag has to be added manually to the urdf file.",
         )
     )
@@ -47,13 +47,13 @@ def generate_launch_description():
     declared_arguments.append(
         DeclareLaunchArgument(
             "robot_ip",
-            default_value="10.172.64.1",
+            default_value="192.168.10.22",
             description="The IP-Adress with which the agv hardware joins the common network",
         )
     )
     declared_arguments.append(
     DeclareLaunchArgument('use_sim_time',
-            default_value='true',
+            default_value='false',
             description='Set to "true" if you want to use the gazebo clock, set to "fasle" if you use real hardware.'
         )
     )

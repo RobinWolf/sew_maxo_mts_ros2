@@ -34,16 +34,17 @@ def generate_launch_description():
     declared_arguments.append(
         DeclareLaunchArgument(
             "gernerate_ros2_control_tag",
-            default_value="false",
+            default_value="true",
             description="Generate the ros2_control tag in the urdf file, if false the tag has to be added manually to the urdf file.",
         )
     )
     # default_value="127.0.0.1"
     # default_value="192.168.10.5",
+    # default_value="10.172.64.1",
     declared_arguments.append(
         DeclareLaunchArgument(
             "agv_ip",
-            default_value="10.172.64.1",
+            default_value="192.168.10.22",  #agv_link PLC IP
             description="The IP-Adress with which the agv hardware joins the common network",
         )
     )  
@@ -85,6 +86,13 @@ def generate_launch_description():
              " ",
             "gernerate_ros2_control_tag:=",
             gernerate_ros2_control_tag,
+            " ",
+            "ros2_control_with_gazebo:=",
+            "false",
+            " ",
+            "standalone_gazebo:=",
+            "false",          
+
          ]
     )
 
