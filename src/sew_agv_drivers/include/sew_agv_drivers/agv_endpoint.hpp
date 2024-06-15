@@ -28,20 +28,20 @@ public:
     /**
      * Connect to the AGV.
      * 
-     * @param agvHost The IP address or hostname of the AGV.
-     * @param agvPort The port number of the AGV.
-     * @param localIp The local IP address to bind the UDP socket.
-     * @param localPort The local port number to bind the UDP socket.
+     * @param agv_ip The IP address or hostname of the AGV.
+     * @param agv_port The port number of the AGV.
+     * @param local_ip The local IP address to bind the UDP socket.
+     * @param local_port The local port number to bind the UDP socket.
      * @return True if connection is successful, false otherwise.
      */
-    bool connect(const std::string& agvHost, int agvPort, const std::string& localIp, int localPort) {
+    bool connect(const std::string& agv_ip, int agv_port, const std::string& local_ip, int local_port) {
         // Close any existing connections
         disconnect();
 
-        this->agvHost = agvHost;
-        this->agvPort = agvPort;
-        this->localIp = localIp;
-        this->localPort = localPort;
+        this->agv_ip = agv_ip;
+        this->agv_port = agv_port;
+        this->local_ip = local_ip;
+        this->local_port = local_port;
 
         // Initialize UDP sockets
         udpTx = socket(AF_INET, SOCK_DGRAM, 0);
@@ -54,8 +54,8 @@ public:
 
         sockaddr_in localAddr {};
         localAddr.sin_family = AF_INET;
-        localAddr.sin_addr.s_addr = inet_addr(localIp.c_str());
-        localAddr.sin_port = htons(localPort);
+        localAddr.sin_addr.s_addr = inet_addr(local_ip.c_str());
+        localAddr.sin_port = htons(local_port);
 
         if (bind(udpRx, reinterpret_cast<struct sockaddr*>(&localAddr), sizeof(localAddr)) < 0) {
             std::cerr << "Failed to bind the socket" << std::endl;
@@ -63,14 +63,14 @@ public:
         }
 
         StartTxMsg startMsg;
-        startMsg.setIP(parseIp(localIp));
-        startMsg.setPort(localPort);
+        startMsg.setIP(parseIp(local_ip));
+        startMsg.setPort(local_port);
 
         std::vector<uint8_t> buf = startMsg.encode();
         sockaddr_in agvAddr {};
         agvAddr.sin_family = AF_INET;
-        agvAddr.sin_addr.s_addr = inet_addr(agvHost.c_str());
-        agvAddr.sin_port = htons(agvPort);
+        agvAddr.sin_addr.s_addr = inet_addr(agv_ip.c_str());
+        agvAddr.sin_port = htons(agv_port);
 
         while (!connected) {
             sendToAgv(buf);
@@ -147,10 +147,10 @@ public:
     }
 
 private:
-    std::string agvHost;
-    int agvPort;
-    std::string localIp;
-    int localPort;
+    std::string agv_ip;
+    int agv_port;
+    std::string local_ip;
+    int local_port;
     int udpTx;
     int udpRx;
     bool connected;
@@ -175,8 +175,8 @@ private:
     void sendToAgv(const std::vector<uint8_t>& buf) {
         sockaddr_in agvAddr {};
         agvAddr.sin_family = AF_INET;
-        agvAddr.sin_addr.s_addr = inet_addr(agvHost.c_str());
-        agvAddr.sin_port = htons(agvPort);
+        agvAddr.sin_addr.s_addr = inet_addr(agv_ip.c_str());
+        agvAddr.sin_port = htons(agv_port);
 
         sendto(udpTx, buf.data(), buf.size(), 0, reinterpret_cast<struct sockaddr*>(&agvAddr), sizeof(agvAddr));
     }

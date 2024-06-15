@@ -13,6 +13,7 @@
 
 #include "sew_agv_drivers/agv_endpoint.hpp"
 #include "sew_agv_drivers/config.h"
+#include "sew_agv_drivers/wheels_to_vel_and_dir.hpp"
 
 using hardware_interface::return_type;
 
@@ -40,6 +41,7 @@ public:
 
 private:
   Config cfg_;
+  Wheels_to_vel_and_dir wheels_;
   AgvEndpoint agv_endpoint_;
 
   rclcpp::Logger logger_;
