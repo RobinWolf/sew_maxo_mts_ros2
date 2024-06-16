@@ -167,19 +167,18 @@ hardware_interface::return_type SewAgvHardwareInterface::write(
 {
   RCLCPP_INFO(rclcpp::get_logger("SewAgvHardwareInterface"), "Writing to AGV...");
 
-    // Verbindung zum AGV herstellen, falls noch nicht verbunden
+    // Check if AGV is connected
     if (!agv_endpoint_.isConnected()) {
-        if (!agv_endpoint_.connect("AGV_IP", AGV_PORT, "LOCAL_IP", LOCAL_PORT)) {
-            RCLCPP_ERROR(rclcpp::get_logger("SewAgvHardwareInterface"), "Fehler beim Verbinden mit dem AGV");
-            return hardware_interface::return_type::ERROR;
-        }
+        RCLCPP_ERROR(rclcpp::get_logger("SewAgvHardwareInterface"), "AGV not connected!");
+        return hardware_interface::return_type::ERROR;
     }
+    
     float speed = 0.0;
     float x = 0.0;
     float y = 0.0;
     wheels_.getVelocityAndDirection(speed, x, y);     // Calculate the speed, x and y values from the wheel velocities that are set in the diffdrive controller
 
-    // Befehl an das AGV senden
+    // Send command to agv
     agv_endpoint_.sendControlToAGV(speed, x, y);
 
   return hardware_interface::return_type::OK;
