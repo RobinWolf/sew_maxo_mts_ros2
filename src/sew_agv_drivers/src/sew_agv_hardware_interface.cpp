@@ -114,7 +114,8 @@ std::vector<hardware_interface::CommandInterface> SewAgvHardwareInterface::expor
 
 
 
-return_type SewAgvHardwareInterface::on_activate()
+hardware_interface::CallbackReturn SewAgvHardwareInterface::on_activate(
+  const rclcpp_lifecycle::State & /*previous_state*/)
 {
   RCLCPP_INFO(rclcpp::get_logger("SewAgvHardwareInterface"), "Activating ...please wait...");
 
@@ -124,20 +125,17 @@ return_type SewAgvHardwareInterface::on_activate()
   // check if connection was successful
   if (connected) {
       RCLCPP_INFO(rclcpp::get_logger("SewAgvHardwareInterface"), "Successfully connected to AGV.");
+      return hardware_interface::CallbackReturn::SUCCESS;
   } else {
       RCLCPP_ERROR(rclcpp::get_logger("SewAgvHardwareInterface"), "Failed to connect to AGV.");
-      return return_type::ERROR;
+      return hardware_interface::CallbackReturn::ERROR;
   }
-
-  RCLCPP_INFO(rclcpp::get_logger("SewAgvHardwareInterface"), "Successfully activated!");
-
-  return hardware_interface::CallbackReturn::SUCCESS;
 }
 
 
 
 hardware_interface::CallbackReturn SewAgvHardwareInterface::on_deactivate(
-const rclcpp_lifecycle::State & /*previous_state*/)
+  const rclcpp_lifecycle::State & /*previous_state*/)
 {
   RCLCPP_INFO(rclcpp::get_logger("SewAgvHardwareInterface"), "Deactivating ...please wait...");
 
