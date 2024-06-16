@@ -17,6 +17,13 @@
 
     <!-- ros2_control related parameters -->
     <xacro:arg name="agv_ip" default="NaN" />
+    <xacro:arg name="agv_port" default="NaN" />
+    <xacro:arg name="local_ip" default="NaN" />
+    <xacro:arg name="local_port" default="NaN" />
+    <xacro:arg name="left_wheel_name" default="sew_wheel_left_joint" />
+    <xacro:arg name="right_wheel_name" default="sew_wheel_right_joint" />
+    <xacro:arg name="wheel_separation" default="1.0" />
+    <xacro:arg name="wheel_radius" default="0.1" />
     <xacro:arg name="generate_ros2_control_tag" default="true" />               <!--change default value ??? seems to be not passed to here-->
 
 
