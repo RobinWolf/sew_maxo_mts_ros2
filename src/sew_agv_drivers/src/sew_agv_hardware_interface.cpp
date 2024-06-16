@@ -1,4 +1,4 @@
-#include "sew_agv_drivers/sew_agv_hardware_interface.h"
+#include "sew_agv_drivers/sew_agv_hardware_interface.hpp"
 
 #include "hardware_interface/types/hardware_interface_type_values.hpp"
 
