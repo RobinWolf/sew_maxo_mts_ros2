@@ -1,6 +1,6 @@
 #include "sew_agv_drivers/sew_agv_hardware_interface.hpp"
-
 #include "hardware_interface/types/hardware_interface_type_values.hpp"
+#include "rclcpp/rclcpp.hpp"
 
 SewAgvHardwareInterface::~SewAgvHardwareInterface() {
   //virtual destructor enables proper cleanup in polymorphic class hierarchies by ensuring the correct destructor is invoked for objects of derived classes when deleted through a base class pointer
@@ -21,17 +21,14 @@ hardware_interface::CallbackReturn SewAgvHardwareInterface::on_init(const hardwa
   cfg_.agv_port = std::stoi(info_.hardware_parameters["agv_port"]);
   cfg_.local_ip = info_.hardware_parameters["local_ip"];
   cfg_.local_port = std::stoi(info_.hardware_parameters["local_port"]);
-  cfg_.left_wheel_name = info_.hardware_parameters["left_wheel_name"];
-  cfg_.right_wheel_name = info_.hardware_parameters["right_wheel_name"];
-  cfg_.wheel_separation_ = std::stod(info_.hardware_parameters["wheel_separation"]);
-  cfg_.wheel_radius_ = std::stod(info_.hardware_parameters["wheel_radius"]);
+  
+  std::string tmp_left_wheel_name = info_.hardware_parameters["left_wheel_name"];
+  std::string tmp_right_wheel_name = info_.hardware_parameters["right_wheel_name"];
+  float tmp_wheel_separation = std::stod(info_.hardware_parameters["wheel_separation"]);
+  float tmp_wheel_radius = std::stod(info_.hardware_parameters["wheel_radius"]);
 
   // set the wheels parameters
-  wheels_.set(cfg_.left_wheel_name, cfg_.right_wheel_name, cfg_.wheel_separation_, cfg_.wheel_radius_);
-  
-  hw_positions_.resize(info_.joints.size(), std::numeric_limits<double>::quiet_NaN());
-  hw_velocities_.resize(info_.joints.size(), std::numeric_limits<double>::quiet_NaN());
-  hw_commands_.resize(info_.joints.size(), std::numeric_limits<double>::quiet_NaN());
+  wheels_.set(tmp_left_wheel_name, tmp_right_wheel_name, tmp_wheel_separation, tmp_wheel_radius);
 
   for (const hardware_interface::ComponentInfo & joint : info_.joints)
   {
