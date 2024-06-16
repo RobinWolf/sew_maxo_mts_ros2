@@ -9,13 +9,14 @@ SewAgvHardwareInterface::~SewAgvHardwareInterface() {
 
 hardware_interface::CallbackReturn SewAgvHardwareInterface::on_init(const hardware_interface::HardwareInfo & info)
 {
+  RCLCPP_INFO(rclcpp::get_logger("SewAgvHardwareInterface"), "Initializing ...");
   if (
     hardware_interface::SystemInterface::on_init(info) !=
     hardware_interface::CallbackReturn::SUCCESS)
   {
     return hardware_interface::CallbackReturn::ERROR;
   }
-
+  
   // read parameters from the ros2_control.xacro file
   cfg_.agv_ip = info_.hardware_parameters["agv_ip"];
   cfg_.agv_port = std::stoi(info_.hardware_parameters["agv_port"]);
@@ -27,6 +28,15 @@ hardware_interface::CallbackReturn SewAgvHardwareInterface::on_init(const hardwa
   wheels_.wheel_separation_ = std::stod(info_.hardware_parameters["wheel_separation"]);
   wheels_.wheel_radius_ = std::stod(info_.hardware_parameters["wheel_radius"]);
 
+  // Log information about parameters
+  RCLCPP_INFO(rclcpp::get_logger("SewAgvHardwareInterface"), "AGV IP: %s", cfg_.agv_ip.c_str());
+  RCLCPP_INFO(rclcpp::get_logger("SewAgvHardwareInterface"), "AGV Port: %d", cfg_.agv_port);
+  RCLCPP_INFO(rclcpp::get_logger("SewAgvHardwareInterface"), "Local IP: %s", cfg_.local_ip.c_str());
+  RCLCPP_INFO(rclcpp::get_logger("SewAgvHardwareInterface"), "Local Port: %d", cfg_.local_port);
+  RCLCPP_INFO(rclcpp::get_logger("SewAgvHardwareInterface"), "Left Wheel Name: %s", wheels_.left_wheel_.name.c_str());
+  RCLCPP_INFO(rclcpp::get_logger("SewAgvHardwareInterface"), "Right Wheel Name: %s", wheels_.right_wheel_.name.c_str());
+  RCLCPP_INFO(rclcpp::get_logger("SewAgvHardwareInterface"), "Wheel Separation: %f", wheels_.wheel_separation_);
+  RCLCPP_INFO(rclcpp::get_logger("SewAgvHardwareInterface"), "Wheel Radius: %f", wheels_.wheel_radius_);
   
   for (const hardware_interface::ComponentInfo & joint : info_.joints)
   {
@@ -77,6 +87,7 @@ hardware_interface::CallbackReturn SewAgvHardwareInterface::on_init(const hardwa
     }
   }
 
+  RCLCPP_INFO(rclcpp::get_logger("SewAgvHardwareInterface"), "Finished initializing successfully.");
   return hardware_interface::CallbackReturn::SUCCESS;
 }
 
@@ -85,6 +96,8 @@ hardware_interface::CallbackReturn SewAgvHardwareInterface::on_init(const hardwa
 // export_state_interfaces and export_command_interfaces to tell ros2_control what the hardware interface has accessable
 std::vector<hardware_interface::StateInterface> SewAgvHardwareInterface::export_state_interfaces()
 {
+  RCLCPP_INFO(rclcpp::get_logger("SewAgvHardwareInterface"), "Start exporting state interfaces ...");
+
   std::vector<hardware_interface::StateInterface> state_interfaces;
 
   // link the state interface of the controller with the variables of wheels_
@@ -100,6 +113,8 @@ std::vector<hardware_interface::StateInterface> SewAgvHardwareInterface::export_
 
 std::vector<hardware_interface::CommandInterface> SewAgvHardwareInterface::export_command_interfaces()
 {
+  RCLCPP_INFO(rclcpp::get_logger("SewAgvHardwareInterface"), "Start exporting command interfaces ...");
+
   std::vector<hardware_interface::CommandInterface> command_interfaces;
   
   // link the command interface of the controller with the variables of wheels_
@@ -117,7 +132,7 @@ std::vector<hardware_interface::CommandInterface> SewAgvHardwareInterface::expor
 hardware_interface::CallbackReturn SewAgvHardwareInterface::on_activate(
   const rclcpp_lifecycle::State & /*previous_state*/)
 {
-  RCLCPP_INFO(rclcpp::get_logger("SewAgvHardwareInterface"), "Activating ...please wait...");
+  RCLCPP_INFO(rclcpp::get_logger("SewAgvHardwareInterface"), "Activating ...");
 
   // Connect to AGV
   bool connected = agv_endpoint_.connect(cfg_.agv_ip, cfg_.agv_port, cfg_.local_ip, cfg_.local_port);
@@ -137,7 +152,7 @@ hardware_interface::CallbackReturn SewAgvHardwareInterface::on_activate(
 hardware_interface::CallbackReturn SewAgvHardwareInterface::on_deactivate(
   const rclcpp_lifecycle::State & /*previous_state*/)
 {
-  RCLCPP_INFO(rclcpp::get_logger("SewAgvHardwareInterface"), "Deactivating ...please wait...");
+  RCLCPP_INFO(rclcpp::get_logger("SewAgvHardwareInterface"), "Deactivating ...");
 
   // Disconnect from AGV
   agv_endpoint_.disconnect();
@@ -167,19 +182,21 @@ hardware_interface::return_type SewAgvHardwareInterface::write(
 {
   RCLCPP_INFO(rclcpp::get_logger("SewAgvHardwareInterface"), "Writing to AGV...");
 
-    // Check if AGV is connected
-    if (!agv_endpoint_.isConnected()) {
-        RCLCPP_ERROR(rclcpp::get_logger("SewAgvHardwareInterface"), "AGV not connected!");
-        return hardware_interface::return_type::ERROR;
-    }
-    
-    float speed = 0.0;
-    float x = 0.0;
-    float y = 0.0;
-    wheels_.getVelocityAndDirection(speed, x, y);     // Calculate the speed, x and y values from the wheel velocities that are set in the diffdrive controller
+  // Check if AGV is connected
+  if (!agv_endpoint_.isConnected()) {
+      RCLCPP_ERROR(rclcpp::get_logger("SewAgvHardwareInterface"), "AGV not connected!");
+      return hardware_interface::return_type::ERROR;
+  }
+  
+  float speed = 0.0;
+  float x = 0.0;
+  float y = 0.0;
+  wheels_.getVelocityAndDirection(speed, x, y);     // Calculate the speed, x and y values from the wheel velocities that are set in the diffdrive controller
 
-    // Send command to agv
-    agv_endpoint_.sendControlToAGV(speed, x, y);
+  // Send command to agv
+  agv_endpoint_.sendControlToAGV(speed, x, y);
+
+  RCLCPP_INFO(rclcpp::get_logger("SewAgvHardwareInterface"), "Finished writing to AGV.");
 
   return hardware_interface::return_type::OK;
 }
