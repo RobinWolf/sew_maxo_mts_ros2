@@ -152,7 +152,7 @@ public:
     }
 
     // Encodes the jog message into a byte array.
-    std::vector<uint8_t> encode() const override {
+    std::vector<uint8_t> encode() const {
         auto buf = AgvTxMsg::encode(); // Encode the base message.
         int x_val = static_cast<int>(x * speed); // Calculate the x value based on the speed.
         int y_val = static_cast<int>(y * speed); // Calculate the y value based on the speed.
