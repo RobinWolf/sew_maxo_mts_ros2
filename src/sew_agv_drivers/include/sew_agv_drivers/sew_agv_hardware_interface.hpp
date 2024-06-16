@@ -17,37 +17,39 @@
 
 using hardware_interface::return_type;
 
-class SewAgvHardwareInterface : public hardware_interface::SystemInterface
-{
+namespace sew_agv_drivers {
+  class SewAgvHardwareInterface : public hardware_interface::SystemInterface
+  {
 
-public:
-  virtual ~SewAgvHardwareInterface();
+  public:
+    virtual ~SewAgvHardwareInterface();
 
-  hardware_interface::CallbackReturn on_init(const hardware_interface::HardwareInfo & info) override; //declares a member function named on_init. It is declared as an override of a function in the base class
+    hardware_interface::CallbackReturn on_init(const hardware_interface::HardwareInfo & info) override; //declares a member function named on_init. It is declared as an override of a function in the base class
 
-  // hardware_interface::CallbackReturn on_configure(const   rclcpp_lifecycle::State& previous_state) override;
+    // hardware_interface::CallbackReturn on_configure(const   rclcpp_lifecycle::State& previous_state) override;
 
-  std::vector<hardware_interface::StateInterface> export_state_interfaces() override;
+    std::vector<hardware_interface::StateInterface> export_state_interfaces() override;
 
-  std::vector<hardware_interface::CommandInterface> export_command_interfaces() override;
+    std::vector<hardware_interface::CommandInterface> export_command_interfaces() override;
 
-  hardware_interface::CallbackReturn on_activate(const rclcpp_lifecycle::State& previous_state) override;
+    hardware_interface::CallbackReturn on_activate(const rclcpp_lifecycle::State& previous_state) override;
 
-  hardware_interface::CallbackReturn on_deactivate(const rclcpp_lifecycle::State& previous_state) override;
+    hardware_interface::CallbackReturn on_deactivate(const rclcpp_lifecycle::State& previous_state) override;
 
-  hardware_interface::return_type read(const rclcpp::Time& time, const rclcpp::Duration& period) override;
+    hardware_interface::return_type read(const rclcpp::Time& time, const rclcpp::Duration& period) override;
 
-  hardware_interface::return_type write(const rclcpp::Time& time, const rclcpp::Duration& period) override;
+    hardware_interface::return_type write(const rclcpp::Time& time, const rclcpp::Duration& period) override;
 
-private:
-  Config cfg_;
-  Wheels_to_vel_and_dir wheels_;
-  AgvEndpoint agv_endpoint_;
+  private:
+    Config cfg_;
+    Wheels_to_vel_and_dir wheels_;
+    AgvEndpoint agv_endpoint_;
 
-  // rclcpp::Logger logger_;
-  // std::chrono::time_point<std::chrono::system_clock> time_;
-  
-};
+    // rclcpp::Logger logger_;
+    // std::chrono::time_point<std::chrono::system_clock> time_;
+    
+  };
 
 
-#endif // SEW_AGV_HARDWARE_INTERFACE_HPP
+  #endif // SEW_AGV_HARDWARE_INTERFACE_HPP
+}  // namespace sew_agv_drivers
