@@ -180,7 +180,7 @@ hardware_interface::return_type SewAgvHardwareInterface::write(
     wheels_.getVelocityAndDirection(speed, x, y);     // Calculate the speed, x and y values from the wheel velocities that are set in the diffdrive controller
 
     // Befehl an das AGV senden
-    agv_endpoint_.sendToAGV(speed, x, y);
+    agv_endpoint_.sendControlToAGV(speed, x, y);
 
   return hardware_interface::return_type::OK;
 }
