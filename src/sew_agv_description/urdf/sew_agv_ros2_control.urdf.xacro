@@ -13,13 +13,13 @@
         initial_velocity:=${dict(sew_wheel_left_joint=0.0,sew_wheel_right_joint=0.0)}
         tf_prefix
         agv_ip
-        agv_port
-        local_ip
-        local_port
-        left_wheel_name
-        right_wheel_name
-        wheel_separation_
-        wheel_radius_
+        agv_port:=0
+        local_ip:=0.0.0.0
+        local_port:=0
+        left_wheel_name:=sew_wheel_left_joint
+        right_wheel_name:=sew_wheel_right_joint
+        wheel_separation_:=1.0
+        wheel_radius_:=0.1
         ros2_control_with_gazebo:=false
         ">
 
@@ -41,7 +41,7 @@
                 <!--unless no simulation is required, use real hardware-->
                 <xacro:unless value="${use_fake_hardware}">
                     <xacro:unless value="${ros2_control_with_gazebo}">
-                        <plugin>agv_driver/AGVHardware</plugin>    <!--call our plugin for interfacing with AGV (this is the Driver!)-->
+                        <plugin>sew_agv_drivers/SewAgvHardwareInterface</plugin>    <!--call our plugin for interfacing with AGV (this is the Driver!)-->
                         <param name="tf_prefix">${tf_prefix}</param>
                         <param name="agv_ip">${agv_ip}</param>
                         <param name="agv_port">{agv_port}</param>
