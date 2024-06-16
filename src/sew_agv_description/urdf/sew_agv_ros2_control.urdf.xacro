@@ -12,15 +12,15 @@
         initial_positions:=${dict(sew_wheel_left_joint=0.0,sew_wheel_right_joint=0.0)}
         initial_velocity:=${dict(sew_wheel_left_joint=0.0,sew_wheel_right_joint=0.0)}
         tf_prefix
-        agv_ip
-        agv_port:=0
-        local_ip:=0.0.0.0
-        local_port:=0
-        left_wheel_name:=sew_wheel_left_joint
-        right_wheel_name:=sew_wheel_right_joint
-        wheel_separation_:=1.0
-        wheel_radius_:=0.1
         ros2_control_with_gazebo:=false
+        agv_ip
+        agv_port
+        local_ip
+        local_port
+        left_wheel_name
+        right_wheel_name
+        wheel_separation
+        wheel_radius
         ">
 
 <!--#######################################################################################################################################-->
@@ -49,8 +49,8 @@
                         <param name="local_port">${local_port}</param>
                         <param name="left_wheel_name">${left_wheel_name}</param>
                         <param name="right_wheel_name">${right_wheel_name}</param>
-                        <param name="wheel_separation">${wheel_separation_}</param>
-                        <param name="wheel_radius">${wheel_radius_}</param>
+                        <param name="wheel_separation">${wheel_separation}</param>
+                        <param name="wheel_radius">${wheel_radius}</param>
                     </xacro:unless>
                 </xacro:unless>
             </hardware>
