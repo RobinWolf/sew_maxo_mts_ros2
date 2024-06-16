@@ -17,10 +17,10 @@ public:
         // Default constructor
     }
 
-    void setName(const std::string &wheel_name)
-    {
-        name = wheel_name;
-    }
+    // void setName(const std::string &wheel_name)
+    // {
+    //     name = wheel_name;
+    // }
 };
 
 class Wheels_to_vel_and_dir
@@ -36,14 +36,14 @@ public:
         // Default constructor
     }
 
-    void set(const std::string &left_wheel_name, const std::string &right_wheel_name,
-             const double &wheel_separation, const double &wheel_radius)
-    {
-        left_wheel_.setName(left_wheel_name);
-        right_wheel_.setName(right_wheel_name);
-        wheel_separation_ = wheel_separation;
-        wheel_radius_ = wheel_radius;
-    }
+    // void set(const std::string &left_wheel_name, const std::string &right_wheel_name,
+    //          const double &wheel_separation, const double &wheel_radius)
+    // {
+    //     left_wheel_.setName(left_wheel_name);
+    //     right_wheel_.setName(right_wheel_name);
+    //     wheel_separation_ = wheel_separation;
+    //     wheel_radius_ = wheel_radius;
+    // }
     
 
     void getVelocityAndDirection(float &speed, float &x, float &y)

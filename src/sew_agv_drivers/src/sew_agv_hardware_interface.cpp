@@ -22,14 +22,12 @@ hardware_interface::CallbackReturn SewAgvHardwareInterface::on_init(const hardwa
   cfg_.local_ip = info_.hardware_parameters["local_ip"];
   cfg_.local_port = std::stoi(info_.hardware_parameters["local_port"]);
   
-  std::string tmp_left_wheel_name = info_.hardware_parameters["left_wheel_name"];
-  std::string tmp_right_wheel_name = info_.hardware_parameters["right_wheel_name"];
-  float tmp_wheel_separation = std::stod(info_.hardware_parameters["wheel_separation"]);
-  float tmp_wheel_radius = std::stod(info_.hardware_parameters["wheel_radius"]);
+  wheels_.left_wheel_.name = info_.hardware_parameters["left_wheel_name"];
+  wheels.right_wheel_.name = info_.hardware_parameters["right_wheel_name"];
+  wheels_.wheel_separation = std::stod(info_.hardware_parameters["wheel_separation"]);
+  wheels_.wheel_radius = std::stod(info_.hardware_parameters["wheel_radius"]);
 
-  // set the wheels parameters
-  wheels_.set(tmp_left_wheel_name, tmp_right_wheel_name, tmp_wheel_separation, tmp_wheel_radius);
-
+  
   for (const hardware_interface::ComponentInfo & joint : info_.joints)
   {
     // DiffBotSystem has exactly two states and one command interface on each joint
