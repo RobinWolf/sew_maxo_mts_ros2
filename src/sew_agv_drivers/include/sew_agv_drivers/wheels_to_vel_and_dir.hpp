@@ -44,15 +44,24 @@ public:
         wheel_separation_ = wheel_separation;
         wheel_radius_ = wheel_radius;
     }
-    // ###########################################################################################
-    // ########### TODO: Implement the following function correct with correct returns ###########
-    // ###########################################################################################
+    
 
-    void calculateVelocityAndDirection(double &linear_velocity, double &angular_velocity)
+    void getVelocityAndDirection(float &speed, float &x, float &y)
     {
-        // Calculate linear and angular velocities
-        linear_velocity = (right_wheel_.vel + left_wheel_.vel) * wheel_radius_ / 2.0;
-        angular_velocity = (right_wheel_.vel - left_wheel_.vel) * wheel_radius_ / wheel_separation_;
+
+        // ###########################################################################################
+        // TODO: Implement the following function correct with correct returns
+        // command vel for both wheels gets stored in left_wheel_.cmd and right_wheel_.cmd --> use this to calculate the speed, x and y (comes from the controller)
+        // state vel for both wheels gets stored in left_wheel_.vel and right_wheel_.vel --> needs to be calculated here because no info from agv?
+        // state pos for both wheels gets stored in left_wheel_.pos and right_wheel_.pos --> needs to be calculated here because no info from agv?
+        // ###########################################################################################
+
+        // dummy values for testing --> drive straight forward
+        x = 1.0;
+        y = 0.0;
+        speed = 1.0;
+
+
     }
 };
 
