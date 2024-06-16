@@ -48,8 +48,7 @@ namespace sew_agv_drivers {
     // rclcpp::Logger logger_;
     // std::chrono::time_point<std::chrono::system_clock> time_;
     
-  };
-
+    };
+  };  // namespace sew_agv_drivers
 
   #endif // SEW_AGV_HARDWARE_INTERFACE_HPP
-}  // namespace sew_agv_drivers

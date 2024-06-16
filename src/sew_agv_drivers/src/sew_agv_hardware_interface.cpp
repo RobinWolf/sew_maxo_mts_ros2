@@ -1,6 +1,7 @@
 #include "sew_agv_drivers/sew_agv_hardware_interface.hpp"
 #include "hardware_interface/types/hardware_interface_type_values.hpp"
 #include "rclcpp/rclcpp.hpp"
+
 namespace sew_agv_drivers {
     
   SewAgvHardwareInterface::~SewAgvHardwareInterface() {
@@ -200,14 +201,13 @@ namespace sew_agv_drivers {
     RCLCPP_INFO(rclcpp::get_logger("SewAgvHardwareInterface"), "Finished writing to AGV.");
 
     return hardware_interface::return_type::OK;
-  }
-
-
-
-  #include "pluginlib/class_list_macros.hpp"
-
-  PLUGINLIB_EXPORT_CLASS(
-    SewAgvHardwareInterface,
-    hardware_interface::SystemInterface
-  )
+  };
 }  // namespace sew_agv_drivers
+
+
+#include "pluginlib/class_list_macros.hpp"
+
+PLUGINLIB_EXPORT_CLASS(
+  sew_agv_drivers::SewAgvHardwareInterface,
+  hardware_interface::SystemInterface
+)
