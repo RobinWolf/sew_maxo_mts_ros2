@@ -56,30 +56,30 @@ set(THIS_PACKAGE_INCLUDE_DEPENDS
 )
 
 
-add_library(sew_agv_drivers
+add_library(sew_agv_interface_plugin
   SHARED
   src/sew_agv_hardware_interface.cpp
 )
 target_link_libraries(
-  sew_agv_drivers
+  sew_agv_interface_plugin
 )
 target_include_directories(
-  sew_agv_drivers
+  sew_agv_interface_plugin
   PRIVATE
   include
 )
 ament_target_dependencies(
-  sew_agv_drivers
+  sew_agv_interface_plugin
   ${${PROJECT_NAME}_EXPORTED_TARGETS}
   ${THIS_PACKAGE_INCLUDE_DEPENDS}
 )
 #export self written hardware interface plugin to libary
-pluginlib_export_plugin_description_file(hardware_interface sew_agv_drivers.xml)
+pluginlib_export_plugin_description_file(hardware_interface sew_agv_interface_plugin.xml)
 
 
 # add custom directories to install them while buildung
 install(
-  TARGETS sew_agv_drivers
+  TARGETS sew_agv_interface_plugin
   DESTINATION lib
 )
 
@@ -101,7 +101,7 @@ ament_export_include_directories(
   include
 )
 ament_export_libraries(
-  sew_agv_drivers
+  sew_agv_interface_plugin
 )
 
 ament_export_dependencies(
