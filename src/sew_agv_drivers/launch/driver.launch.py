@@ -46,7 +46,7 @@ def generate_launch_description():
     )
     declared_arguments.append(
         DeclareLaunchArgument(
-            "robot_ip",
+            "agv_ip",
             default_value="192.168.10.22",
             description="The IP-Adress with which the agv hardware joins the common network",
         )
@@ -61,7 +61,7 @@ def generate_launch_description():
 
     tf_prefix = LaunchConfiguration("tf_prefix")
     use_fake_hardware = LaunchConfiguration("use_fake_hardware")
-    robot_ip = LaunchConfiguration("robot_ip")
+    agv_ip = LaunchConfiguration("agv_ip")
     gernerate_ros2_control_tag = LaunchConfiguration("gernerate_ros2_control_tag")
     ros2_control_with_gazebo = LaunchConfiguration("ros2_control_with_gazebo")
     use_sim_time = LaunchConfiguration('use_sim_time')   
@@ -78,8 +78,8 @@ def generate_launch_description():
             "tf_prefix:=",
             tf_prefix,
             " ",
-            "robot_ip:=",
-            robot_ip,
+            "agv_ip:=",
+            agv_ip,
             " ",
             "use_fake_hardware:=",
             use_fake_hardware,

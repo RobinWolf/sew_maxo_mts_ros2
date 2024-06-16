@@ -164,7 +164,7 @@ def generate_launch_description():
             "standalone_gazebo:=",
             standalone_gazebo,
             " ",
-            "robot_ip:=",
+            "agv_ip:=",
             agv_ip,
             " ",
             "agv_port:=",

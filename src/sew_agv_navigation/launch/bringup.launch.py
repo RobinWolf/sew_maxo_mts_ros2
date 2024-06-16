@@ -57,7 +57,7 @@ def generate_launch_description():
     )
     declared_arguments.append(
         DeclareLaunchArgument(
-            "robot_ip",
+            "agv_ip",
             default_value='TODO',
             description="the IP the real robot can be pinged",
         )
@@ -78,7 +78,7 @@ def generate_launch_description():
     use_sim_time = LaunchConfiguration('use_sim_time')   
     generate_ros2_control_tag = LaunchConfiguration('generate_ros2_control_tag') 
     ros2_control_with_gazebo = LaunchConfiguration("ros2_control_with_gazebo")
-    robot_ip = LaunchConfiguration('robot_ip') 
+    agv_ip = LaunchConfiguration('agv_ip') 
     enable_joystick = LaunchConfiguration('enable_joystick') 
 
 
@@ -114,7 +114,7 @@ def generate_launch_description():
             condition=IfCondition(generate_ros2_control_tag),
             launch_arguments={
                 "tf_prefix": tf_prefix,
-                "robot_ip": robot_ip,
+                "agv_ip": agv_ip,
                 "generate_ros2_control_tag": generate_ros2_control_tag,
                 "ros2_control_with_gazebo": ros2_control_with_gazebo,
                 "use_sim_time": use_sim_time,
