@@ -44,9 +44,8 @@ private:
   Wheels_to_vel_and_dir wheels_;
   AgvEndpoint agv_endpoint_;
 
-  rclcpp::Logger logger_;
-
-  std::chrono::time_point<std::chrono::system_clock> time_;
+  // rclcpp::Logger logger_;
+  // std::chrono::time_point<std::chrono::system_clock> time_;
   
 };
 
