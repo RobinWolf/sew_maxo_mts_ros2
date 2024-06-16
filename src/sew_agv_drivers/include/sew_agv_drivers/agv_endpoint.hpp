@@ -105,8 +105,12 @@ public:
         connected_ = false;
     }
 
+    bool isConnected() const {
+        return connected_;
+    }
+
     // Send a control message to the AGV
-    void sendControlToAGV(float speed, int x, int y, ManualJogTxMsg::SpeedMode speed_mode = ManualJogTxMsg::SpeedMode::CREEP) {
+    void sendControlToAGV(float speed, float x, float y, ManualJogTxMsg::SpeedMode speed_mode = ManualJogTxMsg::SpeedMode::CREEP) {
         // Create and set up the control message
         ManualJogTxMsg msg;
         msg.setSpeedMode(speed_mode);
@@ -115,8 +119,7 @@ public:
 
         // Parse and set the IP address
         std::array<uint8_t, 4> ip;
-        sscanf(agv_ip_.c_str(), "%hhu.%hhu.%hhu.%hhu", &ip[0], &ip[1], &ip[2], &ip[3]);
-        msg.setIP(ip);
+        msg.setIP(parseIp(agv_ip_));
         msg.setPort(agv_port_);
 
         // Encode the message
@@ -140,51 +143,51 @@ public:
     }
 
     // Query and print the status of the AGV
-    void getStatusAGV() {
-        if (!connected_) {
-            std::cerr << "AGV is not connected" << std::endl;
-            return;
-        }
+    // void getStatusAGV() {
+    //     if (!connected_) {
+    //         std::cerr << "AGV is not connected" << std::endl;
+    //         return;
+    //     }
 
-        // Buffer to hold the received data
-        std::array<uint8_t, 54> buf;
-        sockaddr_in senderAddr {};
-        socklen_t addrLen = sizeof(senderAddr);
+    //     // Buffer to hold the received data
+    //     std::array<uint8_t, 54> buf;
+    //     sockaddr_in senderAddr {};
+    //     socklen_t addrLen = sizeof(senderAddr);
 
-        // Receive data from the AGV
-        int len = recvfrom(udpRx_, buf.data(), buf.size(), 0, reinterpret_cast<struct sockaddr*>(&senderAddr), &addrLen);
-        if (len > 0) {
-            // Decode and print the header and message data
-            AgvRxHeader header;
-            header.decode({buf.begin(), buf.begin() + 14});
+    //     // Receive data from the AGV
+    //     int len = recvfrom(udpRx_, buf.data(), buf.size(), 0, reinterpret_cast<struct sockaddr*>(&senderAddr), &addrLen);
+    //     if (len > 0) {
+    //         // Decode and print the header and message data
+    //         AgvRxHeader header;
+    //         header.decode({buf.begin(), buf.begin() + 14});
 
-            MonitorRxMsg msg;
-            msg.decode(buf);
+    //         MonitorRxMsg msg;
+    //         msg.decode(buf);
 
-            // Print AGV status
-            std::cout << "AGV Status:" << std::endl;
-            std::cout << "State: " << static_cast<int>(header.state) << std::endl;
-            std::cout << "Color: " << static_cast<int>(header.color) << std::endl;
-            std::cout << "Current Page: " << static_cast<int>(header.current_page) << std::endl;
-            std::cout << "Error: " << header.error << std::endl;
-            std::cout << "Error Code: " << header.error_code << std::endl;
+    //         // Print AGV status
+    //         std::cout << "AGV Status:" << std::endl;
+    //         std::cout << "State: " << static_cast<int>(header.state) << std::endl;
+    //         std::cout << "Color: " << static_cast<int>(header.color) << std::endl;
+    //         std::cout << "Current Page: " << static_cast<int>(header.current_page) << std::endl;
+    //         std::cout << "Error: " << header.error << std::endl;
+    //         std::cout << "Error Code: " << header.error_code << std::endl;
 
-            std::cout << "Part Data: " << msg.part_data << std::endl;
-            std::cout << "In Station: " << msg.in_station << std::endl;
-            std::cout << "In Station State: " << msg.in_station_state << std::endl;
-            std::cout << "Transponder: " << msg.transponder << std::endl;
-            std::cout << "Transponder Distance: " << msg.transponder_distance << std::endl;
-            std::cout << "V-Track: " << msg.v_track << std::endl;
-            std::cout << "V-Track Distance: " << msg.v_track_distance << std::endl;
-            std::cout << "Actual Speed: " << msg.actual_speed << std::endl;
-            std::cout << "Target Speed: " << msg.target_speed << std::endl;
-            std::cout << "Speed Limit: " << msg.speed_limit << std::endl;
-            std::cout << "Charging State: " << msg.charging_state << std::endl;
-            std::cout << "Power: " << msg.power << std::endl;
-        } else {
-            std::cerr << "Failed to receive status from AGV" << std::endl;
-        }
-    }
+    //         std::cout << "Part Data: " << msg.part_data << std::endl;
+    //         std::cout << "In Station: " << msg.in_station << std::endl;
+    //         std::cout << "In Station State: " << msg.in_station_state << std::endl;
+    //         std::cout << "Transponder: " << msg.transponder << std::endl;
+    //         std::cout << "Transponder Distance: " << msg.transponder_distance << std::endl;
+    //         std::cout << "V-Track: " << msg.v_track << std::endl;
+    //         std::cout << "V-Track Distance: " << msg.v_track_distance << std::endl;
+    //         std::cout << "Actual Speed: " << msg.actual_speed << std::endl;
+    //         std::cout << "Target Speed: " << msg.target_speed << std::endl;
+    //         std::cout << "Speed Limit: " << msg.speed_limit << std::endl;
+    //         std::cout << "Charging State: " << msg.charging_state << std::endl;
+    //         std::cout << "Power: " << msg.power << std::endl;
+    //     } else {
+    //         std::cerr << "Failed to receive status from AGV" << std::endl;
+    //     }
+    // }
 
 private:
     // Member variables for AGV connection details
