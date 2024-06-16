@@ -92,7 +92,7 @@ std::vector<hardware_interface::StateInterface> SewAgvHardwareInterface::export_
 {
   std::vector<hardware_interface::StateInterface> state_interfaces;
 
-  // link the hardware interface with the variables
+  // link the state interface of the controller with the variables of wheels_
   state_interfaces.emplace_back(hardware_interface::StateInterface(wheels_.l_wheel_.name, hardware_interface::HW_IF_VELOCITY, &wheels_.l_wheel_.vel));
   state_interfaces.emplace_back(hardware_interface::StateInterface(wheels_.l_wheel_.name, hardware_interface::HW_IF_POSITION, &wheels_.l_wheel_.pos));
   state_interfaces.emplace_back(hardware_interface::StateInterface(wheels_.r_wheel_.name, hardware_interface::HW_IF_VELOCITY, &wheels_.r_wheel_.vel));
@@ -107,6 +107,7 @@ std::vector<hardware_interface::CommandInterface> SewAgvHardwareInterface::expor
 {
   std::vector<hardware_interface::CommandInterface> command_interfaces;
   
+  // link the command interface of the controller with the variables of wheels_
   command_interfaces.emplace_back(hardware_interface::CommandInterface(wheels_.l_wheel_.name, hardware_interface::HW_IF_VELOCITY, &wheels_.l_wheel_.cmd));
   command_interfaces.emplace_back(hardware_interface::CommandInterface(wheels_.r_wheel_.name, hardware_interface::HW_IF_VELOCITY, &wheels_.r_wheel_.cmd));
 
@@ -128,10 +129,8 @@ return_type SewAgvHardwareInterface::on_activate()
   // check if connection was successful
   if (connected) {
       RCLCPP_INFO(rclcpp::get_logger("SewAgvHardwareInterface"), "Successfully connected to AGV.");
-      status_ = hardware_interface::status::STARTED;
   } else {
       RCLCPP_ERROR(rclcpp::get_logger("SewAgvHardwareInterface"), "Failed to connect to AGV.");
-      status_ = hardware_interface::status::STOPPED;
       return return_type::ERROR;
   }
 
@@ -152,19 +151,17 @@ const rclcpp_lifecycle::State & /*previous_state*/)
 
   RCLCPP_INFO(rclcpp::get_logger("SewAgvHardwareInterface"), "Successfully deactivated!");
 
-  status_ = hardware_interface::status::STOPPED;
-
   return hardware_interface::CallbackReturn::SUCCESS;
 }
 
 
 
-hardware_interface::return_type DiffBotSystemHardware::read(
+hardware_interface::return_type SewAgvHardwareInterface::read(
   const rclcpp::Time & /*time*/, const rclcpp::Duration & period)
 {
-  RCLCPP_INFO(rclcpp::get_logger("SewAgvHardwareInterface"), "Reading from AGV...");
+  RCLCPP_ERROR(rclcpp::get_logger("SewAgvHardwareInterface"), "Reading from AGV not implemented yet.");
   // #####################################################################################################
-  // TODO: Reading status from AGV using the agvEndpoint and print ros info
+  // TODO: Reading status from AGV using the agv_endpoint_ and print ros info
   // #####################################################################################################
 
   return hardware_interface::return_type::OK;
@@ -177,19 +174,20 @@ hardware_interface::return_type SewAgvHardwareInterface::write(
 {
   RCLCPP_INFO(rclcpp::get_logger("SewAgvHardwareInterface"), "Writing to AGV...");
 
-  // Connect to the AGV endpoint if not connected
-  static AgvEndpoint agvEndpoint;
-  if (!agvEndpoint.connected) {
-    if (!agvEndpoint.connect("AGV_IP", AGV_PORT, "LOCAL_IP", LOCAL_PORT)) {
-      RCLCPP_ERROR(rclcpp::get_logger("SewAgvHardwareInterface"), "Failed to connect to AGV");
-      return hardware_interface::return_type::ERROR;
+    // Verbindung zum AGV herstellen, falls noch nicht verbunden
+    if (!agv_endpoint_.isConnected()) {
+        if (!agv_endpoint_.connect("AGV_IP", AGV_PORT, "LOCAL_IP", LOCAL_PORT)) {
+            RCLCPP_ERROR(rclcpp::get_logger("SewAgvHardwareInterface"), "Fehler beim Verbinden mit dem AGV");
+            return hardware_interface::return_type::ERROR;
+        }
     }
-  }
+    float speed = 0.0;
+    float x = 0.0;
+    float y = 0.0;
+    wheels_.getVelocityAndDirection(speed, x, y);     // Calculate the speed, x and y values from the wheel velocities that are set in the diffdrive controller
 
-
-  // #####################################################################################################
-  // TODO: Write the commands to the AGV using the agvEndpoint and wheels_to_vel_and_dir
-  // #####################################################################################################
+    // Befehl an das AGV senden
+    agv_endpoint__.sendToAGV(speed, x, y);
 
   return hardware_interface::return_type::OK;
 }
