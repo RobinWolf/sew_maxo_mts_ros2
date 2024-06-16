@@ -136,7 +136,7 @@
         </collision>
     </link>
 
-    <!--right back wheel / axis shold match the rotation axis of the wheel-->
+    <!--right back wheel / axis should match the rotation axis of the wheel-->
     <joint name="${tf_prefix}wheel_right_joint" type="continuous">
         <origin rpy="0 0 -1.57079" xyz="-0.225 -0.2625 -0.48"/>
         <limit effort="100.0" velocity="3.5"/>
@@ -166,7 +166,7 @@
         </collision>
     </link>
 
-    <!--left back wheel / axis shold match the rotation axis of the wheel-->
+    <!--left back wheel / axis should match the rotation axis of the wheel-->
     <joint name="${tf_prefix}wheel_left_joint" type="continuous">
         <origin rpy="0 0 1.57079" xyz="-0.225 0.2625 -0.48"/>
         <limit effort="100.0" velocity="3.5"/>
@@ -221,10 +221,9 @@
             <geometry>
                 <mesh filename="file://$(find sew_agv_description)/meshes/visual/sew_maxo_mts_lidar.stl" scale="0.001 0.001 0.001"/>
             </geometry>
+            <material name="${tf_prefix}red"/>
         </collision>
-        <material name="${tf_prefix}red"/>
     </link>
 
-  
   </xacro:macro>
 </robot>
