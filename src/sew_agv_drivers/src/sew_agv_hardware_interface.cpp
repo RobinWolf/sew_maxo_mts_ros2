@@ -23,9 +23,9 @@ hardware_interface::CallbackReturn SewAgvHardwareInterface::on_init(const hardwa
   cfg_.local_port = std::stoi(info_.hardware_parameters["local_port"]);
   
   wheels_.left_wheel_.name = info_.hardware_parameters["left_wheel_name"];
-  wheels.right_wheel_.name = info_.hardware_parameters["right_wheel_name"];
-  wheels_.wheel_separation = std::stod(info_.hardware_parameters["wheel_separation"]);
-  wheels_.wheel_radius = std::stod(info_.hardware_parameters["wheel_radius"]);
+  wheels_.right_wheel_.name = info_.hardware_parameters["right_wheel_name"];
+  wheels_.wheel_separation_ = std::stod(info_.hardware_parameters["wheel_separation"]);
+  wheels_.wheel_radius_ = std::stod(info_.hardware_parameters["wheel_radius"]);
 
   
   for (const hardware_interface::ComponentInfo & joint : info_.joints)
@@ -88,10 +88,10 @@ std::vector<hardware_interface::StateInterface> SewAgvHardwareInterface::export_
   std::vector<hardware_interface::StateInterface> state_interfaces;
 
   // link the state interface of the controller with the variables of wheels_
-  state_interfaces.emplace_back(hardware_interface::StateInterface(wheels_.l_wheel_.name, hardware_interface::HW_IF_VELOCITY, &wheels_.l_wheel_.vel));
-  state_interfaces.emplace_back(hardware_interface::StateInterface(wheels_.l_wheel_.name, hardware_interface::HW_IF_POSITION, &wheels_.l_wheel_.pos));
-  state_interfaces.emplace_back(hardware_interface::StateInterface(wheels_.r_wheel_.name, hardware_interface::HW_IF_VELOCITY, &wheels_.r_wheel_.vel));
-  state_interfaces.emplace_back(hardware_interface::StateInterface(wheels_.r_wheel_.name, hardware_interface::HW_IF_POSITION, &wheels_.r_wheel_.pos));
+  state_interfaces.emplace_back(hardware_interface::StateInterface(wheels_.left_wheel_.name, hardware_interface::HW_IF_VELOCITY, &wheels_.left_wheel_.vel));
+  state_interfaces.emplace_back(hardware_interface::StateInterface(wheels_.left_wheel_.name, hardware_interface::HW_IF_POSITION, &wheels_.left_wheel_.pos));
+  state_interfaces.emplace_back(hardware_interface::StateInterface(wheels_.right_wheel_.name, hardware_interface::HW_IF_VELOCITY, &wheels_.right_wheel_.vel));
+  state_interfaces.emplace_back(hardware_interface::StateInterface(wheels_.right_wheel_.name, hardware_interface::HW_IF_POSITION, &wheels_.right_wheel_.pos));
 
   RCLCPP_INFO(rclcpp::get_logger("SewAgvHardwareInterface"), "Export of state interfaces to controller manager finished sucessfully");
 
@@ -103,8 +103,8 @@ std::vector<hardware_interface::CommandInterface> SewAgvHardwareInterface::expor
   std::vector<hardware_interface::CommandInterface> command_interfaces;
   
   // link the command interface of the controller with the variables of wheels_
-  command_interfaces.emplace_back(hardware_interface::CommandInterface(wheels_.l_wheel_.name, hardware_interface::HW_IF_VELOCITY, &wheels_.l_wheel_.cmd));
-  command_interfaces.emplace_back(hardware_interface::CommandInterface(wheels_.r_wheel_.name, hardware_interface::HW_IF_VELOCITY, &wheels_.r_wheel_.cmd));
+  command_interfaces.emplace_back(hardware_interface::CommandInterface(wheels_.left_wheel_.name, hardware_interface::HW_IF_VELOCITY, &wheels_.left_wheel_.cmd));
+  command_interfaces.emplace_back(hardware_interface::CommandInterface(wheels_.right_wheel_.name, hardware_interface::HW_IF_VELOCITY, &wheels_.right_wheel_.cmd));
 
 
   RCLCPP_INFO(rclcpp::get_logger("SewAgvHardwareInterface"), "Export of command interfaces to controller manager finished sucessfully");
@@ -182,7 +182,7 @@ hardware_interface::return_type SewAgvHardwareInterface::write(
     wheels_.getVelocityAndDirection(speed, x, y);     // Calculate the speed, x and y values from the wheel velocities that are set in the diffdrive controller
 
     // Befehl an das AGV senden
-    agv_endpoint__.sendToAGV(speed, x, y);
+    agv_endpoint_.sendToAGV(speed, x, y);
 
   return hardware_interface::return_type::OK;
 }
