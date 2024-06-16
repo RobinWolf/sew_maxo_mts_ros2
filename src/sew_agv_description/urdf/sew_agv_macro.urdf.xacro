@@ -17,7 +17,14 @@
     standalone_gazebo:=false
     ros2_control_with_gazebo:=false
     use_fake_hardware:=false
-    robot_ip"
+    agv_ip
+    agv_port
+    local_ip
+    local_port
+    left_wheel_name
+    right_wheel_name
+    wheel_separation
+    wheel_radius"
   >
 
 <!--#######################################################################################################################################-->
@@ -29,10 +36,17 @@
         <xacro:include filename="$(find sew_agv_description)/urdf/sew_agv_ros2_control.urdf.xacro" />
         <!-- ros2 control instance -->
         <xacro:sew_agv_ros2_control
-          ros2_control_with_gazebo="${ros2_control_with_gazebo}"
-          use_fake_hardware="${use_fake_hardware}"
-          tf_prefix="${tf_prefix}"
-          agv_ip="${robot_ip}"
+            ros2_control_with_gazebo="${ros2_control_with_gazebo}"
+            use_fake_hardware="${use_fake_hardware}"
+            tf_prefix="${tf_prefix}"
+            agv_ip="${agv_ip}"
+            agv_port="${agv_port}"
+            local_ip="${local_ip}"
+            local_port="${local_port}"
+            left_wheel_name="${left_wheel_name}"
+            right_wheel_name="${right_wheel_name}"
+            wheel_separation="${wheel_separation}"
+            wheel_radius="${wheel_radius}"
         />
     </xacro:if>
 
