@@ -33,7 +33,7 @@ def generate_launch_description():
     )
     declared_arguments.append(
         DeclareLaunchArgument(
-            "gernerate_ros2_control_tag",
+            "generate_ros2_control_tag",
             default_value="true",
             description="Generate the ros2_control tag in the urdf file, if false the tag has to be added manually to the urdf file.",
         )
@@ -127,7 +127,7 @@ def generate_launch_description():
     tf_prefix = LaunchConfiguration("tf_prefix")
     use_fake_hardware = LaunchConfiguration("use_fake_hardware")
     rviz = LaunchConfiguration("rviz")
-    gernerate_ros2_control_tag = LaunchConfiguration("gernerate_ros2_control_tag")
+    generate_ros2_control_tag = LaunchConfiguration("generate_ros2_control_tag")
     use_sim_time = LaunchConfiguration('use_sim_time')
     ros2_control_with_gazebo = LaunchConfiguration("ros2_control_with_gazebo")
     standalone_gazebo = LaunchConfiguration("standalone_gazebo")
@@ -155,8 +155,8 @@ def generate_launch_description():
             "use_fake_hardware:=",
             use_fake_hardware,
              " ",
-            "gernerate_ros2_control_tag:=",
-            gernerate_ros2_control_tag,
+            "generate_ros2_control_tag:=",
+            generate_ros2_control_tag,
             " ",
             "ros2_control_with_gazebo:=",
             ros2_control_with_gazebo,
