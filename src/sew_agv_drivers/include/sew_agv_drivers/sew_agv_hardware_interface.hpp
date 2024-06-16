@@ -25,7 +25,7 @@ public:
 
   hardware_interface::CallbackReturn on_init(const hardware_interface::HardwareInfo & info) override; //declares a member function named on_init. It is declared as an override of a function in the base class
 
-  hardware_interface::CallbackReturn on_configure(const   rclcpp_lifecycle::State& previous_state) override;
+  // hardware_interface::CallbackReturn on_configure(const   rclcpp_lifecycle::State& previous_state) override;
 
   std::vector<hardware_interface::StateInterface> export_state_interfaces() override;
 
