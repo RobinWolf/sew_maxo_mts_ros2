@@ -117,8 +117,7 @@ public:
         msg.setSpeed(speed);
         msg.setDirection(x, y);
 
-        // Parse and set the IP address
-        std::array<uint8_t, 4> ip;
+        // Parse and set the IP address and port
         msg.setIP(parseIp(agv_ip_));
         msg.setPort(agv_port_);
 
