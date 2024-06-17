@@ -41,7 +41,7 @@
                 <!--unless no simulation is required, use real hardware-->
                 <xacro:unless value="${use_fake_hardware}">
                     <xacro:unless value="${ros2_control_with_gazebo}">
-                        <plugin>sew_agv_interface_plugin/SewAgvHardwareInterface</plugin>    <!--call our plugin for interfacing with AGV (this is the Driver!)-->
+                        <plugin>sew_agv_drivers/SewAgvHardwareInterface</plugin>    <!--call our plugin for interfacing with AGV (this is the Driver!)-->
                         <param name="tf_prefix">${tf_prefix}</param>
                         <param name="agv_ip">${agv_ip}</param>
                         <param name="agv_port">{agv_port}</param>
