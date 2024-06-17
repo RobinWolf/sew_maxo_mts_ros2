@@ -1,7 +1,8 @@
 #ifndef SEW_AGV_HARDWARE_INTERFACE_HPP
 #define SEW_AGV_HARDWARE_INTERFACE_HPP
 
-#include <cstring>
+//#include <cstring>
+#include <string>
 #include "rclcpp/rclcpp.hpp"
 
 //#include "hardware_interface/base_interface.hpp"
@@ -10,6 +11,7 @@
 #include "hardware_interface/hardware_info.hpp"
 #include "hardware_interface/types/hardware_interface_return_values.hpp"
 //#include "hardware_interface/types/hardware_interface_status_values.hpp"
+#include "hardware_interface/types/hardware_interface_type_values.hpp"
 
 #include "sew_agv_drivers/agv_endpoint.hpp"
 #include "sew_agv_drivers/config.h"

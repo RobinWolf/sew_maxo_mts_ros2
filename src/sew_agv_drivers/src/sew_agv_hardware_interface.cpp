@@ -1,6 +1,6 @@
 #include "sew_agv_drivers/sew_agv_hardware_interface.hpp"
-#include "hardware_interface/types/hardware_interface_type_values.hpp"
-#include "rclcpp/rclcpp.hpp"
+
+
 
 namespace sew_agv_drivers {
     
@@ -18,7 +18,7 @@ namespace sew_agv_drivers {
     {
       return hardware_interface::CallbackReturn::ERROR;
     }
-    
+
     // read parameters from the ros2_control.xacro file
     cfg_.agv_ip = info_.hardware_parameters["agv_ip"];
     cfg_.agv_port = std::stoi(info_.hardware_parameters["agv_port"]);
