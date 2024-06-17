@@ -70,28 +70,28 @@ def generate_launch_description():
     declared_arguments.append(
         DeclareLaunchArgument(
             "agv_ip",
-            default_value="192.168.10.22",  #agv_link PLC IP
+            default_value="192.168.10.04",  #agv_link PLC IP
             description="The IP address of the AGV",
         )
     )  
     declared_arguments.append(
         DeclareLaunchArgument(
             "agv_port",
-            default_value="0",  #agv_link PLC IP
+            default_value="11000",  #agv_link PLC IP
             description="The port number of the AGV.",
         )
     )  
     declared_arguments.append(
         DeclareLaunchArgument(
             "local_ip",
-            default_value="0.0.0.0",
+            default_value="192.168.10.222",
             description="The local IP address to bind the UDP socket",
         )
     )  
     declared_arguments.append(
         DeclareLaunchArgument(
             "local_port",
-            default_value="0",
+            default_value="11001",
             description="The local port number to bind the UDP socket.",
         )
     )  
