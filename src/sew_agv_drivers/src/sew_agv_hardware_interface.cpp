@@ -137,7 +137,8 @@ namespace sew_agv_drivers {
     RCLCPP_INFO(rclcpp::get_logger("SewAgvHardwareInterface"), "Activating ...");
 
     // Connect to AGV
-    bool connected = agv_endpoint_.connect(cfg_.agv_ip, cfg_.agv_port, cfg_.local_ip, cfg_.local_port);
+    // bool connected = agv_endpoint_.connect(cfg_.agv_ip, cfg_.agv_port, cfg_.local_ip, cfg_.local_port);
+    bool connected = true; // TODO #################################################################################################################################################
 
     // check if connection was successful
     if (connected) {
@@ -174,6 +175,12 @@ namespace sew_agv_drivers {
     // TODO: Reading status from AGV using the agv_endpoint_ and print ros info
     // #####################################################################################################
 
+    // write dummy values
+    wheels_.left_wheel_.vel= 0.0;
+    wheels_.left_wheel_.pos= 0.0;
+    wheels_.right_wheel_.vel= 0.0;
+    wheels_.right_wheel_.pos= 0.0;
+
     return hardware_interface::return_type::OK;
   }
 
@@ -184,19 +191,19 @@ namespace sew_agv_drivers {
   {
     RCLCPP_INFO(rclcpp::get_logger("SewAgvHardwareInterface"), "Writing to AGV...");
 
-    // Check if AGV is connected
-    if (!agv_endpoint_.isConnected()) {
-        RCLCPP_ERROR(rclcpp::get_logger("SewAgvHardwareInterface"), "AGV not connected!");
-        return hardware_interface::return_type::ERROR;
-    }
+    // // Check if AGV is connected
+    // if (!agv_endpoint_.isConnected()) {
+    //     RCLCPP_ERROR(rclcpp::get_logger("SewAgvHardwareInterface"), "AGV not connected!");
+    //     return hardware_interface::return_type::ERROR;
+    // }
     
-    float speed = 0.0;
-    float x = 0.0;
-    float y = 0.0;
-    wheels_.getVelocityAndDirection(speed, x, y);     // Calculate the speed, x and y values from the wheel velocities that are set in the diffdrive controller
+    // float speed = 0.0;
+    // float x = 0.0;
+    // float y = 0.0;
+    // wheels_.getVelocityAndDirection(speed, x, y);     // Calculate the speed, x and y values from the wheel velocities that are set in the diffdrive controller
 
-    // Send command to agv
-    agv_endpoint_.sendControlToAGV(speed, x, y);
+    // // Send command to agv
+    // agv_endpoint_.sendControlToAGV(speed, x, y);
 
     RCLCPP_INFO(rclcpp::get_logger("SewAgvHardwareInterface"), "Finished writing to AGV.");
 
