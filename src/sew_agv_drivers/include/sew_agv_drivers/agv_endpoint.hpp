@@ -58,8 +58,8 @@ public:
 
         // add timeout for receiving data to dont block the programm
         struct timeval timeout;
-        timeout.tv_sec = 0;  // Timeout in Sekunden
-        timeout.tv_usec = 500; // Timeout in Mikrosekunden (hier 0 für keine zusätzliche Wartezeit)
+        timeout.tv_sec =0;  // Timeout in Sekunden
+        timeout.tv_usec = 500000; // Timeout in Mikrosekunden
         setsockopt(udpRx_, SOL_SOCKET, SO_RCVTIMEO, &timeout, sizeof(timeout));
 
 
@@ -191,7 +191,7 @@ public:
     bool getStatusAGV() {
         // std::cout << "\n(AGVEndpoint) getStatusAGV():" << std::endl;
         if (!connected_) {
-            std::cerr << "AGV is not connected" << std::endl;
+            std::cerr << "AGVEndpoint) AGV is not connected" << std::endl;
             return false;
         }
 
@@ -200,12 +200,11 @@ public:
         sockaddr_in senderAddr {};
         socklen_t addrLen = sizeof(senderAddr);
 
-        std::cout << "Try to recive data" << std::endl;
-
+        std::cout << "(AGVEndpoint) Try to recive data" << std::endl;
         // Receive data from the AGV
         int len = recvfrom(udpRx_, buf.data(), buf.size(), 0, reinterpret_cast<struct sockaddr*>(&senderAddr), &addrLen);
-        std::cout << "Data recived" << std::endl;
         if (len > 0) {
+            std::cerr << "(AGVEndpoint) Received status from AGV" << std::endl;
             handleRx(std::vector<uint8_t>(buf.begin(), buf.begin() + len));
             // Decode and print the header and message data
             AgvRxHeader header;
