@@ -1,18 +1,20 @@
 from launch import LaunchDescription
-from launch.actions import DeclareLaunchArgument, RegisterEventHandler
+from launch.actions import DeclareLaunchArgument, RegisterEventHandler, IncludeLaunchDescription
 from launch.event_handlers import OnProcessExit
 from launch.substitutions import Command, FindExecutable, PathJoinSubstitution, LaunchConfiguration
 
 from launch_ros.actions import Node
 from launch_ros.substitutions import FindPackageShare
 from launch_ros.descriptions import ParameterValue
-from launch.conditions import IfCondition
+from launch.conditions import IfCondition, LaunchConfigurationEquals
+from launch.launch_description_sources import PythonLaunchDescriptionSource
 
 
 def generate_launch_description():
 #define the packages for driver and description
     description_package = "sew_agv_description"
     driver_package = "sew_agv_drivers"
+    navigation_package = "sew_agv_navigation"
 
 #declare launch arguments (can be passed in the command line while launching)
     declared_arguments = []
@@ -123,6 +125,13 @@ def generate_launch_description():
             description="Wheel radius of the agv.",
         )
     )  
+    declared_arguments.append(
+        DeclareLaunchArgument(
+            "joystick",
+            default_value="true",
+            description="Launch joystick launchfile to controll the agv with a joystick.",
+        )
+    ) 
 
     tf_prefix = LaunchConfiguration("tf_prefix")
     use_fake_hardware = LaunchConfiguration("use_fake_hardware")
@@ -139,7 +148,7 @@ def generate_launch_description():
     right_wheel_name = LaunchConfiguration("right_wheel_name")
     wheel_separation = LaunchConfiguration("wheel_separation")
     wheel_radius = LaunchConfiguration("wheel_radius")
-
+    joystick = LaunchConfiguration("joystick")
 
 
 #define the robot description content
@@ -234,6 +243,11 @@ def generate_launch_description():
         arguments=["diffbot_base_controller", "--controller-manager", "/controller_manager"],
     )
 
+    # Include des Joystick Launch-Files
+    joystick_launch = IncludeLaunchDescription(
+        PythonLaunchDescriptionSource(PathJoinSubstitution([FindPackageShare(navigation_package), "launch", "joystick.launch.py"])),
+        condition=IfCondition(joystick)
+    )
 
     # Delay rviz start after `joint_state_broadcaster`
     delay_rviz_after_joint_state_broadcaster_spawner = RegisterEventHandler(
@@ -256,6 +270,7 @@ def generate_launch_description():
         delay_rviz_after_joint_state_broadcaster_spawner,
         delay_robot_controller_spawner_after_joint_state_broadcaster_spawner,
         robot_state_pub_node,
+        joystick_launch,
     ]
 
     return LaunchDescription(declared_arguments + nodes_to_start)
