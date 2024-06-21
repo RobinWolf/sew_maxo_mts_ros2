@@ -56,6 +56,13 @@ public:
             return false;
         }
 
+        // add timeout for receiving data to dont block the programm
+        struct timeval timeout;
+        timeout.tv_sec = 0;  // Timeout in Sekunden
+        timeout.tv_usec = 500; // Timeout in Mikrosekunden (hier 0 für keine zusätzliche Wartezeit)
+        setsockopt(udpRx_, SOL_SOCKET, SO_RCVTIMEO, &timeout, sizeof(timeout));
+
+
         // std::cout << "(AGVEndpoint) Set up the local address structure "<< std::endl;
         // Set up the local address structure
         sockaddr_in localAddr {};
