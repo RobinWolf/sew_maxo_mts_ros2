@@ -54,5 +54,8 @@ ros2 launch sew_agv_drivers launch_agv.launch.py
 
 
 
-## TODOs 
-- 
+## TODOs/ aktueller Stand Hardware Interface
+- Joystick einbilden --> funktioniert, in cmd variable wird Wert eingetragen, an HW interface wird bisher nur dummy Wert übergeben
+- connection funktioniert jetzt, wenn Ethernetanschluss entsprechend konfiguriert wird (siehe readme)
+- state vom agv wird am anfang ausgelesen (ersten werte sinnvoll, hintere werte (batteriestand, ...) haben komische werte) --> funktioniert nur ein paar mal, dann nichtmehr
+- dummy cmds an agv zu senden funktioniert noch nicht (keine Fehler). Checken wie die Daten genau gesendet werden und ob das so richtig ist
