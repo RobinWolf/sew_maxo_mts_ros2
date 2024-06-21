@@ -170,18 +170,27 @@ namespace sew_agv_drivers {
   hardware_interface::return_type SewAgvHardwareInterface::read(
     const rclcpp::Time & /*time*/, const rclcpp::Duration & period)
   {
-    RCLCPP_ERROR(rclcpp::get_logger("SewAgvHardwareInterface"), "Reading from AGV not implemented yet.");
+    //RCLCPP_ERROR(rclcpp::get_logger("SewAgvHardwareInterface"), "Reading from AGV not implemented yet.");
     // #####################################################################################################
     // TODO: Reading status from AGV using the agv_endpoint_ and print ros info
     // #####################################################################################################
-
-    // write dummy values
-    wheels_.left_wheel_.vel= 0.0;
-    wheels_.left_wheel_.pos= 0.0;
-    wheels_.right_wheel_.vel= 0.0;
-    wheels_.right_wheel_.pos= 0.0;
-
-    return hardware_interface::return_type::OK;
+    RCLCPP_INFO(rclcpp::get_logger("SewAgvHardwareInterface"), "Reading from AGV");
+    if(agv_endpoint_.getStatusAGV())
+    if(true)
+    {
+        RCLCPP_INFO(rclcpp::get_logger("SewAgvHardwareInterface"), "Successfully read from AGV.");
+        // write dummy values
+        wheels_.left_wheel_.vel= 0.0;
+        wheels_.left_wheel_.pos= 0.0;
+        wheels_.right_wheel_.vel= 0.0;
+        wheels_.right_wheel_.pos= 0.0;
+        return hardware_interface::return_type::OK;
+    }
+    else
+    {
+        RCLCPP_ERROR(rclcpp::get_logger("SewAgvHardwareInterface"), "Failed to read from AGV.");
+        return hardware_interface::return_type::ERROR;
+    }    
   }
 
 
@@ -203,11 +212,16 @@ namespace sew_agv_drivers {
     wheels_.getVelocityAndDirection(speed, x, y);     // Calculate the speed, x and y values from the wheel velocities that are set in the diffdrive controller
 
     // Send command to agv
-    agv_endpoint_.sendControlToAGV(speed, x, y);
-
-    RCLCPP_INFO(rclcpp::get_logger("SewAgvHardwareInterface"), "Finished writing to AGV.");
-
-    return hardware_interface::return_type::OK;
+    if(agv_endpoint_.sendControlToAGV(speed, x, y))
+    {
+        RCLCPP_INFO(rclcpp::get_logger("SewAgvHardwareInterface"), "Successfully sent control to AGV.");
+        return hardware_interface::return_type::OK;
+    }
+    else
+    {
+        RCLCPP_ERROR(rclcpp::get_logger("SewAgvHardwareInterface"), "Failed to send control to AGV.");
+        return hardware_interface::return_type::ERROR;
+    }    
   };
 }  // namespace sew_agv_drivers
 
