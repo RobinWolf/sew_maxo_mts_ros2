@@ -2,6 +2,7 @@
 #define DIFFDRIVE_WHEELS_TO_VEL_AND_DIR_H
 
 #include <string>
+#include <iostream>
 #include <cmath>
 
 class Wheel
@@ -57,11 +58,22 @@ public:
         // ###########################################################################################
 
         // dummy values for testing --> drive straight forward
-        x = 1.0;
+        x = 10.0;
         y = 0.0;
-        speed = 1.0;
+        speed = 50.0;
 
+        // std::cout << "Write dummy direction and speed of: " << std::endl;
+        // std::cout << "x: " << x << std::endl;
+        // std::cout << "y: " << y << std::endl;
+        // std::cout << "speed: " << speed << std::endl;
 
+        // std::cout << "Actual values:" << std::endl;
+        // std::cout << "left cmd: " << left_wheel_.cmd << std::endl;
+        // std::cout << "left pos: " << left_wheel_.pos << std::endl;
+        // std::cout << "left vel: " << left_wheel_.vel << std::endl;
+        // std::cout << "right cmd: " << right_wheel_.cmd << std::endl;
+        // std::cout << "right pos: " << right_wheel_.pos << std::endl;
+        // std::cout << "right vel: " << right_wheel_.vel << std::endl;
     }
 };
 
