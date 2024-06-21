@@ -30,5 +30,29 @@ ros2 launch sew_agv_navigation bringup.launch.py
 ros2 launch sew_agv_navigation navigation.launch.py launch_rviz:=true
 ```
 
+
+
+
+
+
+## Hardware Interface
+### Setup connection to AGV:
+```
+sudo ip addr add 192.168.10.222/24 dev enx9cebe8ea463d
+sudo ip addr show enx9cebe8ea463d
+```
+Here `enx9cebe8ea463d` is the Ethernet interface connected to your network. To find out type: `ip addr show`. Something like this shows up:
+```
+4: enx9cebe8ea463d: <BROADCAST,MULTICAST,UP,LOWER_UP> mtu 1500 qdisc fq_codel state UP group default qlen 1000
+    link/ether 9c:eb:e8:ea:46:3d brd ff:ff:ff:ff:ff:ff
+```
+
+### Launch hardware interface
+```
+ros2 launch sew_agv_drivers launch_agv.launch.py 
+```
+
+
+
 ## TODOs 
 - 
