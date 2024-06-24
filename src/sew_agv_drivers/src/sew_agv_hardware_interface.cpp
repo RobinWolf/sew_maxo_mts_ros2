@@ -174,7 +174,18 @@ namespace sew_agv_drivers {
     // TODO: Reading status from AGV using the agv_endpoint_ and print ros info
     // #####################################################################################################
     RCLCPP_INFO(rclcpp::get_logger("SewAgvHardwareInterface"), "Reading from AGV");
-    if(agv_endpoint_.getStatusAGV())
+
+    // testing without status msg from agv
+    // ##### from here
+    wheels_.left_wheel_.vel= 0.0;
+    wheels_.left_wheel_.pos= 0.0;
+    wheels_.right_wheel_.vel= 0.0;
+    wheels_.right_wheel_.pos= 0.0;
+    return hardware_interface::return_type::OK;
+    // ##### to here --> remove this block after testing
+
+
+    /*if(agv_endpoint_.getStatusAGV())
     {
         RCLCPP_INFO(rclcpp::get_logger("SewAgvHardwareInterface"), "Successfully read from AGV.");
         // write dummy values
@@ -191,7 +202,7 @@ namespace sew_agv_drivers {
 
         RCLCPP_WARN(rclcpp::get_logger("SewAgvHardwareInterface"), "Failed to read from AGV.");
         return hardware_interface::return_type::OK;
-    }    
+    }    */
   }
 
 
