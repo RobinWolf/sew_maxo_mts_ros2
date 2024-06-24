@@ -72,7 +72,7 @@ def generate_launch_description():
     declared_arguments.append(
         DeclareLaunchArgument(
             "agv_ip",
-            default_value="192.168.10.04",  #agv_link PLC IP
+            default_value="192.168.10.4",  #agv_link PLC IP
             description="The IP address of the AGV",
         )
     )  
