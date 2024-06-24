@@ -59,3 +59,4 @@ ros2 launch sew_agv_drivers launch_agv.launch.py
 - connection funktioniert jetzt, wenn Ethernetanschluss entsprechend konfiguriert wird (siehe readme)
 - state vom agv wird am anfang ausgelesen (ersten werte sinnvoll, hintere werte (batteriestand, ...) haben komische werte) --> funktioniert nur ein paar mal, dann nichtmehr
 - dummy cmds an agv senden: keine Fehler, 72 Bytes werden gesendet, Agv reagiert nicht. Checken wie die Daten vor dem senden encodiert werden und ob das so richtig ist
+- Frequenz lesen schreiben prüfen
