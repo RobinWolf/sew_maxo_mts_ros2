@@ -59,7 +59,7 @@ public:
         // add timeout for receiving data to dont block the programm
         struct timeval timeout;
         timeout.tv_sec =0;  // Timeout in Sekunden
-        timeout.tv_usec = 500000; // Timeout in Mikrosekunden
+        timeout.tv_usec = 200000; // Timeout in Mikrosekunden
         setsockopt(udpRx_, SOL_SOCKET, SO_RCVTIMEO, &timeout, sizeof(timeout));
 
 
