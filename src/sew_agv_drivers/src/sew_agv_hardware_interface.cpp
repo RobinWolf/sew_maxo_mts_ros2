@@ -176,7 +176,6 @@ namespace sew_agv_drivers {
     // #####################################################################################################
     RCLCPP_INFO(rclcpp::get_logger("SewAgvHardwareInterface"), "Reading from AGV");
     if(agv_endpoint_.getStatusAGV())
-    if(true)
     {
         RCLCPP_INFO(rclcpp::get_logger("SewAgvHardwareInterface"), "Successfully read from AGV.");
         // write dummy values
