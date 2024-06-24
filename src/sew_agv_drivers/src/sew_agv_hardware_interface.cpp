@@ -138,7 +138,6 @@ namespace sew_agv_drivers {
 
     // Connect to AGV
     bool connected = agv_endpoint_.connect(cfg_.agv_ip, cfg_.agv_port, cfg_.local_ip, cfg_.local_port);
-    //bool connected = true; // TODO #################################################################################################################################################
 
     // check if connection was successful
     if (connected) {
@@ -187,8 +186,11 @@ namespace sew_agv_drivers {
     }
     else
     {
-        RCLCPP_ERROR(rclcpp::get_logger("SewAgvHardwareInterface"), "Failed to read from AGV.");
-        return hardware_interface::return_type::ERROR;
+        // RCLCPP_ERROR(rclcpp::get_logger("SewAgvHardwareInterface"), "Failed to read from AGV.");
+        // return hardware_interface::return_type::ERROR;
+
+        RCLCPP_WARN(rclcpp::get_logger("SewAgvHardwareInterface"), "Failed to read from AGV.");
+        return hardware_interface::return_type::OK;
     }    
   }
 
