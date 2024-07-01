@@ -142,10 +142,12 @@ public:
     // Send a control message to the AGV
     bool sendControlToAGV(float speed, float x, float y, ManualJogTxMsg::SpeedMode speed_mode = ManualJogTxMsg::SpeedMode::RAPID) {
         // std::cout << "\n(AGVEndpoint) sendControlToAGV()" << std::endl;
-        if (!connected_) {
-            std::cerr << "AGV is not connected" << std::endl;
-            return false;
-        }
+
+        // Check if the AGV is connected --> not needed because the function is only called if the AGV is connected
+        // if (!connected_) {
+        //     std::cerr << "AGV is not connected" << std::endl;
+        //     return false;
+        // }
       
         // Create and set up the control message
         ManualJogTxMsg msg;
@@ -157,13 +159,13 @@ public:
         msg.setIP(parseIp(agv_ip_));
         msg.setPort(agv_port_);
 
-        // std::cout << "(AGVEndpoint) Message Data:" << std::endl;
-        // std::cout << "(AGVEndpoint) Speed Mode: " << static_cast<int>(speed_mode) << std::endl;
-        // std::cout << "(AGVEndpoint) Speed: " << speed << std::endl;
-        // std::cout << "(AGVEndpoint) Direction X: " << x << std::endl;
-        // std::cout << "(AGVEndpoint) Direction Y: " << y << std::endl;
-        // std::cout << "(AGVEndpoint) IP Address: " << agv_ip_ << std::endl;
-        // std::cout << "(AGVEndpoint) Port: " << agv_port_ << std::endl;
+        std::cout << "(AGVEndpoint) Message Data:" << std::endl;
+        std::cout << "(AGVEndpoint) Speed Mode: " << static_cast<int>(speed_mode) << std::endl;
+        std::cout << "(AGVEndpoint) Speed: " << speed << std::endl;
+        std::cout << "(AGVEndpoint) Direction X: " << x << std::endl;
+        std::cout << "(AGVEndpoint) Direction Y: " << y << std::endl;
+        std::cout << "(AGVEndpoint) IP Address: " << agv_ip_ << std::endl;
+        std::cout << "(AGVEndpoint) Port: " << agv_port_ << std::endl;
 
         // Encode the message
         std::vector<uint8_t> encoded_msg = msg.encode();
@@ -179,12 +181,13 @@ public:
         ssize_t sent_bytes = sendto(udpTx_, encoded_msg.data(), encoded_msg.size(), 0,
                                     (struct sockaddr*)&server_addr, sizeof(server_addr));
         if (sent_bytes < 0) {
-            perror("sendto");
+            perror("sendto error");
             return false;
-        } else {
-            std::cout << "(AGVEndpoint) Sent " << sent_bytes << " bytes to " << agv_ip_ << ":" << agv_port_ << std::endl;
-            return true;
-        }
+        } 
+        // else {
+        //     std::cout << "(AGVEndpoint) Sent " << sent_bytes << " bytes to " << agv_ip_ << ":" << agv_port_ << std::endl;
+        //     return true;
+        // }
     }
 
     // Query and print the status of the AGV
