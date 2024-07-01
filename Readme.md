@@ -59,4 +59,9 @@ ros2 launch sew_agv_drivers launch_agv.launch.py
 - connection funktioniert jetzt, wenn Ethernetanschluss entsprechend konfiguriert wird (siehe readme)
 - state vom agv wird am anfang ausgelesen (ersten werte sinnvoll, hintere werte (batteriestand, ...) haben komische werte) --> funktioniert nur ein paar mal, dann nichtmehr
 - dummy cmds an agv senden: keine Fehler, 72 Bytes werden gesendet, Agv reagiert nicht. Checken wie die Daten vor dem senden encodiert werden und ob das so richtig ist
-- Frequenz lesen schreiben prüfen
+
+01.07.2024
+- AGV mit dummy x und y direct aus hardare interface write funktioniert (aber erst ab controller manager update rate von 1000)
+- TODO: Mit controller und richtigen werten testen
+- TODO: Status richtig lesen
+- TODO: pos und vel für stateinterface richtig berechnen (oder kann man state interface weg lassen?)
