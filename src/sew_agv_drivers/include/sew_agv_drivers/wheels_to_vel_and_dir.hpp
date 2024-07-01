@@ -5,23 +5,12 @@
 #include <iostream>
 #include <cmath>
 
-class Wheel
+struct Wheel
 {
-public:
     std::string name = "";
     double cmd = 0;
     double pos = 0;
     double vel = 0;
-
-    Wheel()
-    {
-        // Default constructor
-    }
-
-    // void setName(const std::string &wheel_name)
-    // {
-    //     name = wheel_name;
-    // }
 };
 
 class Wheels_to_vel_and_dir
@@ -58,22 +47,37 @@ public:
         // ###########################################################################################
 
         // dummy values for testing --> drive straight forward
-        x = 10.0;
-        y = 0.0;
-        speed = 50.0;
+        // x = 1.0;            // right
+        // y = 0.0;           // forward
+        // speed = 100.0;       // speed between 0 and 100
 
-        std::cout << "Write dummy direction and speed of: " << std::endl;
+        // Radgeschwindigkeit berechnen (v_left und v_right)
+        double v_left = left_wheel_.cmd * wheel_radius_;
+        double v_right = right_wheel_.cmd * wheel_radius_;
+
+        // Vorwärtsgeschwindigkeit (v) und Drehgeschwindigkeit (omega) berechnen
+        double v = (v_left + v_right) / 2.0;
+        double omega = (v_right - v_left) / wheel_separation_;
+
+        // Da wir nur die x- und y-Komponenten der Geschwindigkeit berechnen wollen,
+        // nehmen wir an, dass der Roboter in Richtung seiner Vorwärtsachse bewegt wird.
+        // Daher sind die Geschwindigkeiten in x- und y-Richtungen:
+        y = v * cos(omega)*10; // Geschwindigkeit nach vorne
+        x = v * sin(omega)*10; // Geschwindigkeit nach rechts
+
+        // Setze die Geschwindigkeit als Betrag der Vorwärtsgeschwindigkeit
+        // speed = std::sqrt(x * x + y * y);
+        speed = 100;
+
+        std::cout << "Übergebene Werte:" << std::endl;
+        std::cout << "left cmd: " << left_wheel_.cmd << std::endl;
+        std::cout << "right cmd: " << right_wheel_.cmd << std::endl;
+
+        // Ausgabe zur Überprüfung der Werte
+        std::cout << "Berechnete Richtung und Geschwindigkeit:" << std::endl;
         std::cout << "x: " << x << std::endl;
         std::cout << "y: " << y << std::endl;
         std::cout << "speed: " << speed << std::endl;
-
-        std::cout << "Actual values:" << std::endl;
-        std::cout << "left cmd: " << left_wheel_.cmd << std::endl;
-        std::cout << "left pos: " << left_wheel_.pos << std::endl;
-        std::cout << "left vel: " << left_wheel_.vel << std::endl;
-        std::cout << "right cmd: " << right_wheel_.cmd << std::endl;
-        std::cout << "right pos: " << right_wheel_.pos << std::endl;
-        std::cout << "right vel: " << right_wheel_.vel << std::endl;
     }
 };
 
