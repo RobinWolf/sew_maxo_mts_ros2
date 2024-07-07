@@ -169,37 +169,22 @@ namespace sew_agv_drivers {
   hardware_interface::return_type SewAgvHardwareInterface::read(
     const rclcpp::Time & /*time*/, const rclcpp::Duration & period)
   {
-    //RCLCPP_ERROR(rclcpp::get_logger("SewAgvHardwareInterface"), "Reading from AGV not implemented yet.");
+    RCLCPP_INFO(rclcpp::get_logger("SewAgvHardwareInterface"), "Reading from AGV");
+
+    // testing without status msg from agv --> just return OK
+    return hardware_interface::return_type::OK;
+
+
     // #####################################################################################################
     // TODO: Reading status from AGV using the agv_endpoint_ and print ros info
     // #####################################################################################################
-    RCLCPP_INFO(rclcpp::get_logger("SewAgvHardwareInterface"), "Reading from AGV");
-
-    // testing without status msg from agv
-    // ##### from here
-    wheels_.left_wheel_.vel= 0.0;
-    wheels_.left_wheel_.pos= 0.0;
-    wheels_.right_wheel_.vel= 0.0;
-    wheels_.right_wheel_.pos= 0.0;
-    return hardware_interface::return_type::OK;
-    // ##### to here --> remove this block after testing
-
-
     /*if(agv_endpoint_.getStatusAGV())
     {
         RCLCPP_INFO(rclcpp::get_logger("SewAgvHardwareInterface"), "Successfully read from AGV.");
-        // write dummy values
-        wheels_.left_wheel_.vel= 0.0;
-        wheels_.left_wheel_.pos= 0.0;
-        wheels_.right_wheel_.vel= 0.0;
-        wheels_.right_wheel_.pos= 0.0;
         return hardware_interface::return_type::OK;
     }
     else
     {
-        // RCLCPP_ERROR(rclcpp::get_logger("SewAgvHardwareInterface"), "Failed to read from AGV.");
-        // return hardware_interface::return_type::ERROR;
-
         RCLCPP_WARN(rclcpp::get_logger("SewAgvHardwareInterface"), "Failed to read from AGV.");
         return hardware_interface::return_type::OK;
     }    */
