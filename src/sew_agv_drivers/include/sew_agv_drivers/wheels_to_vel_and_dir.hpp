@@ -21,63 +21,36 @@ public:
     double wheel_separation_;
     double wheel_radius_;
 
-    Wheels_to_vel_and_dir()
-    {
-        // Default constructor
-    }
-
-    // void set(const std::string &left_wheel_name, const std::string &right_wheel_name,
-    //          const double &wheel_separation, const double &wheel_radius)
-    // {
-    //     left_wheel_.setName(left_wheel_name);
-    //     right_wheel_.setName(right_wheel_name);
-    //     wheel_separation_ = wheel_separation;
-    //     wheel_radius_ = wheel_radius;
-    // }
+    // Default constructor
+    Wheels_to_vel_and_dir(){}
     
 
     void getVelocityAndDirection(float &speed, float &x, float &y)
-    {
+    {   
+        // Test print to check what values are being read
+        // std::cout << "Left wheel cmd: " << left_wheel_.cmd << std::endl;
+        // std::cout << "Right wheel cmd: " << right_wheel_.cmd << std::endl;
 
-        // ###########################################################################################
-        // TODO: Implement the following function correct with correct returns
-        // command vel for both wheels gets stored in left_wheel_.cmd and right_wheel_.cmd --> use this to calculate the speed, x and y (comes from the controller)
-        // state vel for both wheels gets stored in left_wheel_.vel and right_wheel_.vel --> needs to be calculated here because no info from agv?
-        // state pos for both wheels gets stored in left_wheel_.pos and right_wheel_.pos --> needs to be calculated here because no info from agv?
-        // ###########################################################################################
+        // Calculate wheel speeds (v_left and v_right)
+        float v_left = left_wheel_.cmd * wheel_radius_;
+        float v_right = right_wheel_.cmd * wheel_radius_;
 
-        // dummy values for testing --> drive straight forward
-        // x = 1.0;            // right
-        // y = 0.0;           // forward
-        // speed = 100.0;       // speed between 0 and 100
+        // Calculate forward velocity (v) and angular velocity (omega)
+        float v = (v_left + v_right) / 2.0;
+        float omega = (v_left - v_right) / wheel_separation_;
 
-        // Radgeschwindigkeit berechnen (v_left und v_right)
-        double v_left = left_wheel_.cmd * wheel_radius_;
-        double v_right = right_wheel_.cmd * wheel_radius_;
+        // cmd between -5 and 5 when driving forward/ backward or between -1,3125 and 1,3125 when rotating on the spot
+        // |v_max| = 2 * 5 * wheel_radius_ / 2 = 5 * wheel_radius_
+        // |omega_max| = 2 * 1,3125 * wheel_radius_ / wheel_separation_
+        float v_max = 5 * wheel_radius_;
+        float omega_max = 2 * 1.3125 * wheel_radius_ / wheel_separation_;
 
-        // Vorwärtsgeschwindigkeit (v) und Drehgeschwindigkeit (omega) berechnen
-        double v = (v_left + v_right) / 2.0;
-        double omega = (v_right - v_left) / wheel_separation_;
+        // calculate x and y and normalize them between 0 and 1
+        y = v / v_max;              // forward movement
+        x = omega / omega_max;      // rotation
 
-        // Da wir nur die x- und y-Komponenten der Geschwindigkeit berechnen wollen,
-        // nehmen wir an, dass der Roboter in Richtung seiner Vorwärtsachse bewegt wird.
-        // Daher sind die Geschwindigkeiten in x- und y-Richtungen:
-        y = v * cos(omega)*10; // Geschwindigkeit nach vorne
-        x = v * sin(omega)*10; // Geschwindigkeit nach rechts
-
-        // Setze die Geschwindigkeit als Betrag der Vorwärtsgeschwindigkeit
-        // speed = std::sqrt(x * x + y * y);
-        speed = 100;
-
-        std::cout << "Übergebene Werte:" << std::endl;
-        std::cout << "left cmd: " << left_wheel_.cmd << std::endl;
-        std::cout << "right cmd: " << right_wheel_.cmd << std::endl;
-
-        // Ausgabe zur Überprüfung der Werte
-        std::cout << "Berechnete Richtung und Geschwindigkeit:" << std::endl;
-        std::cout << "x: " << x << std::endl;
-        std::cout << "y: " << y << std::endl;
-        std::cout << "speed: " << speed << std::endl;
+        // Speed is always 100%
+        speed = 100.0; 
     }
 };
 
