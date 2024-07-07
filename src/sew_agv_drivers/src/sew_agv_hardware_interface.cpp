@@ -169,16 +169,10 @@ namespace sew_agv_drivers {
   hardware_interface::return_type SewAgvHardwareInterface::read(
     const rclcpp::Time & /*time*/, const rclcpp::Duration & period)
   {
-    RCLCPP_INFO(rclcpp::get_logger("SewAgvHardwareInterface"), "Reading from AGV");
-
-    // testing without status msg from agv --> just return OK
-    return hardware_interface::return_type::OK;
-
-
     // #####################################################################################################
-    // TODO: Reading status from AGV using the agv_endpoint_ and print ros info
+    // TODO: Fix Reading status from AGV using the agv_endpoint_ and print ros info --> only works a view times when starting?
     // #####################################################################################################
-    /*if(agv_endpoint_.getStatusAGV())
+    if(agv_endpoint_.getStatusAGV())
     {
         RCLCPP_INFO(rclcpp::get_logger("SewAgvHardwareInterface"), "Successfully read from AGV.");
         return hardware_interface::return_type::OK;
@@ -187,7 +181,9 @@ namespace sew_agv_drivers {
     {
         RCLCPP_WARN(rclcpp::get_logger("SewAgvHardwareInterface"), "Failed to read from AGV.");
         return hardware_interface::return_type::OK;
-    }    */
+    }
+    // testing without status msg from agv --> just return OK
+    //return hardware_interface::return_type::OK;
   }
 
 
@@ -195,8 +191,6 @@ namespace sew_agv_drivers {
   hardware_interface::return_type SewAgvHardwareInterface::write(
     const rclcpp::Time & /*time*/, const rclcpp::Duration & /*period*/)
   {
-    RCLCPP_INFO(rclcpp::get_logger("SewAgvHardwareInterface"), "Writing to AGV...");
-
     // Check if AGV is connected
     if (!agv_endpoint_.isConnected()) {
         RCLCPP_ERROR(rclcpp::get_logger("SewAgvHardwareInterface"), "AGV not connected!");
@@ -207,18 +201,23 @@ namespace sew_agv_drivers {
     float x = 0.0;
     float y = 0.0;
     wheels_.getVelocityAndDirection(speed, x, y);     // Calculate the speed, x and y values from the wheel velocities that are set in the diffdrive controller
-
+    
+    
     // Send command to agv
     if(agv_endpoint_.sendControlToAGV(speed, x, y))
     {
-        RCLCPP_INFO(rclcpp::get_logger("SewAgvHardwareInterface"), "Successfully sent control to AGV.");
-        return hardware_interface::return_type::OK;
+      // RCLCPP_INFO(rclcpp::get_logger("SewAgvHardwareInterface"), "Successfully sent control to AGV. Speed: %f, X: %f, Y: %f", speed, x, y);
+      return hardware_interface::return_type::OK;
     }
     else
     {
-        RCLCPP_ERROR(rclcpp::get_logger("SewAgvHardwareInterface"), "Failed to send control to AGV.");
-        return hardware_interface::return_type::ERROR;
-    }    
+      RCLCPP_ERROR(rclcpp::get_logger("SewAgvHardwareInterface"), "Failed to send control to AGV.");
+      return hardware_interface::return_type::ERROR;
+    }
+
+    // For testing without sending to AGV
+    // RCLCPP_INFO(rclcpp::get_logger("SewAgvHardwareInterface"), "Speed: %f, X: %f, Y: %f", speed, x, y);
+    // return hardware_interface::return_type::OK;
   };
 }  // namespace sew_agv_drivers
 
