@@ -140,11 +140,11 @@ public:
     }
 
     // Set the direction the AGV should move in.
-    void setDirection(int x_dir, int y_dir) {
+    void setDirection(float x_dir, float y_dir) {
         float magnitude = std::sqrt(static_cast<float>(x_dir * x_dir + y_dir * y_dir)); // Calculate the magnitude.
         if (magnitude == 0) {
-            x = 0; // Avoid division by zero.
-            y = 0;
+            x = 0.0; // Avoid division by zero.
+            y = 0.0;
         } else {
             x = x_dir / magnitude; // Normalize the x direction.
             y = y_dir / magnitude; // Normalize the y direction.
