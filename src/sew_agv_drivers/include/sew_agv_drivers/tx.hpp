@@ -141,7 +141,7 @@ public:
 
     // Set the direction the AGV should move in.
     void setDirection(float x_dir, float y_dir) {
-        float magnitude = std::sqrt(static_cast<float>(x_dir * x_dir + y_dir * y_dir)); // Calculate the magnitude.
+        float magnitude = std::sqrt(x_dir * x_dir + y_dir * y_dir); // Calculate the magnitude.
         if (magnitude == 0) {
             x = 0.0; // Avoid division by zero.
             y = 0.0;
@@ -156,6 +156,11 @@ public:
         auto buf = AgvTxMsg::encode(); // Encode the base message.
         int x_val = static_cast<int>(x * speed); // Calculate the x value based on the speed.
         int y_val = static_cast<int>(y * speed); // Calculate the y value based on the speed.
+
+        // std::cout << "x_val: " << x_val << std::endl;
+        // std::cout << "y_val: " << y_val << std::endl;
+        // std::cout << "norm: " << std::sqrt(x_val * x_val + y_val * y_val) << std::endl;
+        
         uint8_t* ptr = buf.data() + BODY_OFFSET; // Pointer to the body offset in the buffer.
         *ptr++ = static_cast<uint8_t>(speed_mode); // Copy the speed mode.
         *reinterpret_cast<int32_t*>(ptr) = htonl(x_val); // Copy the x value, converting to network byte order.
