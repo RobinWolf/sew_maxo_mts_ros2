@@ -159,13 +159,13 @@ public:
         msg.setIP(parseIp(agv_ip_));
         msg.setPort(agv_port_);
 
-        std::cout << "(AGVEndpoint) Message Data:" << std::endl;
-        std::cout << "(AGVEndpoint) Speed Mode: " << static_cast<int>(speed_mode) << std::endl;
-        std::cout << "(AGVEndpoint) Speed: " << speed << std::endl;
-        std::cout << "(AGVEndpoint) Direction X: " << x << std::endl;
-        std::cout << "(AGVEndpoint) Direction Y: " << y << std::endl;
-        std::cout << "(AGVEndpoint) IP Address: " << agv_ip_ << std::endl;
-        std::cout << "(AGVEndpoint) Port: " << agv_port_ << std::endl;
+        // std::cout << "(AGVEndpoint) Message Data:" << std::endl;
+        // std::cout << "(AGVEndpoint) Speed Mode: " << static_cast<int>(speed_mode) << std::endl;
+        // std::cout << "(AGVEndpoint) Speed: " << speed << std::endl;
+        // std::cout << "(AGVEndpoint) Direction X: " << x << std::endl;
+        // std::cout << "(AGVEndpoint) Direction Y: " << y << std::endl;
+        // std::cout << "(AGVEndpoint) IP Address: " << agv_ip_ << std::endl;
+        // std::cout << "(AGVEndpoint) Port: " << agv_port_ << std::endl;
 
         // Encode the message
         std::vector<uint8_t> encoded_msg = msg.encode();
