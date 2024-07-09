@@ -227,18 +227,18 @@ public:
             std::cout << "(AGVEndpoint) Current Page: " << static_cast<int>(header.current_page) << std::endl;
             std::cout << "(AGVEndpoint) Error: " << header.error << std::endl;
             std::cout << "(AGVEndpoint) Error Code: " << header.error_code << std::endl;
-            std::cout << "(AGVEndpoint) Part Data: " << msg.part_data << std::endl;
-            std::cout << "(AGVEndpoint) In Station: " << msg.in_station << std::endl;
-            std::cout << "(AGVEndpoint) In Station State: " << msg.in_station_state << std::endl;
-            std::cout << "(AGVEndpoint) Transponder: " << msg.transponder << std::endl;
-            std::cout << "(AGVEndpoint) Transponder Distance: " << msg.transponder_distance << std::endl;
-            std::cout << "(AGVEndpoint) V-Track: " << msg.v_track << std::endl;
-            std::cout << "(AGVEndpoint) V-Track Distance: " << msg.v_track_distance << std::endl;
-            std::cout << "(AGVEndpoint) Actual Speed: " << msg.actual_speed << std::endl;
-            std::cout << "(AGVEndpoint) Target Speed: " << msg.target_speed << std::endl;
-            std::cout << "(AGVEndpoint) Speed Limit: " << msg.speed_limit << std::endl;
-            std::cout << "(AGVEndpoint) Charging State: " << msg.charging_state << std::endl;
-            std::cout << "(AGVEndpoint) Power: " << msg.power << std::endl;
+            // std::cout << "(AGVEndpoint) Part Data: " << msg.part_data << std::endl;
+            // std::cout << "(AGVEndpoint) In Station: " << msg.in_station << std::endl;
+            // std::cout << "(AGVEndpoint) In Station State: " << msg.in_station_state << std::endl;
+            // std::cout << "(AGVEndpoint) Transponder: " << msg.transponder << std::endl;
+            // std::cout << "(AGVEndpoint) Transponder Distance: " << msg.transponder_distance << std::endl;
+            // std::cout << "(AGVEndpoint) V-Track: " << msg.v_track << std::endl;
+            // std::cout << "(AGVEndpoint) V-Track Distance: " << msg.v_track_distance << std::endl;
+            // std::cout << "(AGVEndpoint) Actual Speed: " << msg.actual_speed << std::endl;
+            // std::cout << "(AGVEndpoint) Target Speed: " << msg.target_speed << std::endl;
+            // std::cout << "(AGVEndpoint) Speed Limit: " << msg.speed_limit << std::endl;
+            // std::cout << "(AGVEndpoint) Charging State: " << msg.charging_state << std::endl;
+            // std::cout << "(AGVEndpoint) Power: " << msg.power << std::endl;
 
             return true;
         } 
