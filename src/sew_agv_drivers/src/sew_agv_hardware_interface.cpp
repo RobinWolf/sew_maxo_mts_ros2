@@ -142,7 +142,6 @@ namespace sew_agv_drivers {
     // check if connection was successful
     if (connected) {
         RCLCPP_INFO(rclcpp::get_logger("SewAgvHardwareInterface"), "Successfully connected to AGV.");
-        return hardware_interface::CallbackReturn::SUCCESS;
 
         // read AGV status
         if(agv_endpoint_.getStatusAGV())
@@ -183,6 +182,7 @@ namespace sew_agv_drivers {
   {
     // Funktion to read status from AGV
     // No position feedback from AGV, only status --> no need to read from AGV, status is read once in on_activate
+    return hardware_interface::return_type::OK;
 
     // Reading from AGV is not needed in every cycle, but this code shows youw, how to read the status
     // if(agv_endpoint_.getStatusAGV())
