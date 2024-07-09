@@ -143,6 +143,18 @@ namespace sew_agv_drivers {
     if (connected) {
         RCLCPP_INFO(rclcpp::get_logger("SewAgvHardwareInterface"), "Successfully connected to AGV.");
         return hardware_interface::CallbackReturn::SUCCESS;
+
+        // read AGV status
+        if(agv_endpoint_.getStatusAGV())
+        {
+            RCLCPP_INFO(rclcpp::get_logger("SewAgvHardwareInterface"), "Successfully read status from AGV.");
+            return hardware_interface::CallbackReturn::SUCCESS;;
+        }
+        else
+        {
+            RCLCPP_WARN(rclcpp::get_logger("SewAgvHardwareInterface"), "Failed to read status from AGV.");
+            return hardware_interface::CallbackReturn::ERROR;
+        }
     } else {
         RCLCPP_ERROR(rclcpp::get_logger("SewAgvHardwareInterface"), "Failed to connect to AGV.");
         return hardware_interface::CallbackReturn::ERROR;
@@ -169,21 +181,20 @@ namespace sew_agv_drivers {
   hardware_interface::return_type SewAgvHardwareInterface::read(
     const rclcpp::Time & /*time*/, const rclcpp::Duration & period)
   {
-    // #####################################################################################################
-    // TODO: Fix Reading status from AGV using the agv_endpoint_ and print ros info --> only works a view times when starting?
-    // #####################################################################################################
-    if(agv_endpoint_.getStatusAGV())
-    {
-        RCLCPP_INFO(rclcpp::get_logger("SewAgvHardwareInterface"), "Successfully read from AGV.");
-        return hardware_interface::return_type::OK;
-    }
-    else
-    {
-        RCLCPP_WARN(rclcpp::get_logger("SewAgvHardwareInterface"), "Failed to read from AGV.");
-        return hardware_interface::return_type::OK;
-    }
-    // testing without status msg from agv --> just return OK
-    //return hardware_interface::return_type::OK;
+    // Funktion to read status from AGV
+    // No position feedback from AGV, only status --> no need to read from AGV, status is read once in on_activate
+
+    // Reading from AGV is not needed in every cycle, but this code shows youw, how to read the status
+    // if(agv_endpoint_.getStatusAGV())
+    // {
+    //     RCLCPP_INFO(rclcpp::get_logger("SewAgvHardwareInterface"), "Successfully read from AGV.");
+    //     return hardware_interface::return_type::OK;
+    // }
+    // else
+    // {
+    //     RCLCPP_WARN(rclcpp::get_logger("SewAgvHardwareInterface"), "Failed to read from AGV.");
+    //     return hardware_interface::return_type::OK;
+    // }
   }
 
 
