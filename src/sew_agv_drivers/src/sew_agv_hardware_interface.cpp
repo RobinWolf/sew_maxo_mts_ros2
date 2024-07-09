@@ -217,7 +217,7 @@ namespace sew_agv_drivers {
     // Send command to agv
     if(agv_endpoint_.sendControlToAGV(speed, x, y))
     {
-      // RCLCPP_INFO(rclcpp::get_logger("SewAgvHardwareInterface"), "Successfully sent control to AGV. Speed: %f, X: %f, Y: %f", speed, x, y);
+      RCLCPP_INFO(rclcpp::get_logger("SewAgvHardwareInterface"), "Successfully sent control to AGV. Speed: %f, X: %f, Y: %f", speed, x, y);
       return hardware_interface::return_type::OK;
     }
     else
