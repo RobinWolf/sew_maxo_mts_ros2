@@ -180,7 +180,7 @@ namespace sew_agv_drivers {
   hardware_interface::return_type SewAgvHardwareInterface::read(
     const rclcpp::Time & /*time*/, const rclcpp::Duration & /*period*/)
   {
-    // Funktion to read status from AGV
+    // Function to read status from AGV
     // No position feedback from AGV, only status --> no need to read from AGV, status is read once in on_activate
     return hardware_interface::return_type::OK;
 
