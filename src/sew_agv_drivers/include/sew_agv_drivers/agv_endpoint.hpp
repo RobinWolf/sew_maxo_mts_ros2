@@ -92,10 +92,10 @@ public:
         // std::cout << "(AGVEndpoint) Encode the start message "<< std::endl;
         // Encode the start message
         std::vector<uint8_t> buf = startMsg.encode();
-        sockaddr_in agvAddr {};
-        agvAddr.sin_family = AF_INET;
-        agvAddr.sin_addr.s_addr = inet_addr(agv_ip_.c_str());
-        agvAddr.sin_port = htons(agv_port);
+        // sockaddr_in agvAddr {};
+        // agvAddr.sin_family = AF_INET;
+        // agvAddr.sin_addr.s_addr = inet_addr(agv_ip_.c_str());
+        // agvAddr.sin_port = htons(agv_port);
 
         // std::cout << "(AGVEndpoint) Send start message until a response is received "<< std::endl;
         // Send start message until a response is received
@@ -185,10 +185,10 @@ public:
             perror("sendto error");
             return false;
         } 
-        // else {
-        //     std::cout << "(AGVEndpoint) Sent " << sent_bytes << " bytes to " << agv_ip_ << ":" << agv_port_ << std::endl;
-        //     return true;
-        // }
+        else {
+            // std::cout << "(AGVEndpoint) Sent " << sent_bytes << " bytes to " << agv_ip_ << ":" << agv_port_ << std::endl;
+            return true;
+        }
     }
 
     // Query and print the status of the AGV
@@ -200,7 +200,7 @@ public:
         }
 
         // Buffer to hold the received data
-        std::array<uint8_t, 54> buf;
+        std::array<uint8_t, 54> buf = {};   // Initialize the array with zeros
         sockaddr_in senderAddr {};
         socklen_t addrLen = sizeof(senderAddr);
 
@@ -210,6 +210,7 @@ public:
         if (len > 0) {
             std::cout << "(AGVEndpoint) Received status from AGV" << std::endl;
             handleRx(std::vector<uint8_t>(buf.begin(), buf.begin() + len));
+            
             // Decode and print the header and message data
             AgvRxHeader header;
             //header.decode({buf.begin(), buf.begin() + 14});
