@@ -70,3 +70,8 @@ ros2 launch sew_agv_drivers launch_agv.launch.py
 - open_loop = true --> odom wird aus cmd berechnet, feedback nicht notwendig --> TODO: check if odom seems to be correct
 - Steuerung des AGVs mit Controller erfolgreich, stoppt manchmal, wenn zu schnell hält AGV an und zeigt Fehler "Sicherheitsfunktion SOS" an
 - Status AGV wird nach wie vor nur am Anfang gelesen, danach keine Antwort mehr --> einfach in on_activate verschieben und read entfernen? Status muss eigentlich nicht die ganze zeit gelesen werden
+
+
+09.07.2024
+- Status vom AGV nur einmal in on_activate() lesen, nichtmehr zyklisch in read()
+- TODO mit Raspi testen
