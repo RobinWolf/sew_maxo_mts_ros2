@@ -57,10 +57,10 @@ FROM sew_description as gazebo_testenviroment
 USER root
 RUN apt-get update && apt-get install -y ros-${ROS_DISTRO}-teleop-twist-joy \
     ros-${ROS_DISTRO}-teleop-twist-keyboard \
-    ros-${ROS_DISTRO}-joy \
-    ros-${ROS_DISTRO}-ros-gz \
-    ros-${ROS_DISTRO}-gazebo-ros-pkgs \
-    ros-${ROS_DISTRO}-gazebo-ros2-control
+    ros-${ROS_DISTRO}-joy
+    # ros-${ROS_DISTRO}-ros-gz \
+    # ros-${ROS_DISTRO}-gazebo-ros-pkgs \
+    # ros-${ROS_DISTRO}-gazebo-ros2-control
 
 RUN apt-get update && apt-get install -y joystick
 USER $USER
@@ -77,6 +77,11 @@ RUN apt-get update && apt-get install -y ros-${ROS_DISTRO}-navigation2 \
     ros-${ROS_DISTRO}-slam-toolbox \
     ros-${ROS_DISTRO}-twist-mux
 
+USER $USER
+
+# Install rviz2 because its not included in arm64 base image 
+USER root
+RUN apt-get update && apt-get install -y ros-${ROS_DISTRO}-rviz2
 USER $USER
 
 
