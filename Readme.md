@@ -81,3 +81,9 @@ ros2 launch sew_agv_drivers launch_agv.launch.py
 09.07.2024
 - Status vom AGV nur einmal in on_activate() lesen, nichtmehr zyklisch in read()
 - TODO mit Raspi testen
+
+
+24.07.2024
+- Connection zum AGV wird nicht durchgängig gehalten --> extra thread, der connection aufrecht erhält
+- wenn connection_ = true; in zeile 82 in agv_enpoint auskommentiert: Verbindung mit agv stabil, aber rest funktioniert natürlich nichtmehr (Wenn einkommentiert: Verbindung mit agv nicht stabil)
+- TODO: Prüfen ob buffer nach senden wirklich leer ist
