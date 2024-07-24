@@ -107,6 +107,10 @@ public:
 
     // Send a control message to the AGV
     bool sendControlToAGV(float speed, float x, float y, ManualJogTxMsg::SpeedMode speed_mode = ManualJogTxMsg::SpeedMode::RAPID) {
+        if (!connected_) {
+            std::cerr << "(AGVEndpoint) AGV is not connected" << std::endl;
+            return false;
+        }
         // Create and set up the control message
         ManualJogTxMsg msg;
         msg.setSpeedMode(speed_mode);

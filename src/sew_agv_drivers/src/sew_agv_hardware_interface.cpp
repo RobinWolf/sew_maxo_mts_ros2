@@ -202,12 +202,6 @@ namespace sew_agv_drivers {
   hardware_interface::return_type SewAgvHardwareInterface::write(
     const rclcpp::Time & /*time*/, const rclcpp::Duration & /*period*/)
   {
-    // Check if AGV is connected
-    if (!agv_endpoint_.isConnected()) {
-        RCLCPP_ERROR(rclcpp::get_logger("SewAgvHardwareInterface"), "AGV not connected!");
-        return hardware_interface::return_type::ERROR;
-    }
-    
     float speed = 0.0;
     float x = 0.0;
     float y = 0.0;
