@@ -79,6 +79,7 @@ public:
         stopRequested_ = false;
         connectionThread_ = std::thread(&AgvEndpoint::connectionLoop, this);
 
+        connected_ = true;
         return true;
     }
 
@@ -205,12 +206,15 @@ private:
             {
                 std::lock_guard<std::mutex> lock(txMutex_);
                 localTxBuffer = txBuffer_;
+                txBuffer_.clear();
             }
 
             if (!localTxBuffer.empty()) {
+                std::cout << "(AGVEndpoint txBuffer_ not empty" << std::endl;
                 sendDataToAgv(localTxBuffer);
             } else {
                 // Send only the header if txBuffer_ is empty
+                std::cout << "(AGVEndpoint txBuffer_ empty" << std::endl;
                 ManualJogTxMsg msg;
                 msg.setSpeedMode(ManualJogTxMsg::SpeedMode::RAPID); // Set default header values if needed
                 localTxBuffer = msg.encode();
@@ -225,13 +229,14 @@ private:
             if (len > 0) {
                 std::lock_guard<std::mutex> lock(mtx_);
                 std::copy(buf.begin(), buf.end(), rxBuffer_.begin());
+                std::cout << "Received " << len << " bytes from the AGV" << std::endl;
             } 
             else if (len < 0 && errno != EAGAIN && errno != EWOULDBLOCK) {
                 perror("(AGVEndpoint) recvfrom error");
             }
 
             // Sleep to avoid busy waiting
-            std::this_thread::sleep_for(std::chrono::milliseconds(100));
+            //std::this_thread::sleep_for(std::chrono::milliseconds(100));
         }
         std::cout << "(AGVEndpoint) Connection loop stopped" << std::endl;
     }
