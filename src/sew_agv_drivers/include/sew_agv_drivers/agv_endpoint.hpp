@@ -12,6 +12,10 @@
 #include <arpa/inet.h>
 #include <sys/socket.h>
 #include <unistd.h>
+#include <thread>
+#include <mutex>
+#include <condition_variable>
+#include <atomic>
 #include "tx.hpp"
 #include "rx.hpp"
 
@@ -19,7 +23,7 @@
 class AgvEndpoint {
 public:
     // Constructor initializes member variables
-    AgvEndpoint() : udpTx_(-1), udpRx_(-1), connected_(false) {}
+    AgvEndpoint() : udpTx_(-1), udpRx_(-1), connected_(false), stopRequested_(false) {}
 
     // Destructor ensures sockets are closed upon object destruction
     ~AgvEndpoint() {
@@ -52,10 +56,10 @@ public:
             return false;
         }
 
-        // add timeout for receiving data to dont block the programm
+        // Add timeout for receiving data to avoid blocking the program
         struct timeval timeout;
-        timeout.tv_sec =0;  // Timeout in Sekunden
-        timeout.tv_usec = 200000; // Timeout in Mikrosekunden
+        timeout.tv_sec = 0;
+        timeout.tv_usec = 200000; // Timeout in microseconds
         setsockopt(udpRx_, SOL_SOCKET, SO_RCVTIMEO, &timeout, sizeof(timeout));
 
         // Set up the local address structure
@@ -64,45 +68,27 @@ public:
         localAddr.sin_addr.s_addr = inet_addr(local_ip_.c_str());
         localAddr.sin_port = htons(local_port_);
 
-        std::cout << "(AGVEndpoint) Bind the receiving socket to the local address "<< std::endl;
+        std::cout << "(AGVEndpoint) Bind the receiving socket to the local address" << std::endl;
         // Bind the receiving socket to the local address
         if (bind(udpRx_, reinterpret_cast<struct sockaddr*>(&localAddr), sizeof(localAddr)) < 0) {
             perror("(AGVEndpoint) Failed to bind the socket");
             return false;
         }
 
-        // Create a start message to send to the AGV
-        StartTxMsg startMsg;
-        startMsg.setIP(parseIp(local_ip_));
-        startMsg.setPort(local_port_);
+        // Start the connection thread
+        stopRequested_ = false;
+        connectionThread_ = std::thread(&AgvEndpoint::connectionLoop, this);
 
-        // Encode the start message
-        std::vector<uint8_t> buf = startMsg.encode();
-
-        // Send start message until a response is received
-        while (!connected_) {
-            sendDataToAgv(buf);  // Send start message
-            buf.resize(1024);
-            sockaddr_in senderAddr {};
-            socklen_t addrLen = sizeof(senderAddr);
-            
-            // Receive a response
-            int len = recvfrom(udpRx_, buf.data(), buf.size(), 0, reinterpret_cast<struct sockaddr*>(&senderAddr), &addrLen);
-            if (len > 0) {
-                connected_ = true;
-                handleRx(std::vector<uint8_t>(buf.begin(), buf.begin() + len));
-                return true;
-            } else {
-                handleRx({});
-            }
-        }
-
-        return false;
+        return true;
     }
 
     // Disconnect from the AGV and close the sockets
     void disconnect() {
         std::cout << "(AGVEndpoint) disconnect()" << std::endl;
+        stopRequested_ = true;
+        if (connectionThread_.joinable()) {
+            connectionThread_.join();
+        }
         if (udpTx_ >= 0) {
             close(udpTx_);
             udpTx_ = -1;
@@ -119,13 +105,7 @@ public:
     }
 
     // Send a control message to the AGV
-    bool sendControlToAGV(float speed, float x, float y, ManualJogTxMsg::SpeedMode speed_mode = ManualJogTxMsg::SpeedMode::RAPID) { //SpeedMode RAPID or CREEP
-        // Check if the AGV is connected --> not needed because the function is only called if the AGV is connected
-        // if (!connected_) {
-        //     std::cerr << "AGV is not connected" << std::endl;
-        //     return false;
-        // }
-      
+    bool sendControlToAGV(float speed, float x, float y, ManualJogTxMsg::SpeedMode speed_mode = ManualJogTxMsg::SpeedMode::RAPID) {
         // Create and set up the control message
         ManualJogTxMsg msg;
         msg.setSpeedMode(speed_mode);
@@ -135,14 +115,6 @@ public:
         // Parse and set the IP address and port
         msg.setIP(parseIp(agv_ip_));
         msg.setPort(agv_port_);
-
-        // std::cout << "(AGVEndpoint) Message Data:" << std::endl;
-        // std::cout << "(AGVEndpoint) Speed Mode: " << static_cast<int>(speed_mode) << std::endl;
-        // std::cout << "(AGVEndpoint) Speed: " << speed << std::endl;
-        // std::cout << "(AGVEndpoint) Direction X: " << x << std::endl;
-        // std::cout << "(AGVEndpoint) Direction Y: " << y << std::endl;
-        // std::cout << "(AGVEndpoint) IP Address: " << agv_ip_ << std::endl;
-        // std::cout << "(AGVEndpoint) Port: " << agv_port_ << std::endl;
 
         // Encode the message
         std::vector<uint8_t> encoded_msg = msg.encode();
@@ -169,7 +141,7 @@ public:
     // Query and print the status of the AGV
     bool getStatusAGV() {
         if (!connected_) {
-            std::cerr << "AGVEndpoint) AGV is not connected" << std::endl;
+            std::cerr << "(AGVEndpoint) AGV is not connected" << std::endl;
             return false;
         }
 
@@ -186,7 +158,6 @@ public:
 
             // Decode and print the header and message data
             AgvRxHeader header;
-            //header.decode({buf.begin(), buf.begin() + 14});
             std::array<uint8_t, 14> header_buf;
             std::copy(buf.begin(), buf.begin() + 14, header_buf.begin());
             header.decode(header_buf);
@@ -213,7 +184,6 @@ public:
             // std::cout << "(AGVEndpoint) Speed Limit: " << msg.speed_limit << std::endl;
             // std::cout << "(AGVEndpoint) Charging State: " << msg.charging_state << std::endl;
             // std::cout << "(AGVEndpoint) Power: " << msg.power << std::endl;
-
             return true;
         } 
         else {
@@ -232,36 +202,76 @@ private:
     int udpRx_;           // UDP socket for receiving data
     bool connected_;      // Connection status flag
 
-    // Helper method to send data to the AGV
+    // Thread and synchronization
+    std::thread connectionThread_;
+    std::mutex mtx_;
+    std::condition_variable cv_;
+    std::atomic<bool> stopRequested_; // Flag to signal the thread to stop
+
+    // Buffers for incoming and outgoing data
+    std::array<uint8_t, 54> rxBuffer_;
+    std::vector<uint8_t> txBuffer_;
+    std::mutex txMutex_;
+
+    // Function that runs in a separate thread for continuous communication
+    void connectionLoop() {
+        std::cout << "(AGVEndpoint) Connection loop started" << std::endl;
+        while (!stopRequested_) {
+            std::vector<uint8_t> localTxBuffer;
+
+            {
+                std::lock_guard<std::mutex> lock(txMutex_);
+                localTxBuffer = txBuffer_;
+            }
+
+            if (!localTxBuffer.empty()) {
+                sendDataToAgv(localTxBuffer);
+            }
+
+            // Receive data from the AGV
+            std::array<uint8_t, 54> buf;
+            sockaddr_in senderAddr {};
+            socklen_t addrLen = sizeof(senderAddr);
+            int len = recvfrom(udpRx_, buf.data(), buf.size(), 0, reinterpret_cast<struct sockaddr*>(&senderAddr), &addrLen);
+            if (len > 0) {
+                std::lock_guard<std::mutex> lock(mtx_);
+                rxBuffer_ = buf;
+            } 
+            else if (len < 0 && errno != EAGAIN && errno != EWOULDBLOCK) {
+                perror("(AGVEndpoint) recvfrom error");
+            }
+
+            // Sleep to avoid busy waiting
+            std::this_thread::sleep_for(std::chrono::milliseconds(100));
+        }
+        std::cout << "(AGVEndpoint) Connection loop stopped" << std::endl;
+    }
+
+    // Helper function to send data to the AGV
     void sendDataToAgv(const std::vector<uint8_t>& buf) {
-        // Set up the AGV address structure
         struct sockaddr_in agvAddr {};
         agvAddr.sin_family = AF_INET;
         agvAddr.sin_addr.s_addr = inet_addr(agv_ip_.c_str());
         agvAddr.sin_port = htons(agv_port_);
-
-        // Send data using the transmission socket
-        ssize_t sent_bytes = sendto(udpTx_, buf.data(), buf.size(), 0,
-                                    (struct sockaddr*)&agvAddr, sizeof(agvAddr));
+        ssize_t sent_bytes = sendto(udpTx_, buf.data(), buf.size(), 0, reinterpret_cast<struct sockaddr*>(&agvAddr), sizeof(agvAddr));
         if (sent_bytes < 0) {
             perror("sendto");
-        } else {
+        } 
+        else {
             std::cout << "Sent " << sent_bytes << " bytes to " << agv_ip_ << ":" << agv_port_ << std::endl;
         }
     }
 
-    // Helper method to parse an IP address string into an array of bytes
+    // Helper function to parse IP address into an array of bytes
     std::array<uint8_t, 4> parseIp(const std::string& ip) {
         std::array<uint8_t, 4> arr;
         sscanf(ip.c_str(), "%hhu.%hhu.%hhu.%hhu", &arr[0], &arr[1], &arr[2], &arr[3]);
         return arr;
     }
 
-    // Handler for received data from the AGV
+    // Helper function to handle received data
     void handleRx(const std::vector<uint8_t>& data) {
-        // Process the received data (implementation depends on protocol)
-        // For now, just print the size of the received data
-        std::cout << "Received data of size: " << data.size() << std::endl;
+        std::cout << "(AGVEndpoint) Handling received data of size " << data.size() << " bytes" << std::endl;
     }
 };
 
