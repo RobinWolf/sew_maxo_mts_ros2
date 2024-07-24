@@ -119,23 +119,13 @@ public:
         // Encode the message
         std::vector<uint8_t> encoded_msg = msg.encode();
 
-        // Set up the server address
-        struct sockaddr_in server_addr;
-        std::memset(&server_addr, 0, sizeof(server_addr));
-        server_addr.sin_family = AF_INET;
-        server_addr.sin_port = htons(agv_port_);
-        inet_pton(AF_INET, agv_ip_.c_str(), &server_addr.sin_addr);
-
-        // Send the message
-        ssize_t sent_bytes = sendto(udpTx_, encoded_msg.data(), encoded_msg.size(), 0,
-                                    (struct sockaddr*)&server_addr, sizeof(server_addr));
-        if (sent_bytes < 0) {
-            perror("sendto error");
-            return false;
-        } 
-        else {
-            return true;
+        // Lock the txBuffer_ and set the new data
+        {
+            std::lock_guard<std::mutex> lock(txMutex_);
+            txBuffer_ = encoded_msg;
         }
+
+        return true;
     }
 
     // Query and print the status of the AGV
@@ -145,51 +135,44 @@ public:
             return false;
         }
 
-        // Buffer to hold the received data
-        std::array<uint8_t, 54> buf = {};   // Initialize the array with zeros
-        sockaddr_in senderAddr {};
-        socklen_t addrLen = sizeof(senderAddr);
-
-        // Receive data from the AGV
-        int len = recvfrom(udpRx_, buf.data(), buf.size(), 0, reinterpret_cast<struct sockaddr*>(&senderAddr), &addrLen);
-        if (len > 0) {
-            std::cout << "(AGVEndpoint) Received status from AGV" << std::endl;
-            handleRx(std::vector<uint8_t>(buf.begin(), buf.begin() + len));
-
-            // Decode and print the header and message data
-            AgvRxHeader header;
-            std::array<uint8_t, 14> header_buf;
-            std::copy(buf.begin(), buf.begin() + 14, header_buf.begin());
-            header.decode(header_buf);
-
-            MonitorRxMsg msg;
-            msg.decode(buf);
-
-            // Print AGV status
-            std::cout << "(AGVEndpoint) AGV Status:" << std::endl;
-            std::cout << "(AGVEndpoint) State: " << static_cast<int>(header.state) << std::endl;
-            std::cout << "(AGVEndpoint) Color: " << static_cast<int>(header.color) << std::endl;
-            std::cout << "(AGVEndpoint) Current Page: " << static_cast<int>(header.current_page) << std::endl;
-            std::cout << "(AGVEndpoint) Error: " << header.error << std::endl;
-            std::cout << "(AGVEndpoint) Error Code: " << header.error_code << std::endl;
-            // std::cout << "(AGVEndpoint) Part Data: " << msg.part_data << std::endl;
-            // std::cout << "(AGVEndpoint) In Station: " << msg.in_station << std::endl;
-            // std::cout << "(AGVEndpoint) In Station State: " << msg.in_station_state << std::endl;
-            // std::cout << "(AGVEndpoint) Transponder: " << msg.transponder << std::endl;
-            // std::cout << "(AGVEndpoint) Transponder Distance: " << msg.transponder_distance << std::endl;
-            // std::cout << "(AGVEndpoint) V-Track: " << msg.v_track << std::endl;
-            // std::cout << "(AGVEndpoint) V-Track Distance: " << msg.v_track_distance << std::endl;
-            // std::cout << "(AGVEndpoint) Actual Speed: " << msg.actual_speed << std::endl;
-            // std::cout << "(AGVEndpoint) Target Speed: " << msg.target_speed << std::endl;
-            // std::cout << "(AGVEndpoint) Speed Limit: " << msg.speed_limit << std::endl;
-            // std::cout << "(AGVEndpoint) Charging State: " << msg.charging_state << std::endl;
-            // std::cout << "(AGVEndpoint) Power: " << msg.power << std::endl;
-            return true;
-        } 
-        else {
-            std::cerr << "(AGVEndpoint) Failed to receive status from AGV" << std::endl;
-            return false;
+        // Lock the rxBuffer_ and print its content
+        std::array<uint8_t, 54> localRxBuffer;
+        {
+            std::lock_guard<std::mutex> lock(mtx_);
+            localRxBuffer = rxBuffer_;
         }
+
+        handleRx(std::vector<uint8_t>(localRxBuffer.begin(), localRxBuffer.end()));
+
+        // Decode and print the header and message data
+        AgvRxHeader header;
+        std::array<uint8_t, 14> header_buf;
+        std::copy(localRxBuffer.begin(), localRxBuffer.begin() + 14, header_buf.begin());
+        header.decode(header_buf);
+
+        MonitorRxMsg msg;
+        msg.decode(localRxBuffer);
+
+        // Print AGV status
+        std::cout << "(AGVEndpoint) AGV Status:" << std::endl;
+        std::cout << "(AGVEndpoint) State: " << static_cast<int>(header.state) << std::endl;
+        std::cout << "(AGVEndpoint) Color: " << static_cast<int>(header.color) << std::endl;
+        std::cout << "(AGVEndpoint) Current Page: " << static_cast<int>(header.current_page) << std::endl;
+        std::cout << "(AGVEndpoint) Error: " << header.error << std::endl;
+        std::cout << "(AGVEndpoint) Error Code: " << header.error_code << std::endl;
+        // std::cout << "(AGVEndpoint) Part Data: " << msg.part_data << std::endl;
+        // std::cout << "(AGVEndpoint) In Station: " << msg.in_station << std::endl;
+        // std::cout << "(AGVEndpoint) In Station State: " << msg.in_station_state << std::endl;
+        // std::cout << "(AGVEndpoint) Transponder: " << msg.transponder << std::endl;
+        // std::cout << "(AGVEndpoint) Transponder Distance: " << msg.transponder_distance << std::endl;
+        // std::cout << "(AGVEndpoint) V-Track: " << msg.v_track << std::endl;
+        // std::cout << "(AGVEndpoint) V-Track Distance: " << msg.v_track_distance << std::endl;
+        // std::cout << "(AGVEndpoint) Actual Speed: " << msg.actual_speed << std::endl;
+        // std::cout << "(AGVEndpoint) Target Speed: " << msg.target_speed << std::endl;
+        // std::cout << "(AGVEndpoint) Speed Limit: " << msg.speed_limit << std::endl;
+        // std::cout << "(AGVEndpoint) Charging State: " << msg.charging_state << std::endl;
+        // std::cout << "(AGVEndpoint) Power: " << msg.power << std::endl;
+        return true;
     }
 
 private:
@@ -217,14 +200,20 @@ private:
     void connectionLoop() {
         std::cout << "(AGVEndpoint) Connection loop started" << std::endl;
         while (!stopRequested_) {
+            // Send data to AGV if txBuffer_ is not empty
             std::vector<uint8_t> localTxBuffer;
-
             {
                 std::lock_guard<std::mutex> lock(txMutex_);
                 localTxBuffer = txBuffer_;
             }
 
             if (!localTxBuffer.empty()) {
+                sendDataToAgv(localTxBuffer);
+            } else {
+                // Send only the header if txBuffer_ is empty
+                ManualJogTxMsg msg;
+                msg.setSpeedMode(ManualJogTxMsg::SpeedMode::RAPID); // Set default header values if needed
+                localTxBuffer = msg.encode();
                 sendDataToAgv(localTxBuffer);
             }
 
@@ -235,7 +224,7 @@ private:
             int len = recvfrom(udpRx_, buf.data(), buf.size(), 0, reinterpret_cast<struct sockaddr*>(&senderAddr), &addrLen);
             if (len > 0) {
                 std::lock_guard<std::mutex> lock(mtx_);
-                rxBuffer_ = buf;
+                std::copy(buf.begin(), buf.end(), rxBuffer_.begin());
             } 
             else if (len < 0 && errno != EAGAIN && errno != EWOULDBLOCK) {
                 perror("(AGVEndpoint) recvfrom error");
