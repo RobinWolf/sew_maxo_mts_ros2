@@ -2,7 +2,12 @@
 ##                           1. stage: Base Image                           ##
 ##############################################################################
 ARG ROS_DISTRO=humble
-FROM osrf/ros:$ROS_DISTRO-desktop as base
+
+# For PC with amd64: (https://hub.docker.com/r/osrf/ros/tags?page=1&page_size=&name=&ordering=?
+#FROM osrf/ros:$ROS_DISTRO-desktop AS base
+
+#For RaspberryPi with arm64: (https://hub.docker.com/r/arm64v8/ros/tags)
+FROM arm64v8/ros:$ROS_DISTRO AS base
 
 # Configure DDS
 COPY dds_profile.xml /opt/misc/dds_profile.xml
