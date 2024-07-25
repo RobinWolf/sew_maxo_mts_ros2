@@ -142,18 +142,19 @@ namespace sew_agv_drivers {
     // check if connection was successful
     if (connected) {
         RCLCPP_INFO(rclcpp::get_logger("SewAgvHardwareInterface"), "Successfully connected to AGV.");
+        return hardware_interface::CallbackReturn::SUCCESS;
 
         // read AGV status
-        if(agv_endpoint_.readAgvRxBuffer())
-        {
-            RCLCPP_INFO(rclcpp::get_logger("SewAgvHardwareInterface"), "Successfully read status from AGV.");
-            return hardware_interface::CallbackReturn::SUCCESS;;
-        }
-        else
-        {
-            RCLCPP_WARN(rclcpp::get_logger("SewAgvHardwareInterface"), "Failed to read status from AGV.");
-            return hardware_interface::CallbackReturn::ERROR;
-        }
+        // if(agv_endpoint_.readAgvRxBuffer())
+        // {
+        //     RCLCPP_INFO(rclcpp::get_logger("SewAgvHardwareInterface"), "Successfully read status from AGV.");
+        //     return hardware_interface::CallbackReturn::SUCCESS;
+        // }
+        // else
+        // {
+        //     RCLCPP_WARN(rclcpp::get_logger("SewAgvHardwareInterface"), "Failed to read status from AGV.");
+        //     return hardware_interface::CallbackReturn::ERROR;
+        // }
     } else {
         RCLCPP_ERROR(rclcpp::get_logger("SewAgvHardwareInterface"), "Failed to connect to AGV.");
         return hardware_interface::CallbackReturn::ERROR;
