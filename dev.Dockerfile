@@ -50,17 +50,14 @@ RUN apt-get update && apt-get install -y ros-humble-ros2-controllers
 USER $USER
 
 ##############################################################################
-##                           3. stage: set up gazebo                        ##
+##                           3. stage: set up joystick control                        ##
 ##############################################################################
-FROM sew_description as gazebo_testenviroment
+FROM sew_description as joystick_control
 
 USER root
 RUN apt-get update && apt-get install -y ros-${ROS_DISTRO}-teleop-twist-joy \
     ros-${ROS_DISTRO}-teleop-twist-keyboard \
     ros-${ROS_DISTRO}-joy
-    # ros-${ROS_DISTRO}-ros-gz \
-    # ros-${ROS_DISTRO}-gazebo-ros-pkgs \
-    # ros-${ROS_DISTRO}-gazebo-ros2-control
 
 RUN apt-get update && apt-get install -y joystick
 RUN apt-get update && apt-get install -y xterm
@@ -69,7 +66,7 @@ USER $USER
 ##############################################################################
 ##                         4. stage: set up nav2 stack                      ##
 ##############################################################################
-FROM gazebo_testenviroment as sew_navigation
+FROM joystick_control as sew_navigation
 
 USER root
 RUN apt-get update && apt-get install -y ros-${ROS_DISTRO}-navigation2 \
@@ -103,6 +100,6 @@ USER $USER
 
 
 # autostart drivers
-CMD ["ros2", "launch", "sew_agv_drivers", "launch_agv.launch.py", "enable_joystick:=false"] 
+CMD ["ros2", "launch", "sew_agv_drivers", "launch_agv.launch.py", "enable_joystick:=false"]
 
 #CMD [/bin/bash]

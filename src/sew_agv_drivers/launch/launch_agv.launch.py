@@ -259,6 +259,8 @@ def generate_launch_description():
                 launch_arguments={
                     "use_sim_time": use_sim_time,
                     "use_controller": use_controller,
+                    "standalone_gazebo": standalone_gazebo,
+                    "generate_ros2_control_tag": generate_ros2_control_tag,
                 }.items(),
         )
 

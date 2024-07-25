@@ -25,14 +25,14 @@ def generate_launch_description():
     declared_arguments.append(
         DeclareLaunchArgument(
             "generate_ros2_control_tag",
-            default_value='false',
+            default_value='true',
             description="launch hardware drivers for real hardware, mock hardware or gazebo (recommendet to use)",
         )
     )
     declared_arguments.append(
         DeclareLaunchArgument(
             "standalone_gazebo",
-            default_value='true',
+            default_value='false',
             description="add the robot description to gazebo with a simpler approach, using a diff_drive and lidar plugin (NOT recommendet to use, only for testing purposes without ros2 control)",
         )
     )
@@ -90,7 +90,6 @@ def generate_launch_description():
         parameters=[twistmux_params,{use_sim_time}], 
         remappings=[('/cmd_vel_out', '/cmd_vel')], # until ros2_control is available just shortcut the twistmux node --> controller is not prioritized!
         condition=IfCondition(standalone_gazebo)
-   
     )
 
     twistmux_node_control = Node(
