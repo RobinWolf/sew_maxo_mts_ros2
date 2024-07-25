@@ -106,7 +106,7 @@ public:
     }
 
     // Write comands to the AGV tx buffer
-    bool writeAgvTxBuffer(float speed, float x, float y, ManualJogTxMsg::SpeedMode speed_mode = ManualJogTxMsg::SpeedMode::RAPID) {
+    bool writeAgvTxBuffer(float speed, float x, float y, ManualJogTxMsg::SpeedMode speed_mode = ManualJogTxMsg::SpeedMode::CREEP) {
         if (!connected_) {
             std::cerr << "(AGVEndpoint) AGV is not connected" << std::endl;
             return false;
@@ -214,7 +214,7 @@ private:
             } else {
                 // Send only the header if txBuffer_ is empty
                 ManualJogTxMsg msg;
-                msg.setSpeedMode(ManualJogTxMsg::SpeedMode::RAPID); // Set default header values if needed
+                msg.setSpeedMode(ManualJogTxMsg::SpeedMode::CREEP); // Set default header values if needed
                 localTxBuffer = msg.encode();
                 sendDataToAgv(localTxBuffer);
                 localTxBuffer.clear();
