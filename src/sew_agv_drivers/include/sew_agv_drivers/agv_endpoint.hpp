@@ -142,7 +142,7 @@ public:
             std::lock_guard<std::mutex> lock(rxMutex_);
             localRxBuffer = rxBuffer_;
 
-            std::cout << "(AGVEndpoint) Received Buffer content: ";
+            std::cout << "(readAgvRxBuffer) Received Buffer content: " << std::endl;
                 for (const auto& byte : localRxBuffer) {
                     std::cout << static_cast<int>(byte) << " ";
                 }
@@ -227,17 +227,19 @@ private:
                 localTxBuffer.clear();
             }
 
-
-            std::cout << "(AGVEndpoint) Try to receive data from the AGV";
+            // Receive data from the AGV
+            std::cout << "(connectionLoop) Try to receive data from the AGV" << std::endl;
             std::array<uint8_t, 54> buf;
             sockaddr_in senderAddr {};
             socklen_t addrLen = sizeof(senderAddr);
+            
             int len = recvfrom(udpRx_, buf.data(), buf.size(), 0, reinterpret_cast<struct sockaddr*>(&senderAddr), &addrLen);
             if (len > 0) {
+                std::cout << "(connectionLoop) if (len > 0)" << std::endl;
                 std::lock_guard<std::mutex> lock(rxMutex_);
                 std::copy(buf.begin(), buf.end(), rxBuffer_.begin());
-                std::cout << "(AGVEndpoint) Received " << len << " bytes from the AGV" << std::endl;
-                std::cout << "(AGVEndpoint) Received Buffer content: ";
+                std::cout << "(connectionLoop) Received " << len << " bytes from the AGV" << std::endl;
+                std::cout << "(connectionLoop) Received Buffer content: ";
                 for (const auto& byte : buf) {
                     std::cout << static_cast<int>(byte) << " ";
                 }
@@ -245,6 +247,9 @@ private:
             }
             else if (len < 0 && errno != EAGAIN && errno != EWOULDBLOCK) {
                 perror("(AGVEndpoint) recvfrom error");
+            }
+            else {
+                std::cout << "(connectionLoop) No data received from the AGV" << std::endl;
             }
         }
         std::cout << "(AGVEndpoint) Connection loop stopped" << std::endl;
