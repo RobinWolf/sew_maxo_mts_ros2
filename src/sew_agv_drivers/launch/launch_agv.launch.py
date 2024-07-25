@@ -127,11 +127,18 @@ def generate_launch_description():
     )  
     declared_arguments.append(
         DeclareLaunchArgument(
-            "joystick",
+            "enable_joystick",
             default_value="true",
-            description="Launch joystick launchfile to controll the agv with a joystick.",
+            description="set to true if you want to use a joystick (XBox controller od keyboard) to move the robot.",
         )
     ) 
+    declared_arguments.append(
+        DeclareLaunchArgument(
+            'use_controller',
+            default_value='true',
+            description='Set to "true" if you want to use a xBox One Controller to control the AGV movement, set to "false" if you want to use "wasd" on the keyboard instead.',
+        )
+    )
 
     tf_prefix = LaunchConfiguration("tf_prefix")
     use_fake_hardware = LaunchConfiguration("use_fake_hardware")
@@ -148,7 +155,8 @@ def generate_launch_description():
     right_wheel_name = LaunchConfiguration("right_wheel_name")
     wheel_separation = LaunchConfiguration("wheel_separation")
     wheel_radius = LaunchConfiguration("wheel_radius")
-    joystick = LaunchConfiguration("joystick")
+    enable_joystick = LaunchConfiguration("joystick")
+    use_controller = LaunchConfiguration("use_controller")
 
 
 #define the robot description content
@@ -245,9 +253,15 @@ def generate_launch_description():
 
     # Include des Joystick Launch-Files
     joystick_launch = IncludeLaunchDescription(
-        PythonLaunchDescriptionSource(PathJoinSubstitution([FindPackageShare(navigation_package), "launch", "joystick.launch.py"])),
-        condition=IfCondition(joystick)
-    )
+            PythonLaunchDescriptionSource(
+                [PathJoinSubstitution([FindPackageShare(navigation_package), 'launch']), "/joystick.launch.py"]),
+                condition=IfCondition(enable_joystick),
+                launch_arguments={
+                    "use_sim_time": use_sim_time,
+                    "use_controller": use_controller,
+                }.items(),
+        )
+
 
     # Delay rviz start after `joint_state_broadcaster`
     delay_rviz_after_joint_state_broadcaster_spawner = RegisterEventHandler(
