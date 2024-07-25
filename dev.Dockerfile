@@ -85,5 +85,24 @@ USER root
 RUN apt-get update && apt-get install -y ros-${ROS_DISTRO}-rviz2
 USER $USER
 
+##############################################################################
+##                        build and source the workspace                    ##
+##############################################################################
+# Copy src into src folder to build the workspace initially --> mounting overwrites this later
+COPY ./src /home/$USER/ros2_ws/src
+
+# Build the workspace packages
+RUN cd /home/$USER/ros2_ws && \
+     . /opt/ros/$ROS_DISTRO/setup.sh && \
+     colcon build
+
+# Add built package to entrypoint by calling install/setup.bash
+USER root
+RUN sed -i 's|exec "\$@"|source "/home/'"${USER}"'/ros2_ws/install/setup.bash"\n&|' /ros_entrypoint.sh
+USER $USER
+
+
+# autostart drivers
+CMD ["ros2", "launch", "sew_agv_drivers", "launch_agv.launch.py", "enable_joystick:=false"] 
 
 #CMD [/bin/bash]
