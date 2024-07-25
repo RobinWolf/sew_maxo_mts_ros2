@@ -13,6 +13,6 @@ WantedBy=multi-user.target
 
 ---> TODO:
 1) move this file to /etc/systemd/system/
-2) replace PATH_to_script with the real path: on raspi: /home/agv/Igus_and_AGV/sew_maxo_mts/
+2) replace PATH_to_script with the real path: on raspi: /home/agv/Igus_and_AGV/sew_maxo_mts_ros2/
 2) enable service so that it runs on boot sudo systemctl enable setup_agv.service
 3) reboot
