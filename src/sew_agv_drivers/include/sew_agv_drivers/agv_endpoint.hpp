@@ -76,70 +76,6 @@ public:
         }
 
 
-        // ///////////////////////////////////////////////////////////////////////////////////////
-        // // Create a start message to send to the AGV
-        // StartTxMsg startMsg;
-        // startMsg.setIP(parseIp(local_ip_));
-        // startMsg.setPort(local_port_);
-
-        // // Encode the start message
-        // std::vector<uint8_t> buf = startMsg.encode();
-
-        // // Send start message until a response is received
-        // while (!connected_) {
-        //     sendDataToAgv(buf);  // Send start message
-        //     buf.resize(1024);
-        //     sockaddr_in senderAddr {};
-        //     socklen_t addrLen = sizeof(senderAddr);
-            
-        //     // Receive a response
-        //     int len = recvfrom(udpRx_, buf.data(), buf.size(), 0, reinterpret_cast<struct sockaddr*>(&senderAddr), &addrLen);
-        //     if (len > 0) {
-        //         connected_ = true;
-
-        //         // copy the received data to the rxBuffer_
-        //         {
-        //         std::lock_guard<std::mutex> lock(rxMutex_);
-        //         std::copy(buf.begin(), buf.end(), rxBuffer_.begin());
-        //         }
-
-        //         // Decode and print the header and message data
-        //         AgvRxHeader header;
-        //         std::array<uint8_t, 14> header_buf;
-        //         std::copy(buf.begin(), buf.begin() + 14, header_buf.begin());
-        //         header.decode(header_buf);
-
-        //         // MonitorRxMsg msg;
-        //         // msg.decode(buf);
-
-        //         std::cout << "(AGVEndpoint) connected" << std::endl;
-        //         // Print AGV status
-        //         std::cout << "(AGVEndpoint) AGV Status:" << std::endl;
-        //         std::cout << "(AGVEndpoint) State: " << static_cast<int>(header.state) << std::endl;
-        //         std::cout << "(AGVEndpoint) Color: " << static_cast<int>(header.color) << std::endl;
-        //         std::cout << "(AGVEndpoint) Current Page: " << static_cast<int>(header.current_page) << std::endl;
-        //         std::cout << "(AGVEndpoint) Error: " << header.error << std::endl;
-        //         std::cout << "(AGVEndpoint) Error Code: " << header.error_code << std::endl;
-        //         // std::cout << "(AGVEndpoint) Part Data: " << msg.part_data << std::endl;
-        //         // std::cout << "(AGVEndpoint) In Station: " << msg.in_station << std::endl;
-        //         // std::cout << "(AGVEndpoint) In Station State: " << msg.in_station_state << std::endl;
-        //         // std::cout << "(AGVEndpoint) Transponder: " << msg.transponder << std::endl;
-        //         // std::cout << "(AGVEndpoint) Transponder Distance: " << msg.transponder_distance << std::endl;
-        //         // std::cout << "(AGVEndpoint) V-Track: " << msg.v_track << std::endl;
-        //         // std::cout << "(AGVEndpoint) V-Track Distance: " << msg.v_track_distance << std::endl;
-        //         // std::cout << "(AGVEndpoint) Actual Speed: " << msg.actual_speed << std::endl;
-        //         // std::cout << "(AGVEndpoint) Target Speed: " << msg.target_speed << std::endl;
-        //         // std::cout << "(AGVEndpoint) Speed Limit: " << msg.speed_limit << std::endl;
-        //         // std::cout << "(AGVEndpoint) Charging State: " << msg.charging_state << std::endl;
-        //         // std::cout << "(AGVEndpoint) Power: " << msg.power << std::endl;
-        //         return true;
-        //     } else {
-        //         std::cout << "(AGVEndpoint) not connected" << std::endl;
-        //     }
-        // }
-        // ///////////////////////////////////////////////////////////////////////////////////////
-
-
         // Start the connection thread
         stopRequested_ = false;
         connectionThread_ = std::thread(&AgvEndpoint::connectionLoop, this);
@@ -282,6 +218,71 @@ private:
     // Function that runs in a separate thread for continuous communication
     void connectionLoop() {
         std::cout << "(AGVEndpoint) Connection loop started" << std::endl;
+
+        ///////////////////////////////////////////////////////////////////////////////////////
+        // Create a start message to send to the AGV
+        StartTxMsg startMsg;
+        startMsg.setIP(parseIp(local_ip_));
+        startMsg.setPort(local_port_);
+
+        // Encode the start message
+        std::vector<uint8_t> temp_buf = startMsg.encode();
+
+        // Send start message until a response is received
+        bool recivedStatus = false;
+        while (!recivedStatus) {
+            sendDataToAgv(temp_buf);  // Send start message
+            temp_buf.resize(1024);
+            sockaddr_in senderAddr {};
+            socklen_t addrLen = sizeof(senderAddr);
+            
+            // Receive a response
+            int len = recvfrom(udpRx_, temp_buf.data(), temp_buf.size(), 0, reinterpret_cast<struct sockaddr*>(&senderAddr), &addrLen);
+            if (len > 0) {
+                recivedStatus = true;
+
+                // copy the received data to the rxBuffer_
+                {
+                std::lock_guard<std::mutex> lock(rxMutex_);
+                std::copy(temp_buf.begin(), temp_buf.end(), rxBuffer_.begin());
+                }
+
+                // Decode and print the header and message data
+                AgvRxHeader header;
+                std::array<uint8_t, 14> header_buf;
+                std::copy(temp_buf.begin(), temp_buf.begin() + 14, header_buf.begin());
+                header.decode(header_buf);
+
+                // MonitorRxMsg msg;
+                // msg.decode(buf);
+
+                std::cout << "(AGVEndpoint) connected" << std::endl;
+                // Print AGV status
+                std::cout << "(AGVEndpoint) AGV Status:" << std::endl;
+                std::cout << "(AGVEndpoint) State: " << static_cast<int>(header.state) << std::endl;
+                std::cout << "(AGVEndpoint) Color: " << static_cast<int>(header.color) << std::endl;
+                std::cout << "(AGVEndpoint) Current Page: " << static_cast<int>(header.current_page) << std::endl;
+                std::cout << "(AGVEndpoint) Error: " << header.error << std::endl;
+                std::cout << "(AGVEndpoint) Error Code: " << header.error_code << std::endl;
+                // std::cout << "(AGVEndpoint) Part Data: " << msg.part_data << std::endl;
+                // std::cout << "(AGVEndpoint) In Station: " << msg.in_station << std::endl;
+                // std::cout << "(AGVEndpoint) In Station State: " << msg.in_station_state << std::endl;
+                // std::cout << "(AGVEndpoint) Transponder: " << msg.transponder << std::endl;
+                // std::cout << "(AGVEndpoint) Transponder Distance: " << msg.transponder_distance << std::endl;
+                // std::cout << "(AGVEndpoint) V-Track: " << msg.v_track << std::endl;
+                // std::cout << "(AGVEndpoint) V-Track Distance: " << msg.v_track_distance << std::endl;
+                // std::cout << "(AGVEndpoint) Actual Speed: " << msg.actual_speed << std::endl;
+                // std::cout << "(AGVEndpoint) Target Speed: " << msg.target_speed << std::endl;
+                // std::cout << "(AGVEndpoint) Speed Limit: " << msg.speed_limit << std::endl;
+                // std::cout << "(AGVEndpoint) Charging State: " << msg.charging_state << std::endl;
+                // std::cout << "(AGVEndpoint) Power: " << msg.power << std::endl;
+            } else {
+                std::cout << "(AGVEndpoint) not connected" << std::endl;
+            }
+        }
+        ///////////////////////////////////////////////////////////////////////////////////////
+
+
         while (!stopRequested_) {
             // Send data to AGV if txBuffer_ is not empty
             std::vector<uint8_t> localTxBuffer;
