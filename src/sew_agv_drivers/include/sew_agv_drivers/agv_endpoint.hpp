@@ -106,7 +106,7 @@ public:
     }
 
     // Send a control message to the AGV
-    bool sendControlToAGV(float speed, float x, float y, ManualJogTxMsg::SpeedMode speed_mode = ManualJogTxMsg::SpeedMode::RAPID) {
+    bool writeAgvTxBuffer(float speed, float x, float y, ManualJogTxMsg::SpeedMode speed_mode = ManualJogTxMsg::SpeedMode::RAPID) {
         if (!connected_) {
             std::cerr << "(AGVEndpoint) AGV is not connected" << std::endl;
             return false;
@@ -118,8 +118,8 @@ public:
         msg.setDirection(x, y);
 
         // Parse and set the IP address and port
-        msg.setIP(parseIp(agv_ip_));
-        msg.setPort(agv_port_);
+        // msg.setIP(parseIp(agv_ip_));
+        // msg.setPort(agv_port_);
 
         // Encode the message
         std::vector<uint8_t> encoded_msg = msg.encode();
@@ -134,7 +134,7 @@ public:
     }
 
     // Query and print the status of the AGV
-    bool getStatusAGV() {
+    bool readAgvRxBuffer() {
         if (!connected_) {
             std::cerr << "(AGVEndpoint) AGV is not connected" << std::endl;
             return false;
@@ -249,7 +249,7 @@ private:
                     std::cout << static_cast<int>(byte) << " ";
                 }
                 std::cout << std::endl;
-                
+
                 sendDataToAgv(localTxBuffer);
                 localTxBuffer.clear();
             }

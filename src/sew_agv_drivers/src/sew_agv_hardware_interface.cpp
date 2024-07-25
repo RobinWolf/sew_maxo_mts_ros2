@@ -144,7 +144,7 @@ namespace sew_agv_drivers {
         RCLCPP_INFO(rclcpp::get_logger("SewAgvHardwareInterface"), "Successfully connected to AGV.");
 
         // read AGV status
-        if(agv_endpoint_.getStatusAGV())
+        if(agv_endpoint_.readAgvRxBuffer())
         {
             RCLCPP_INFO(rclcpp::get_logger("SewAgvHardwareInterface"), "Successfully read status from AGV.");
             return hardware_interface::CallbackReturn::SUCCESS;;
@@ -185,7 +185,7 @@ namespace sew_agv_drivers {
     // return hardware_interface::return_type::OK;
 
     // Reading from AGV is not needed in every cycle, but this code shows youw, how to read the status
-    if(agv_endpoint_.getStatusAGV())
+    if(agv_endpoint_.readAgvRxBuffer())
     {
         RCLCPP_INFO(rclcpp::get_logger("SewAgvHardwareInterface"), "Successfully read from AGV.");
         return hardware_interface::return_type::OK;
@@ -209,7 +209,7 @@ namespace sew_agv_drivers {
     
     
     // Send command to agv
-    if(agv_endpoint_.sendControlToAGV(speed, x, y))
+    if(agv_endpoint_.writeAgvTxBuffer(speed, x, y))
     {
       RCLCPP_INFO(rclcpp::get_logger("SewAgvHardwareInterface"), "Successfully sent control to AGV. Speed: %f, X: %f, Y: %f", speed, x, y);
       return hardware_interface::return_type::OK;
