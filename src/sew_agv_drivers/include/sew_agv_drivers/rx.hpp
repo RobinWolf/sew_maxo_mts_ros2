@@ -98,7 +98,7 @@ public:
           charging_state(0), power(0) {}
 
     // Method to decode the message from a given byte array.
-    void decode(const std::array<uint8_t, 72>& buf) {
+    void decode(const std::array<uint8_t, 54>& buf) {
         size_t offset = BODY_OFFSET;   // Start at the body offset.
         part_data = (buf[offset] << 8) | buf[offset + 1];                  // Decode part data.
         in_station = (buf[offset + 2] << 8) | buf[offset + 3];             // Decode station indicator.

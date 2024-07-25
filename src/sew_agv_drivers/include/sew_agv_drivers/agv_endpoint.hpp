@@ -202,7 +202,7 @@ public:
         }
 
         // Lock the rxBuffer_ and print its content
-        std::array<uint8_t, 72> localRxBuffer;
+        std::array<uint8_t, 54> localRxBuffer;
         {
             std::lock_guard<std::mutex> lock(rxMutex_);
             localRxBuffer = rxBuffer_;
@@ -274,7 +274,7 @@ private:
     std::atomic<bool> stopRequested_; // Flag to signal the thread to stop
 
     // Buffers for incoming and outgoing data
-    std::array<uint8_t, 72> rxBuffer_;
+    std::array<uint8_t, 54> rxBuffer_;
     std::vector<uint8_t> txBuffer_;
     std::mutex txMutex_;
     std::mutex rxMutex_;
@@ -306,7 +306,7 @@ private:
 
             // Receive data from the AGV
             std::cout << "(connectionLoop) Try to receive data from the AGV" << std::endl;
-            std::array<uint8_t, 72> buf;
+            std::array<uint8_t, 54> buf;
             sockaddr_in senderAddr {};
             socklen_t addrLen = sizeof(senderAddr);
 
