@@ -89,3 +89,14 @@ ros2 launch sew_agv_drivers launch_agv.launch.py
 - TODO: Prüfen ob buffer nach senden wirklich leer ist
 - TODO: Errocode AGV Status checken
 - TODO: Buffer prüfen ob vector oder array
+
+
+25.07.2024
+- IP und Port bei msg an AGV weglassen --> Verbindung bleibt stabil
+- Cahnged speedmode to CREEP --> AGV wird nichtmehr zu schnell und stoppt desswegen nichtmehr
+- Speed berechnet statt 100 hardgecodet
+
+- TODO: Status msg richtig decodieren/ checken
+- TODO: Status auf Topic publishen
+- TODO: Alles auf raspi laufen lassen mit fernsteuerung pc
+- TODO: Autostart
