@@ -87,3 +87,5 @@ ros2 launch sew_agv_drivers launch_agv.launch.py
 - Connection zum AGV wird nicht durchgängig gehalten --> extra thread, der connection aufrecht erhält
 - wenn connection_ = true; in zeile 82 in agv_enpoint auskommentiert: Verbindung mit agv stabil, aber rest funktioniert natürlich nichtmehr (Wenn einkommentiert: Verbindung mit agv nicht stabil)
 - TODO: Prüfen ob buffer nach senden wirklich leer ist
+- TODO: Errocode AGV Status checken
+- TODO: Buffer prüfen ob vector oder array
