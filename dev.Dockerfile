@@ -31,7 +31,7 @@ WORKDIR /home/$USER/ros2_ws
 ##############################################################################
 ##       2. stage: set up description and install ros2 control pkg          ##
 ##############################################################################
-FROM base as sew_description
+FROM base AS sew_description
 
 USER root
 RUN apt-get update && apt-get install -y ros-${ROS_DISTRO}-xacro
@@ -52,7 +52,7 @@ USER $USER
 ##############################################################################
 ##                           3. stage: set up joystick control                        ##
 ##############################################################################
-FROM sew_description as joystick_control
+FROM sew_description AS joystick_control
 
 USER root
 RUN apt-get update && apt-get install -y ros-${ROS_DISTRO}-teleop-twist-joy \
@@ -66,7 +66,7 @@ USER $USER
 ##############################################################################
 ##                         4. stage: set up nav2 stack                      ##
 ##############################################################################
-FROM joystick_control as sew_navigation
+FROM joystick_control AS sew_navigation
 
 USER root
 RUN apt-get update && apt-get install -y ros-${ROS_DISTRO}-navigation2 \
