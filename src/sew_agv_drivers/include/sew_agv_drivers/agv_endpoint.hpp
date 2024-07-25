@@ -159,24 +159,24 @@ public:
         msg.decode(localRxBuffer);
 
         // Print AGV status
-        std::cout << "(AGVEndpoint) AGV Status:" << std::endl;
-        std::cout << "(AGVEndpoint) State: " << static_cast<int>(header.state) << std::endl;
-        std::cout << "(AGVEndpoint) Color: " << static_cast<int>(header.color) << std::endl;
-        std::cout << "(AGVEndpoint) Current Page: " << static_cast<int>(header.current_page) << std::endl;
-        std::cout << "(AGVEndpoint) Error: " << header.error << std::endl;
-        std::cout << "(AGVEndpoint) Error Code: " << header.error_code << std::endl;
-        std::cout << "(AGVEndpoint) Part Data: " << msg.part_data << std::endl;
-        std::cout << "(AGVEndpoint) In Station: " << msg.in_station << std::endl;
-        std::cout << "(AGVEndpoint) In Station State: " << msg.in_station_state << std::endl;
-        std::cout << "(AGVEndpoint) Transponder: " << msg.transponder << std::endl;
-        std::cout << "(AGVEndpoint) Transponder Distance: " << msg.transponder_distance << std::endl;
-        std::cout << "(AGVEndpoint) V-Track: " << msg.v_track << std::endl;
-        std::cout << "(AGVEndpoint) V-Track Distance: " << msg.v_track_distance << std::endl;
-        std::cout << "(AGVEndpoint) Actual Speed: " << msg.actual_speed << std::endl;
-        std::cout << "(AGVEndpoint) Target Speed: " << msg.target_speed << std::endl;
-        std::cout << "(AGVEndpoint) Speed Limit: " << msg.speed_limit << std::endl;
-        std::cout << "(AGVEndpoint) Charging State: " << msg.charging_state << std::endl;
-        std::cout << "(AGVEndpoint) Power: " << msg.power << std::endl;
+        // std::cout << "(AGVEndpoint) AGV Status:" << std::endl;
+        // std::cout << "(AGVEndpoint) State: " << static_cast<int>(header.state) << std::endl;
+        // std::cout << "(AGVEndpoint) Color: " << static_cast<int>(header.color) << std::endl;
+        // std::cout << "(AGVEndpoint) Current Page: " << static_cast<int>(header.current_page) << std::endl;
+        // std::cout << "(AGVEndpoint) Error: " << header.error << std::endl;
+        // std::cout << "(AGVEndpoint) Error Code: " << header.error_code << std::endl;
+        // std::cout << "(AGVEndpoint) Part Data: " << msg.part_data << std::endl;
+        // std::cout << "(AGVEndpoint) In Station: " << msg.in_station << std::endl;
+        // std::cout << "(AGVEndpoint) In Station State: " << msg.in_station_state << std::endl;
+        // std::cout << "(AGVEndpoint) Transponder: " << msg.transponder << std::endl;
+        // std::cout << "(AGVEndpoint) Transponder Distance: " << msg.transponder_distance << std::endl;
+        // std::cout << "(AGVEndpoint) V-Track: " << msg.v_track << std::endl;
+        // std::cout << "(AGVEndpoint) V-Track Distance: " << msg.v_track_distance << std::endl;
+        // std::cout << "(AGVEndpoint) Actual Speed: " << msg.actual_speed << std::endl;
+        // std::cout << "(AGVEndpoint) Target Speed: " << msg.target_speed << std::endl;
+        // std::cout << "(AGVEndpoint) Speed Limit: " << msg.speed_limit << std::endl;
+        // std::cout << "(AGVEndpoint) Charging State: " << msg.charging_state << std::endl;
+        // std::cout << "(AGVEndpoint) Power: " << msg.power << std::endl;
         return true;
     }
 
@@ -210,12 +210,15 @@ private:
             {
                 std::lock_guard<std::mutex> lock(txMutex_);
                 localTxBuffer = txBuffer_;
+
                 std::cout << "(AGVEndpoint) txBuffer_ before clear content: ";
                 for (const auto& byte : txBuffer_) {
                     std::cout << static_cast<int>(byte) << " ";
                 }
                 std::cout << std::endl;
+
                 txBuffer_.clear();
+
                 std::cout << "(AGVEndpoint) txBuffer_ after clear content: ";
                 for (const auto& byte : txBuffer_) {
                     std::cout << static_cast<int>(byte) << " ";
@@ -224,9 +227,16 @@ private:
 
             }
 
+            std::cout << "(AGVEndpoint) localTxBuffer content: ";
+                for (const auto& byte : localTxBuffer) {
+                    std::cout << static_cast<int>(byte) << " ";
+                }
+                std::cout << std::endl;
+
             if (!localTxBuffer.empty()) {
-                std::cout << "(AGVEndpoint) txBuffer_ not empty" << std::endl;
+                std::cout << "(AGVEndpoint) localTxBuffer not empty" << std::endl;
                 sendDataToAgv(localTxBuffer);
+                localTxBuffer.clear();
             } else {
                 // Send only the header if txBuffer_ is empty
                 std::cout << "(AGVEndpoint) txBuffer_ empty" << std::endl;
@@ -234,6 +244,7 @@ private:
                 msg.setSpeedMode(ManualJogTxMsg::SpeedMode::RAPID); // Set default header values if needed
                 localTxBuffer = msg.encode();
                 sendDataToAgv(localTxBuffer);
+                localTxBuffer.clear();
             }
 
             // Receive data from the AGV
