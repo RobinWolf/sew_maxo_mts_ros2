@@ -155,7 +155,7 @@ def generate_launch_description():
     right_wheel_name = LaunchConfiguration("right_wheel_name")
     wheel_separation = LaunchConfiguration("wheel_separation")
     wheel_radius = LaunchConfiguration("wheel_radius")
-    enable_joystick = LaunchConfiguration("joystick")
+    enable_joystick = LaunchConfiguration("enable_joystick")
     use_controller = LaunchConfiguration("use_controller")
 
 
