@@ -209,7 +209,7 @@ private:
             std::vector<uint8_t> localTxBuffer;
             {
                 std::lock_guard<std::mutex> lock(txMutex_);
-                //localTxBuffer = txBuffer_;
+                localTxBuffer = txBuffer_;
 
                 std::cout << "(AGVEndpoint) txBuffer_ before clear content: ";
                 for (const auto& byte : txBuffer_) {
