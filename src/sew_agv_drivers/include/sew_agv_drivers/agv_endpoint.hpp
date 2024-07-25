@@ -219,6 +219,7 @@ private:
     void connectionLoop() {
         std::cout << "(AGVEndpoint) Connection loop started" << std::endl;
 
+        /* // Read AGV status one time
         // Create a start message to send to the AGV and recive AGV status
         StartTxMsg startMsg;
         startMsg.setIP(parseIp(local_ip_));
@@ -251,7 +252,7 @@ private:
             } else {
                 std::cout << "(AGVEndpoint) not connected" << std::endl;
             }
-        }
+        }*/
 
         while (!stopRequested_) {
             // Send data to AGV if txBuffer_ is not empty
