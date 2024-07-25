@@ -1,6 +1,6 @@
 [Unit]
 Description=Setup AGV Ethernet Connection
-After=network.target
+After=network-online.target
 
 [Service]
 ExecStart=/PATH_to_script/setup_agv.sh
