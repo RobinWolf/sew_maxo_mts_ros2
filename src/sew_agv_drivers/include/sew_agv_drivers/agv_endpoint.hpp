@@ -141,6 +141,13 @@ public:
         {
             std::lock_guard<std::mutex> lock(rxMutex_);
             localRxBuffer = rxBuffer_;
+
+            std::cout << "(AGVEndpoint) Received Buffer content: ";
+                for (const auto& byte : localRxBuffer) {
+                    std::cout << static_cast<int>(byte) << " ";
+                }
+                std::cout << std::endl;
+
         }
 
         // Decode and print the header and message data
@@ -221,7 +228,7 @@ private:
             }
 
 
-            // Receive data from the AGV
+            std::cout << "(AGVEndpoint) Try to receive data from the AGV";
             std::array<uint8_t, 54> buf;
             sockaddr_in senderAddr {};
             socklen_t addrLen = sizeof(senderAddr);
