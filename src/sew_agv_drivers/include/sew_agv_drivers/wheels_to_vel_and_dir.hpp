@@ -27,10 +27,6 @@ public:
 
     void getVelocityAndDirection(float &speed, float &x, float &y)
     {   
-        // Test print to check what values are being read
-        // std::cout << "Left wheel cmd: " << left_wheel_.cmd << std::endl;
-        // std::cout << "Right wheel cmd: " << right_wheel_.cmd << std::endl;
-
         // Calculate wheel speeds (v_left and v_right)
         float v_left = left_wheel_.cmd * wheel_radius_;
         float v_right = right_wheel_.cmd * wheel_radius_;
@@ -49,8 +45,8 @@ public:
         y = v / v_max;              // forward movement
         x = omega / omega_max;      // rotation
 
-        // Speed is always 100%
-        speed = 100.0; 
+        // Speed between 0 and 100%
+        speed = sqrt(x * x + y * y) * 100.0;
     }
 };
 
