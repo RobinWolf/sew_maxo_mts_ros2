@@ -12,4 +12,5 @@ docker run \
   -e DISPLAY="$DISPLAY" \
   -v /dev:/dev \
   --privileged \
+  --env-file .env \
   logilab-sew-maxo-mts/ros-render:"$ROS_DISTRO"
