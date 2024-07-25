@@ -209,7 +209,7 @@ private:
             std::vector<uint8_t> localTxBuffer;
             {
                 std::lock_guard<std::mutex> lock(txMutex_);
-                localTxBuffer = txBuffer_;
+                //localTxBuffer = txBuffer_;
 
                 std::cout << "(AGVEndpoint) txBuffer_ before clear content: ";
                 for (const auto& byte : txBuffer_) {
@@ -239,13 +239,26 @@ private:
                 localTxBuffer.clear();
             } else {
                 // Send only the header if txBuffer_ is empty
-                std::cout << "(AGVEndpoint) txBuffer_ empty" << std::endl;
+                std::cout << "(AGVEndpoint) localTxBuffer empty" << std::endl;
                 ManualJogTxMsg msg;
                 msg.setSpeedMode(ManualJogTxMsg::SpeedMode::RAPID); // Set default header values if needed
                 localTxBuffer = msg.encode();
+
+                std::cout << "(AGVEndpoint) localTxBuffer content only header: ";
+                for (const auto& byte : localTxBuffer) {
+                    std::cout << static_cast<int>(byte) << " ";
+                }
+                std::cout << std::endl;
+                
                 sendDataToAgv(localTxBuffer);
                 localTxBuffer.clear();
             }
+
+            std::cout << "(AGVEndpoint) localTxBuffer content after sending: ";
+                for (const auto& byte : localTxBuffer) {
+                    std::cout << static_cast<int>(byte) << " ";
+                }
+                std::cout << std::endl;
 
             // Receive data from the AGV
             std::array<uint8_t, 54> buf;
