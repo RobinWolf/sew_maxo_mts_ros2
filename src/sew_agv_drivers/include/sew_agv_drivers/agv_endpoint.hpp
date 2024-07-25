@@ -276,31 +276,25 @@ private:
             }
 
             // Receive data from the AGV
-            // std::cout << "(connectionLoop) Try to receive data from the AGV" << std::endl;
-            // std::array<uint8_t, 54> buf;
-            // sockaddr_in senderAddr {};
-            // socklen_t addrLen = sizeof(senderAddr);
+            std::array<uint8_t, 54> buf;
+            sockaddr_in senderAddr {};
+            socklen_t addrLen = sizeof(senderAddr);
+  
+            int len = recvfrom(udpRx_, buf.data(), buf.size(), 0, reinterpret_cast<struct sockaddr*>(&senderAddr), &addrLen);
+            if (len > 0) {
+                std::lock_guard<std::mutex> lock(rxMutex_);
+                std::copy(buf.begin(), buf.end(), rxBuffer_.begin());
+                for (const auto& byte : buf) {
+                    std::cout << static_cast<int>(byte) << " ";
+                }
+                std::cout << std::endl;
+            }
+            else if (len < 0 && errno != EAGAIN && errno != EWOULDBLOCK) {
+                perror("(AGVEndpoint) recvfrom error");
+            }
 
-                
-            // int len = recvfrom(udpRx_, buf.data(), buf.size(), 0, reinterpret_cast<struct sockaddr*>(&senderAddr), &addrLen);
-            // std::cout << "(connectionLoop) Received " << len << " bytes from the AGV" << std::endl;
-            // if (len > 0) {
-            //     std::cout << "(connectionLoop) if (len > 0)" << std::endl;
-            //     std::lock_guard<std::mutex> lock(rxMutex_);
-            //     std::copy(buf.begin(), buf.end(), rxBuffer_.begin());
-            //     std::cout << "(connectionLoop) Received " << len << " bytes from the AGV" << std::endl;
-            //     std::cout << "(connectionLoop) Received Buffer content: ";
-            //     for (const auto& byte : buf) {
-            //         std::cout << static_cast<int>(byte) << " ";
-            //     }
-            //     std::cout << std::endl;
-            // }
-            // else if (len < 0 && errno != EAGAIN && errno != EWOULDBLOCK) {
-            //     perror("(AGVEndpoint) recvfrom error");
-            // }
-            // else {
-            //     std::cout << "(connectionLoop) No data received from the AGV" << std::endl;
-            // }
+            // Wait for a while before sending the next message
+            //std::this_thread::sleep_for(std::chrono::milliseconds(10));
         }
         std::cout << "(AGVEndpoint) Connection loop stopped" << std::endl;
     }
