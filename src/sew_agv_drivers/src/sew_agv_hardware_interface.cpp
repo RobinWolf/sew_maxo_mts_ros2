@@ -143,17 +143,6 @@ namespace sew_agv_drivers {
     if (connected) {
         RCLCPP_INFO(rclcpp::get_logger("SewAgvHardwareInterface"), "Successfully connected to AGV.");
         return hardware_interface::CallbackReturn::SUCCESS;
-        // read AGV status
-        // if(agv_endpoint_.readAgvRxBuffer())
-        // {
-        //     RCLCPP_INFO(rclcpp::get_logger("SewAgvHardwareInterface"), "Successfully read status from AGV.");
-        //     return hardware_interface::CallbackReturn::SUCCESS;
-        // }
-        // else
-        // {
-        //     RCLCPP_WARN(rclcpp::get_logger("SewAgvHardwareInterface"), "Failed to read status from AGV.");
-        //     return hardware_interface::CallbackReturn::ERROR;
-        // }
     } else {
         RCLCPP_ERROR(rclcpp::get_logger("SewAgvHardwareInterface"), "Failed to connect to AGV.");
         return hardware_interface::CallbackReturn::ERROR;
@@ -211,7 +200,7 @@ namespace sew_agv_drivers {
     // Send command to agv
     if(agv_endpoint_.writeAgvTxBuffer(speed, x, y))
     {
-      RCLCPP_INFO(rclcpp::get_logger("SewAgvHardwareInterface"), "Successfully sent control to AGV. Speed: %f, X: %f, Y: %f", speed, x, y);
+      //RCLCPP_INFO(rclcpp::get_logger("SewAgvHardwareInterface"), "Successfully sent control to AGV. Speed: %f, X: %f, Y: %f", speed, x, y);
       return hardware_interface::return_type::OK;
     }
     else
