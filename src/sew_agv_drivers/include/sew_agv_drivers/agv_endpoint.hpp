@@ -251,7 +251,6 @@ private:
                 }
                 std::cout << std::endl;
             }
-            } 
             else if (len < 0 && errno != EAGAIN && errno != EWOULDBLOCK) {
                 perror("(AGVEndpoint) recvfrom error");
             }
