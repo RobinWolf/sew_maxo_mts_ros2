@@ -1,0 +1,18 @@
+[Unit]
+Description=Setup AGV Ethernet Connection
+After=network.target
+
+[Service]
+ExecStart=/PATH_to_script/setup_agv.sh
+Restart=always
+User=root
+
+[Install]
+WantedBy=multi-user.target
+
+
+---> TODO:
+1) move this file to /etc/systemd/system/
+2) replace PATH_to_script with the real path: on raspi: /home/agv/Igus_and_AGV/sew_maxo_mts/
+2) enable service so that it runs on boot sudo systemctl enable setup_agv.service
+3) reboot
