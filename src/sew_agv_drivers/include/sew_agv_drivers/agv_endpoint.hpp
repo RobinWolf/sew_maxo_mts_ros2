@@ -78,8 +78,6 @@ public:
 
         ///////////////////////////////////////////////////////////////////////////////////////
         // Create a start message to send to the AGV
-        {
-        std::lock_guard<std::mutex> lock(rxMutex_);
         StartTxMsg startMsg;
         startMsg.setIP(parseIp(local_ip_));
         startMsg.setPort(local_port_);
@@ -98,6 +96,13 @@ public:
             int len = recvfrom(udpRx_, buf.data(), buf.size(), 0, reinterpret_cast<struct sockaddr*>(&senderAddr), &addrLen);
             if (len > 0) {
                 connected_ = true;
+
+                // copy the received data to the rxBuffer_
+                {
+                std::lock_guard<std::mutex> lock(rxMutex_);
+                std::copy(buf.begin(), buf.end(), rxBuffer_.begin());
+                }
+
                 // Decode and print the header and message data
                 AgvRxHeader header;
                 std::array<uint8_t, 14> header_buf;
@@ -131,7 +136,6 @@ public:
             } else {
                 std::cout << "(AGVEndpoint) not connected" << std::endl;
             }
-        }
         }
         ///////////////////////////////////////////////////////////////////////////////////////
 
@@ -198,7 +202,7 @@ public:
         }
 
         // Lock the rxBuffer_ and print its content
-        std::array<uint8_t, 54> localRxBuffer;
+        std::array<uint8_t, 72> localRxBuffer;
         {
             std::lock_guard<std::mutex> lock(rxMutex_);
             localRxBuffer = rxBuffer_;
@@ -270,7 +274,7 @@ private:
     std::atomic<bool> stopRequested_; // Flag to signal the thread to stop
 
     // Buffers for incoming and outgoing data
-    std::array<uint8_t, 54> rxBuffer_;
+    std::array<uint8_t, 72> rxBuffer_;
     std::vector<uint8_t> txBuffer_;
     std::mutex txMutex_;
     std::mutex rxMutex_;
@@ -302,7 +306,7 @@ private:
 
             // Receive data from the AGV
             std::cout << "(connectionLoop) Try to receive data from the AGV" << std::endl;
-            std::array<uint8_t, 54> buf;
+            std::array<uint8_t, 72> buf;
             sockaddr_in senderAddr {};
             socklen_t addrLen = sizeof(senderAddr);
 
