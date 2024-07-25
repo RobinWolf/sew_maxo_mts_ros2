@@ -219,7 +219,7 @@ private:
     void connectionLoop() {
         std::cout << "(AGVEndpoint) Connection loop started" << std::endl;
 
-        /* // Read AGV status one time
+        /* // Read AGV status one time --> works on pc, but causes problems on raspi5
         // Create a start message to send to the AGV and recive AGV status
         StartTxMsg startMsg;
         startMsg.setIP(parseIp(local_ip_));
