@@ -95,8 +95,7 @@ ros2 launch sew_agv_drivers launch_agv.launch.py
 - IP und Port bei msg an AGV weglassen --> Verbindung bleibt stabil
 - Cahnged speedmode to CREEP --> AGV wird nichtmehr zu schnell und stoppt desswegen nichtmehr
 - Speed berechnet statt 100 hardgecodet
+- Status wird nur einmal am ANfang geprintet
 
-- TODO: Status msg richtig decodieren/ checken
-- TODO: Status auf Topic publishen
 - TODO: Alles auf raspi laufen lassen mit fernsteuerung pc
 - TODO: Autostart
