@@ -57,9 +57,8 @@ This ROS 2 driver package is responsible for hardware communication with the AGV
 - **Status Data Retrieval:** It reads status data from the AGV to monitor its current state.
 - **Workaround for Motor Control:** Since the motors are not directly controlled, but instead, the AGV needs to receive movement data in the x (rotation) and y (forward) directions, a workaround has been implemented. The wheel speeds from the hardware interface are recalculated into speeds in the x (rotation) and y (forward) directions, and then transmitted to the AGV.
 
-
 ### [sew_agv_navigation](https://github.com/RobinWolf/sew_maxo_mts_ros2/tree/dev/src/sew_agv_navigation)
-This package handles connection to a xBox One controller or the PCs keyboaed which can be used to drive the AGV manually and provides all necessary nodes to navigate the AGV autonomously in a recorded map with the use of ROS2 Nav2 Stack. Functionalities for 2D SLAM-Mapping are included too. Da wir jedoch bisher keine der Laserscanner des AGVs verwenden funktioniert die autonome navigation nur in der simulation in unserem [sew_maxo_mts_and_igus_rebel](https://github.com/RobinWolf/sew_maxo_mts_and_igus_rebel) repository.
+This package handles connection to a xBox One controller or the PCs keyboaed which can be used to drive the AGV manually and provides all necessary nodes to navigate the AGV autonomously in a recorded map with the use of ROS2 Nav2 Stack. Functionalities for 2D SLAM-Mapping are included too. However, since we are not currently using any of the AGV's laser scanners, autonomous navigation only works in simulation in our [sew_maxo_mts_and_igus_rebel](https://github.com/RobinWolf/sew_maxo_mts_and_igus_rebel) repository.
 
 
 <a name="howto"/>
