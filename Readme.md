@@ -100,7 +100,13 @@ sudo ip addr add 192.168.10.222/24 dev eth0
 sudo ip addr show eth0
 ```
 #### In autostart
-TODO Robin
+To perform the autostart capabilities of our system on a different PC connected to the hardware (instead of the RasperryPi 5 provided), you have to do some additional configurations on your hardware-PC/ RasperryPi.
+
+1) change the path placeholders `YOUR_PATH` in the [`setup_agv.service`](https://github.com/RobinWolf/sew_maxo_mts_ros2/blob/dev/setup_agv.service) file to the ABSOLUTE path to your cloned repo (igus_rebel_ros2_docker)
+2) move the `setup_agv.service` file to `/etc/systemd/system` (sudo required)
+3) enable and activate the system service with `sudo systemctl enable setup_agv.service` and `sudo systemctl start setup_agv.service`
+
+If you reboot the hardware PC now, the configuration of the Ethernet port is done automatically. When pressing the red reboot-buttton (connected to RasperryPi GPIO 18/ GND), a safe-reboot should be executed.
 
 
 ### Launch hardware interface
