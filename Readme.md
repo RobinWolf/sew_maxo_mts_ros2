@@ -1,6 +1,6 @@
 # sew_agv_drivers
 
-This Repo contains ROS2 code to controll a SEW AGV. The communication to the AGV is based on the Repo LinkTODO by Tom Schneider.
+This Repo contains ROS2 code to controll a SEW AGV. The communication to the AGV is based on the Repo [LINK](https://github.com/elekTom/ros_sew_agv) by Tom Schneider.
 
 ## Helpful informations:
 ROS Control: https://control.ros.org/humble/doc/ros2_control/doc/index.html 
