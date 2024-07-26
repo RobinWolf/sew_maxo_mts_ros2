@@ -102,7 +102,7 @@ sudo ip addr show eth0
 #### In autostart
 To perform the autostart capabilities of our system on a different PC connected to the hardware (instead of the RasperryPi 5 provided), you have to do some additional configurations on your hardware-PC/ RasperryPi.
 
-1) change the path placeholders `YOUR_PATH` in the [`setup_agv.service`](https://github.com/RobinWolf/sew_maxo_mts_ros2/blob/dev/setup_agv.service) file to the ABSOLUTE path to your cloned repo (igus_rebel_ros2_docker)
+1) change the path placeholders `YOUR_PATH` in the [`setup_agv.service`](https://github.com/RobinWolf/sew_maxo_mts_ros2/blob/dev/setup_agv.service) file to the ABSOLUTE path to your cloned repo (sew_agv_drivers)
 2) move the `setup_agv.service` file to `/etc/systemd/system` (sudo required)
 3) enable and activate the system service with `sudo systemctl enable setup_agv.service` and `sudo systemctl start setup_agv.service`
 
