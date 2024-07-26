@@ -69,12 +69,12 @@ This package handles connection to a xBox One controller or the PCs keyboaed whi
 <img src="doc/switches_back.png" alt="switches" height="400"/> 
 
 #### Start the AGV:
-1. pull the emergency-stop
+1. pull the agv emergency-stop
 2. turn on the AGV by pressing and holding the green and blue button for a few seconds
 3. The display is now turning on and the green button is lit up.
 
 #### Turn off the AGV
-1. push the emergency-stop
+1. push the agv emergency-stop
 2. turn of the AGV by pressing and holding the green and blue button for a few seconds
 3. The display turns off and the buttons stop lighting up.
 
